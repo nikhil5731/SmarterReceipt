@@ -4,11 +4,12 @@ body {
 }
 
 nav {
-  width: 100%;
+  width: 85%;
   height: 5em;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-left: 7.5%;
 }
 
 .burger {
@@ -18,22 +19,21 @@ nav {
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
-  margin-left: 1.5em;
-}
-
-.logo {
-  background: url(comp-logo.png);
-  height: 6em;
-  width: 5em;
-  margin-right: 1em;
-  background-repeat: no-repeat;
-  background-position: 60% 50%;
 }
 
 .line {
   height: 0.2em;
   width: 2em;
   background: black;
+}
+
+.container {
+  width: 85%;
+  padding: 7.5%;
+}
+
+.sales {
+  width: 100%;
 }
 
 
