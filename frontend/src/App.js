@@ -7,6 +7,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Home />} />
       </Routes>
     </BrowserRouter>
   );

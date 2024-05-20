@@ -63,11 +63,17 @@ const SalesChart = ({ isLightMode }) => {
             x: {
                 ticks: {
                     color: isLightMode ? '#000' : '#fff'
+                },
+                grid: {
+                    color: isLightMode ? '#ccc' : '#555'
                 }
             },
             y: {
                 ticks: {
                     color: isLightMode ? '#000' : '#fff'
+                },
+                grid: {
+                    color: isLightMode ? '#ccc' : '#555'
                 }
             }
         }

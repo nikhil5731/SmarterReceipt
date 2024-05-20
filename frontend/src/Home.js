@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SalesChart from './SalesChart';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faX, faBars } from '@fortawesome/free-solid-svg-icons';
-import ModeToggler from './ModeToggler';
+import Nav from './Nav';
+import { toggleMode as helperToggleMode} from './helpers';
 
 function Home() {
     const [isLightMode, setIsLightMode] = useState(() => {
@@ -17,49 +16,13 @@ function Home() {
         document.querySelector('.menu').style.color = isLightMode ? '#fff' : '#000';
     }, [isLightMode]);
 
-    function toggleMode() {
-        const newMode = !isLightMode;
-        setIsLightMode(newMode);
-        localStorage.setItem('isLightMode', JSON.stringify(newMode));
-    }
-
-    function openMenu() {
-        document.querySelector('.menu').style.animation = 'slideIn 0.5s forwards';
-        const listItems = document.querySelectorAll('.menu ul li');
-        listItems.forEach((item, index) => {
-            item.style.animation = `slideIn 0.5s forwards ${index / 7 + 0.3}s`;
-        });
-    }
-
-    function closeMenu() {
-        document.querySelector('.menu').style.animation = 'slideOut 0.5s forwards';
-        const listItems = document.querySelectorAll('.menu ul li');
-        setTimeout(() => {
-            listItems.forEach((item) => {
-                item.style.animation = '';
-            });
-        }, 500);
-    }
+    const toggleMode = () => {
+        helperToggleMode(isLightMode, setIsLightMode);
+    };
 
     return (
         <div>
-            <nav>
-                <ModeToggler isLightMode={isLightMode} toggleMode={toggleMode} />
-                <div className="burger" onClick={openMenu}>
-                    <FontAwesomeIcon icon={faBars} size="3x" />
-                </div>
-            </nav>
-            <div className="menu">
-                <ul>
-                    <li onClick={toggleMode}>Home</li>
-                    <li>About</li>
-                    <li>Services</li>
-                    <li>Contact</li>
-                </ul>
-                <div className="close-button" onClick={closeMenu}>
-                    <FontAwesomeIcon icon={faX} />
-                </div>
-            </div>
+            <Nav isLightMode={isLightMode} toggleMode={toggleMode} />
             <div className="container">
                 <h1 className='shop-name'>ShopNames's Statistics</h1>
                 <div className="sales">
