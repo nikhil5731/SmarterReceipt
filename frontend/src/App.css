@@ -14,7 +14,7 @@ nav {
 
 .burger {
   width: 2em;
-  height: 1.8em;
+  height: 3em;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -36,4 +36,126 @@ nav {
   width: 100%;
 }
 
+.menu {
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  background: black;
+  color: white;
+  transform: translateX(100%);
+}
 
+.menu ul {
+  list-style: none;
+}
+
+.menu ul li {
+  padding: 1em;
+  font-size: large;
+  transform: translateX(100%);
+  padding-right: 0;
+}
+
+.close-button {
+  margin: 2.1em;
+  height: 2em;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.mode-toggler {
+  position: relative;
+  width: 60px;
+  height: 30px;
+  background-color: #ccc;
+  border-radius: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 15px;
+  transition: background-color 0.3s, transform 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-container.light {
+  background-color: #f1c40f;
+}
+
+.toggle-container.dark {
+  background-color: #34495e;
+}
+
+.icon {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  transition: opacity 1s, transform 1s;
+}
+
+.sun-icon {
+  left: 5px;
+  color: #f39c12;
+}
+
+.sun-icon.dark-icon {
+  transform: translateX(30px);
+}
+
+.moon-icon {
+  right: 5px;
+  color: #ecf0f1;
+}
+
+.moon-icon.light-icon {
+  transform: translateX(-30px);
+}
+
+.light .sun-icon {
+  opacity: 1;
+}
+
+.light .moon-icon {
+  opacity: 0;
+}
+
+.dark .sun-icon {
+  opacity: 0;
+}
+
+.dark .moon-icon {
+  opacity: 1;
+}
+
+.shop-name {
+  padding: 0;
+  margin: 0;
+}
