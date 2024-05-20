@@ -13,6 +13,8 @@ function Home() {
     useEffect(() => {
         document.body.style.backgroundColor = isLightMode ? '#fff' : '#000';
         document.body.style.color = isLightMode ? '#000' : '#fff';
+        document.querySelector('.menu').style.backgroundColor = isLightMode ? '#000' : '#fff';
+        document.querySelector('.menu').style.color = isLightMode ? '#fff' : '#000';
     }, [isLightMode]);
 
     function toggleMode() {
@@ -59,7 +61,7 @@ function Home() {
                 </div>
             </div>
             <div className="container">
-                <h1>ShopNames's Statistics</h1>
+                <h1 className='shop-name'>ShopNames's Statistics</h1>
                 <div className="sales">
                     <h3>SALES</h3>
                     <SalesChart isLightMode={isLightMode} />
