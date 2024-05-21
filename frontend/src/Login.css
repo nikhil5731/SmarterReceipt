@@ -1,0 +1,121 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.login-container {
+    width: 85%;
+    margin-left: 7.5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5em;
+}
+
+.login-box {
+    width: 4em;
+    display: flex;
+    justify-content: center;
+    height: 4em;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: white;
+    padding: 2em;
+    flex-direction: column;
+    border: 0.2em solid #ff69b4;
+    animation: dropBounce 2s ease-in-out, transformToFinal 2s 2s forwards;
+}
+
+.login-box p {
+    margin-bottom: 2em;
+    text-align: center;
+    opacity: 0;
+    animation: fadeIn 2s 4s forwards;
+}
+
+.box-text {
+    text-align: center;
+    opacity: 0;
+    animation: fadeIn 2s 4s forwards;
+}
+
+.login-button {
+    width: 100%;
+    height: 3em;
+    background: white;
+    color: black;
+    border: none;
+    border-radius: 0.5em;
+    cursor: pointer;
+    margin-bottom: 2em;
+    opacity: 0;
+    animation: fadeIn 2s 4s forwards;
+}
+
+.login-heading {
+    margin-top: 2em;
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+    color: #fff;
+}
+
+.special-text {
+    font-family: 'Pacifico', cursive;
+    color: #ff69b4;
+}
+
+.special-heading1 {
+    font-family: 'Pacifico', cursive;
+    color: #32CD32;
+    font-size: 1.2em;
+}
+
+.special-heading2 {
+    font-family: 'Pacifico', cursive;
+    color: #1E90FF;
+    font-size: 1.2em;
+}
+
+@keyframes dropBounce {
+    0% {
+        transform: translateY(-100vh);
+    }
+    60% {
+        transform: translateY(0);
+    }
+    70% {
+        transform: translateY(-20%);
+    }
+    80% {
+        transform: translateY(0);
+    }
+    90% {
+        transform: translateY(-7%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes transformToFinal {
+    0% {
+        width: 4em;
+        height: 4em;
+        border-radius: 50%;
+    }
+    100% {
+        width: 100%;
+        height: 20em;
+        border-radius: 1.5em;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

@@ -4,6 +4,7 @@ import SalesChart from './SalesChart';
 import Nav from './Nav';
 import { toggleMode as helperToggleMode } from './helpers';
 import axios from 'axios';
+import ProductsToRestock from './ProductsToRestock';
 
 function Home() {
     const [isLightMode, setIsLightMode] = useState(() => {
@@ -15,6 +16,7 @@ function Home() {
     const [loading, setLoading] = useState(true);
     const [showPopup, setShowPopup] = useState(false);
     const [shopName, setShopName] = useState('');
+    const [inventory, setInventory] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -27,6 +29,7 @@ function Home() {
                     if (!response.data.ShopName) {
                         setShowPopup(true);
                     }
+                    fetchInventory(response.data.InventoryId);
                 } else {
                     console.log('User is not authenticated, redirecting to login');
                     navigate('/login');
@@ -41,13 +44,30 @@ function Home() {
             });
     }, [navigate]);
 
+    const fetchInventory = (inventoryId) => {
+        axios.get(`http://localhost:8000/api/inventory/${inventoryId}`, { withCredentials: true })
+            .then(response => {
+                setInventory(response.data.products);
+            })
+            .catch(error => {
+                console.error('Error fetching inventory:', error);
+            });
+    };
+
     useEffect(() => {
         document.body.style.backgroundColor = isLightMode ? '#fff' : '#000';
         document.body.style.color = isLightMode ? '#000' : '#fff';
         const menu = document.querySelector('.menu');
+        const popup = document.querySelector('.popup');
         if (menu) {
             menu.style.backgroundColor = isLightMode ? '#000' : '#fff';
             menu.style.color = isLightMode ? '#fff' : '#000';
+        }
+        if (popup) {
+            popup.style.backgroundColor = isLightMode ? '#fff' : '#000';
+            popup.style.setProperty('background-color', isLightMode ? '#000' : '#fff', 'important');
+            popup.style.color = isLightMode ? '#fff' : '#000';
+            popup.style.setProperty('color', isLightMode ? '#fff' : '#000', 'important');
         }
     }, [isLightMode]);
 
@@ -79,14 +99,24 @@ function Home() {
         <div>
             <Nav isLightMode={isLightMode} toggleMode={toggleMode} />
             <div className="container">
-                <h1 className='shop-name'>{user.ShopName ? `${user.ShopName}'s Statistics` : 'Statistics'}</h1>
+                <h1>{user.ShopName}'s Statistics</h1>
                 <div className="sales">
                     <h3>SALES</h3>
                     <h4 className="chart-title">Monthly Sales Data</h4>
                     <div className="chart">
                         <SalesChart isLightMode={isLightMode} />
                     </div>
-                    
+                </div>
+                <ProductsToRestock isLightMode={isLightMode} />
+                <div className="inventory">
+                    <h3>Inventory</h3>
+                    <ul>
+                        {inventory.map(product => (
+                            <li key={product.barcode}>
+                                {product.barcode} - ${product.price} - {product.quantity} units
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </div>
             {showPopup && (

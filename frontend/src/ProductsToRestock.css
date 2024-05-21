@@ -1,0 +1,41 @@
+.products-container {
+    margin: 20px;
+}
+
+.products-container.light {
+    background-color: #fff;
+    color: #000;
+}
+
+.products-container.dark {
+    padding: 0;
+    background-color: #000;
+    color: #fff;
+    margin: 0;
+}
+
+.products-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.product-box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.product-box:hover {
+    transform: scale(1.05);
+}
+
+.product-box h4 {
+    margin: 0;
+}
+
+.product-box p {
+    margin: 5px 0;
+}

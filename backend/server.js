@@ -1,17 +1,11 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const cookieSession = require('cookie-session');
-const { User, Inventory } = require('./db');
 const cors = require('cors');
 const path = require('path');
+const { User, Inventory } = require('./db');
 const { generateUniqueInventoryId } = require('./helpers');
-
-mongoose.connect("mongodb+srv://kinshuokmunjal:kmunjal654@cluster0.kzwzut4.mongodb.net/", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
 
 const app = express();
 
@@ -124,6 +118,66 @@ app.get('/api/logout', (req, res) => {
     console.log('Logging out user');
     req.session = null;
     res.send({ success: true });
+});
+
+// Endpoint to add a product to the user's inventory
+app.post('/api/inventory', async (req, res) => {
+    if (req.isAuthenticated()) {
+        try {
+            const { product } = req.body;
+            let inventory = await Inventory.findById(req.user.InventoryId);
+            
+            // Check if inventory exists, if not create a new one
+            if (!inventory) {
+                inventory = new Inventory({ _id: req.user.InventoryId, products: [] });
+            }
+            
+            inventory.products.push(product);
+            await inventory.save();
+            res.send(inventory);
+        } catch (err) {
+            console.log('Error updating inventory:', err);
+            res.status(500).send('Error updating inventory');
+        }
+    } else {
+        res.status(401).send('User not authenticated');
+    }
+});
+
+// Endpoint to get the inventory by ID
+app.get('/api/inventory/:id', async (req, res) => {
+    try {
+        let inventory = await Inventory.findById(req.params.id);
+        
+        // Check if inventory exists, if not create a new one
+        if (!inventory) {
+            inventory = new Inventory({ _id: req.params.id, products: [] });
+            await inventory.save();
+        }
+        
+        res.send(inventory);
+    } catch (err) {
+        console.log('Error fetching inventory:', err);
+        res.status(500).send('Error fetching inventory');
+    }
+});
+
+app.get('/api/products_to_restock', async (req, res) => {
+    if (req.isAuthenticated()) {
+        try {
+            const inventory = await Inventory.findById(req.user.InventoryId);
+            if (!inventory) {
+                return res.status(404).send('Inventory not found');
+            }
+            const productsToRestock = inventory.products.filter(product => product.quantity === 0);
+            res.send(productsToRestock);
+        } catch (err) {
+            console.log('Error fetching products to restock:', err);
+            res.status(500).send('Error fetching products to restock');
+        }
+    } else {
+        res.status(401).send('User not authenticated');
+    }
 });
 
 if (process.env.NODE_ENV === 'production') {

@@ -18,9 +18,23 @@ const Login = () => {
         document.body.style.backgroundColor = isLightMode ? '#fff' : '#000';
         document.body.style.color = isLightMode ? '#000' : '#fff';
         const menu = document.querySelector('.menu');
+        const loginBox = document.querySelector('.login-box');
+        const loginButton = document.querySelector('.login-button');
+        const loginHeading = document.querySelector('.login-heading');
         if (menu) {
             menu.style.backgroundColor = isLightMode ? '#000' : '#fff';
             menu.style.color = isLightMode ? '#fff' : '#000';
+        }
+        if (loginBox) {
+            loginBox.style.backgroundColor = isLightMode ? '#000' : '#fff';
+            loginBox.style.color = isLightMode ? '#fff' : '#000';
+        }
+        if (loginButton) {
+            loginButton.style.backgroundColor = isLightMode ? '#fff' : '#000';
+            loginButton.style.color = isLightMode ? '#000' : '#fff';
+        }
+        if (loginHeading) {
+            loginHeading.style.color = isLightMode ? '#000' : '#fff';
         }
     }, [isLightMode]);
 
@@ -53,16 +67,14 @@ const Login = () => {
     return (
         <div>
             <Nav isLightMode={isLightMode} toggleMode={toggleMode} />
-            {!user ? (
-                <div>
-                    <h2>Login</h2>
-                    <button onClick={handleLogin}>Login with Google</button>
+            <h2 className="box-text login-heading">Welcome to <span className="special-heading1">S</span>marter<span className="special-heading1">R</span>eceipt</h2>
+            <div className="login-container">
+                <div className="login-box">
+                    <h2 className="box-text">Want to make your inventory management and receipts <span className="special-text">digital</span>?</h2>
+                    <p>Log in with your Google account to get started</p>
+                    <button onClick={handleLogin} className="login-button">Login with Google</button>
                 </div>
-            ) : (
-                <div>
-                    <h2>Welcome, {user.username}</h2>
-                </div>
-            )}
+            </div>
         </div>
     );
 };
