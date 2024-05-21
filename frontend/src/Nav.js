@@ -1,10 +1,24 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faX, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faX } from '@fortawesome/free-solid-svg-icons';
 import ModeToggler from './ModeToggler';
 import { openMenu, closeMenu } from './helpers';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Nav({ isLightMode, toggleMode }) {
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        axios.get('http://localhost:8000/api/logout')
+            .then(() => {
+                navigate('/login');
+            })
+            .catch(error => {
+                console.log('Logout error', error);
+            });
+    };
+
     return (
         <div>
             <nav>
@@ -15,10 +29,8 @@ function Nav({ isLightMode, toggleMode }) {
             </nav>
             <div className="menu">
                 <ul>
-                    <li onClick={toggleMode}>Home</li>
-                    <li>About</li>
-                    <li>Services</li>
-                    <li>Contact</li>
+                    <li onClick={toggleMode}>Toggle Mode</li>
+                    <li onClick={handleLogout}>Logout</li>
                 </ul>
                 <div className="close-button" onClick={closeMenu}>
                     <FontAwesomeIcon icon={faX} />
