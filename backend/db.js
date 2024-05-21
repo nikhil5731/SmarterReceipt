@@ -41,7 +41,7 @@ const userSchema = new mongoose.Schema({
     },
     ShopName: {
         type: String,
-        required: true,
+        required: false,
         trim: true,
         maxLength: 100
     },
