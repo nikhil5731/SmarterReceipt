@@ -82,7 +82,11 @@ function Home() {
                 <h1 className='shop-name'>{user.ShopName ? `${user.ShopName}'s Statistics` : 'Statistics'}</h1>
                 <div className="sales">
                     <h3>SALES</h3>
-                    <SalesChart isLightMode={isLightMode} />
+                    <h4 className="chart-title">Monthly Sales Data</h4>
+                    <div className="chart">
+                        <SalesChart isLightMode={isLightMode} />
+                    </div>
+                    
                 </div>
             </div>
             {showPopup && (

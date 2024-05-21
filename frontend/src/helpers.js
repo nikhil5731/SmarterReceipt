@@ -6,7 +6,7 @@ export function toggleMode(isLightMode, setIsLightMode) {
     document.body.style.color = newMode ? '#000' : '#fff';
 }
 
-export function openMenu() {
+export function openMenu(isLightMode) {
     document.querySelector('.menu').style.animation = 'slideIn 0.5s forwards';
     const listItems = document.querySelectorAll('.menu ul li');
     listItems.forEach((item, index) => {

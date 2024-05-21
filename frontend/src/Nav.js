@@ -5,19 +5,34 @@ import ModeToggler from './ModeToggler';
 import { openMenu, closeMenu } from './helpers';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 function Nav({ isLightMode, toggleMode }) {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-        axios.get('http://localhost:8000/api/logout')
-            .then(() => {
-                navigate('/login');
+        console.log('Logging out');
+        axios.get('http://localhost:8000/api/logout', { withCredentials: true })
+            .then(response => {
+                if (response.data.success) {
+                    console.log('Logout successful');
+                    navigate('/login');
+                } else {
+                    console.log('Logout failed');
+                }
             })
             .catch(error => {
                 console.log('Logout error', error);
             });
     };
+
+    useEffect(() => {
+        const menu = document.querySelector('.menu');
+        if (menu) {
+            menu.style.backgroundColor = isLightMode ? '#000' : '#fff';
+            menu.style.color = isLightMode ? '#fff' : '#000';
+        }
+    }, [isLightMode]);
 
     return (
         <div>

@@ -54,7 +54,7 @@ const SalesChart = ({ isLightMode }) => {
                 }
             },
             title: {
-                display: true,
+                display: false,
                 text: 'Monthly Sales Data',
                 color: isLightMode ? '#000' : '#fff'
             },
@@ -79,7 +79,7 @@ const SalesChart = ({ isLightMode }) => {
         }
     };
 
-    return <div className="bar"><Bar data={data} options={options} height={400} /></div>;
+    return <div className="bar"><Bar data={data} options={options} height={125} /></div>;
 };
 
 export default SalesChart;

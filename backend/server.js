@@ -5,6 +5,8 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const cookieSession = require('cookie-session');
 const { User, Inventory } = require('./db');
 const cors = require('cors');
+const path = require('path');
+const { generateUniqueInventoryId } = require('./helpers');
 
 mongoose.connect("mongodb+srv://kinshuokmunjal:kmunjal654@cluster0.kzwzut4.mongodb.net/", {
     useNewUrlParser: true,
@@ -36,6 +38,10 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
     try {
         const user = await User.findById(id);
+        if (!user.InventoryId) {
+            user.InventoryId = await generateUniqueInventoryId();
+            await user.save();
+        }
         done(null, user);
     } catch (err) {
         done(err, null);
@@ -48,11 +54,17 @@ passport.use(new GoogleStrategy({
     callbackURL: 'http://localhost:8000/auth/google/callback'
 }, async (token, tokenSecret, profile, done) => {
     try {
-        const existingUser = await User.findOne({ googleId: profile.id });
-        if (existingUser) {
-            console.log('User already exists:', existingUser);
-            return done(null, existingUser);
+        let user = await User.findOne({ googleId: profile.id });
+        if (user) {
+            console.log('User already exists:', user);
+            if (!user.InventoryId) {
+                user.InventoryId = await generateUniqueInventoryId();
+                await user.save();
+            }
+            return done(null, user);
         }
+
+        const inventoryId = await generateUniqueInventoryId();
 
         const newUser = new User({
             googleId: profile.id,
@@ -60,7 +72,7 @@ passport.use(new GoogleStrategy({
             OwnerFirstName: profile.name.givenName,
             OwnerLastName: profile.name.familyName,
             password: undefined,
-            InventoryId: undefined
+            InventoryId: inventoryId
         });
 
         await newUser.save();
@@ -109,11 +121,9 @@ app.post('/api/addShopName', async (req, res) => {
 });
 
 app.get('/api/logout', (req, res) => {
-    req.logout((err) => {
-        if (err) { console.log('Logout error:', err); }
-        console.log('User logged out');
-        res.redirect('/');
-    });
+    console.log('Logging out user');
+    req.session = null;
+    res.send({ success: true });
 });
 
 if (process.env.NODE_ENV === 'production') {
