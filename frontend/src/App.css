@@ -38,39 +38,73 @@ nav {
 }
 
 .menu {
-  width: 50%;
+  width: 80%;
+  max-width: 350px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
   position: fixed;
   top: 0;
   right: 0;
   height: 100%;
-  background: black;
   color: white;
   transform: translateX(100%);
   z-index: 1;
+  padding: 2em 1em;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease-in-out;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.menu.open {
+  transform: translateX(0);
 }
 
 .menu ul {
   list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  text-align: center;
 }
 
 .menu ul li {
-  padding: 1em;
+  padding: 1em 0;
   font-size: large;
-  transform: translateX(100%);
-  padding-right: 0;
-  z-index: 2;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out, background 0.3s;
+  margin: 0.5em 0;
+  border-radius: 10px;
+  opacity: 0;
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.menu ul li:hover {
+  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .close-button {
-  margin: 2.1em;
-  height: 2em;
+  margin-bottom: 1em;
+  cursor: pointer;
+  color: white;
 }
+
+.close-button svg {
+  width: 1.5em;
+  height: 1.5em;
+}
+
+.close-button:hover {
+  color: #ff6b6b;
+}
+
 
 @keyframes slideIn {
   from {
-    transform: translateX(100%);
+    transform: translateX(70%);
   }
   to {
     transform: translateX(0);
@@ -223,6 +257,10 @@ nav {
   width: 100%;
   text-align: center;
   font-size: small;
+}
+
+.move-down {
+  margin-top: 50% !important;
 }
 
 @keyframes fade-in {

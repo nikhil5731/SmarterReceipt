@@ -21,10 +21,6 @@ const Login = () => {
         const loginBox = document.querySelector('.login-box');
         const loginButton = document.querySelector('.login-button');
         const loginHeading = document.querySelector('.login-heading');
-        if (menu) {
-            menu.style.backgroundColor = isLightMode ? '#000' : '#fff';
-            menu.style.color = isLightMode ? '#fff' : '#000';
-        }
         if (loginBox) {
             loginBox.style.backgroundColor = isLightMode ? '#000' : '#fff';
             loginBox.style.color = isLightMode ? '#fff' : '#000';

@@ -6,6 +6,8 @@ import { toggleMode as helperToggleMode } from './helpers';
 import axios from 'axios';
 import ProductsToRestock from './ProductsToRestock';
 import './App.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 function Home() {
     const [isLightMode, setIsLightMode] = useState(() => {
@@ -58,12 +60,7 @@ function Home() {
     useEffect(() => {
         document.body.style.backgroundColor = isLightMode ? '#fff' : '#000';
         document.body.style.color = isLightMode ? '#000' : '#fff';
-        const menu = document.querySelector('.menu');
         const popup = document.querySelector('.popup');
-        if (menu) {
-            menu.style.backgroundColor = isLightMode ? '#000' : '#fff';
-            menu.style.color = isLightMode ? '#fff' : '#000';
-        }
         if (popup) {
             popup.style.backgroundColor = isLightMode ? '#fff' : '#000';
             popup.style.setProperty('background-color', isLightMode ? '#000' : '#fff', 'important');
@@ -100,6 +97,7 @@ function Home() {
         <div>
             <Nav isLightMode={isLightMode} toggleMode={toggleMode} />
             <div className="container">
+                <h2 style={{"color": "gray"}}><FontAwesomeIcon icon={faPlus}/> New Order</h2>
                 <h1>{user.ShopName}'s Statistics</h1>
                 <div className="sales">
                     <h3>Sales</h3>
@@ -109,16 +107,6 @@ function Home() {
                     </div>
                 </div>
                 <ProductsToRestock isLightMode={isLightMode} />
-                <div className="inventory">
-                    <h3>Inventory</h3>
-                    <ul>
-                        {inventory.map(product => (
-                            <li>
-                                {product.name} - ${product.price} - {product.quantity} units
-                            </li>
-                        ))}
-                    </ul>
-                </div>
             </div>
             {showPopup && (
                 <div className="backdrop">

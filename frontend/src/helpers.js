@@ -10,7 +10,7 @@ export function openMenu(isLightMode) {
     document.querySelector('.menu').style.animation = 'slideIn 0.5s forwards';
     const listItems = document.querySelectorAll('.menu ul li');
     listItems.forEach((item, index) => {
-        item.style.animation = `slideIn 0.5s forwards ${index / 7 + 0.3}s`;
+        item.style.animation = `fadeIn 0.5s forwards ${index / 7 + 0.3}s`;
     });
 }
 

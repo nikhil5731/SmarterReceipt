@@ -1,22 +1,13 @@
 .products-container {
     transition: background-color 1s, color 1s;
-}
-
-.products-container.light {
-    background-color: #fff;
-    color: #000;
-}
-
-.products-container.dark {
-    padding: 0;
-    background-color: #000;
-    color: #fff;
+    border-radius: 10px;
 }
 
 .products-title {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 .products-title p {
@@ -47,6 +38,7 @@
 .products-list {
     display: flex;
     flex-direction: column;
+    gap: 15px;
 }
 
 .scroll-container {
@@ -67,13 +59,21 @@
 
 .product-box {
     border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
+    padding: 15px;
+    border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
-    min-width: 200px; 
-    background-color: white;
-    color: black;
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #fff;
+    color: #333;
+}
+
+.product-box.dark {
+    background-color: #000;
+    color: #f9f9f9;
 }
 
 .product-box:hover {
@@ -81,11 +81,27 @@
 }
 
 .product-box h4 {
-    margin: 0;
+    margin: 0 0 10px 0;
+    font-size: 1.2em;
+    text-align: center;
 }
 
 .product-box p {
     margin: 5px 0;
+    font-size: 1em;
+}
+
+.product-price {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    flex-grow: 1;
+}
+
+.product-metrics-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .modal-backdrop {
@@ -103,27 +119,27 @@
 
 .modal {
     background-color: #fff;
-    color: #000;
+    color: #333;
     border-radius: 10px;
     padding: 20px;
-    margin-left: 1em;
-    margin-right: 1em;
+    margin: 1em;
     max-height: 90vh;
     overflow-y: auto;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;
     transition: background-color 1s, color 1s;
-    border: 2px #ff69b4 solid;
 }
 
 .modal.light {
     background-color: #fff;
-    color: #000;
+    color: #333;
+    border: 2px #000 solid;
 }
 
 .modal.dark {
     background-color: #000;
-    color: #fff;
+    color: #f9f9f9;
+    border: 2px #fff solid;
 }
 
 .modal-header {
@@ -148,9 +164,4 @@
 
 .x-button:hover {
     color: red;
-}
-
-.product-price {
-    display: flex;
-    justify-content: space-around;
 }

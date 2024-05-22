@@ -23,20 +23,20 @@ body {
     padding: 2em;
     flex-direction: column;
     border: 0.2em solid #ff69b4;
-    animation: dropBounce 2s ease-in-out, transformToFinal 2s 2s forwards;
+    animation: dropBounce 1.25s ease-in-out, transformToFinal 1.25s 1.25s forwards;
 }
 
 .login-box p {
     margin-bottom: 2em;
     text-align: center;
     opacity: 0;
-    animation: fadeIn 2s 4s forwards;
+    animation: fadeIn 1.25s 2.5s forwards;
 }
 
 .box-text {
     text-align: center;
     opacity: 0;
-    animation: fadeIn 2s 4s forwards;
+    animation: fadeIn 1.25s 2.5s forwards;
 }
 
 .login-button {
@@ -49,7 +49,7 @@ body {
     cursor: pointer;
     margin-bottom: 2em;
     opacity: 0;
-    animation: fadeIn 2s 4s forwards;
+    animation: fadeIn 1.25s 2.5s forwards;
 }
 
 .login-heading {

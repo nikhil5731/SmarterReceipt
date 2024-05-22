@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const ProductsToRestock = ({ isLightMode }) => {
-
     const [products, setProducts] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -42,13 +41,20 @@ const ProductsToRestock = ({ isLightMode }) => {
             <div className="products-list">
                 <div className="scroll-container">
                     {products.map(product => (
-                        <div key={product.name} className="product-box">
+                        <div key={product.name} className={`product-box ${isLightMode ? 'light' : 'dark'}`}>
                             <h4>{product.name}</h4>
-                            <p>Price: ${product.price}</p>
-                            <p>Quantity: {product.quantity}</p>
+                            <div className='product-price'>
+                                <div className='product-metrics-row'>
+                                    <div><h3>Price</h3></div>
+                                    <div><h3>Quantity</h3></div>
+                                </div>
+                                <div className='product-metrics-row'>
+                                    <div><h4>${product.price}</h4></div>
+                                    <div><h4>{product.quantity}</h4></div>
+                                </div>
+                            </div>
                         </div>
                     ))}
-                    
                 </div>
             </div>
             {isModalOpen && (
@@ -61,11 +67,17 @@ const ProductsToRestock = ({ isLightMode }) => {
                         </div>
                         <div className="modal-content">
                             {products.map(product => (
-                                <div key={product.name} className="product-box">
+                                <div key={product.name} className={`product-box ${isLightMode ? 'light' : 'dark'}`}>
                                     <h4>{product.name}</h4>
                                     <div className='product-price'>
-                                        <div>Price: ${product.price}</div>
-                                        <div>Quantity: {product.quantity}</div>
+                                        <div className='product-metrics-row'>
+                                            <div><h3>Price</h3></div>
+                                            <div><h3>Quantity</h3></div>
+                                        </div>
+                                        <div className='product-metrics-row'>
+                                            <div><h4>${product.price}</h4></div>
+                                            <div><h4>{product.quantity}</h4></div>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
