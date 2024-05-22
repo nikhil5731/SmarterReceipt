@@ -113,8 +113,8 @@ function Home() {
                     <h3>Inventory</h3>
                     <ul>
                         {inventory.map(product => (
-                            <li key={product.barcode}>
-                                {product.barcode} - ${product.price} - {product.quantity} units
+                            <li>
+                                {product.name} - ${product.price} - {product.quantity} units
                             </li>
                         ))}
                     </ul>

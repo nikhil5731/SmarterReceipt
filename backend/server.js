@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const cookieSession = require('cookie-session');
@@ -125,6 +126,12 @@ app.post('/api/inventory', async (req, res) => {
     if (req.isAuthenticated()) {
         try {
             const { product } = req.body;
+            console.log('Received product data:', product);
+            if (!product.name || !product.price || product.quantity === undefined) {
+                console.log('Invalid product data:', product);
+                return res.status(400).send('Invalid product data');
+            }
+
             let inventory = await Inventory.findById(req.user.InventoryId);
             
             // Check if inventory exists, if not create a new one
@@ -162,6 +169,23 @@ app.get('/api/inventory/:id', async (req, res) => {
     }
 });
 
+app.delete('/api/delete_inventory', async (req, res) => {
+    if (req.isAuthenticated()) {
+        try {
+            await Inventory.findByIdAndDelete(req.user.InventoryId);
+            req.user.InventoryId = await generateUniqueInventoryId();
+            await req.user.save();
+            res.send({ success: true });
+        } catch (err) {
+            console.log('Error deleting inventory:', err);
+            res.status(500).send('Error deleting inventory');
+        }
+    } else {
+        res.status(401).send('User not authenticated');
+    }
+});
+
+// Endpoint to get the products to restock (quantity = 0)
 app.get('/api/products_to_restock', async (req, res) => {
     if (req.isAuthenticated()) {
         try {
@@ -179,6 +203,25 @@ app.get('/api/products_to_restock', async (req, res) => {
         res.status(401).send('User not authenticated');
     }
 });
+
+app.get('/api/product_details/:barcode', async (req, res) => {
+    try {
+        const apiKey = 'crl0y7wsflrwkiky4cpjy83eza8gxc';
+        const response = await axios.get(`https://api.barcodelookup.com/v3/products?barcode=${req.params.barcode}&key=${apiKey}`);
+        if (response.data.products && response.data.products.length > 0) {
+            res.send({
+                name: response.data.products[0].title, // Use title instead of product_name
+                image: response.data.products[0].images[0]
+            });
+        } else {
+            res.status(404).send('Product not found');
+        }
+    } catch (error) {
+        console.error('Error fetching product details:', error);
+        res.status(500).send('Error fetching product details');
+    }
+});
+ 
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));

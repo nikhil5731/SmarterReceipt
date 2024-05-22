@@ -54,14 +54,17 @@ const userSchema = new mongoose.Schema({
 
 const InventorySchema = new mongoose.Schema({
     products: [{
-        barcode: {
-            type: String
+        name: {
+            type: String,
+            required: true
         },
         quantity: {
-            type: Number
+            type: Number,
+            required: true
         },
         price: {
-            type: Number
+            type: Number,
+            required: true
         }
     }]
 });

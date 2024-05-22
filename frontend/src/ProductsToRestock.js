@@ -41,9 +41,8 @@ const ProductsToRestock = ({ isLightMode }) => {
             <div className="products-list">
                 <div className="scroll-container">
                     {products.map(product => (
-                        <div key={product.barcode} className="product-box">
+                        <div key={product.name} className="product-box">
                             <h4>{product.name}</h4>
-                            <p>Barcode: {product.barcode}</p>
                             <p>Price: ${product.price}</p>
                             <p>Quantity: {product.quantity}</p>
                         </div>
@@ -60,9 +59,8 @@ const ProductsToRestock = ({ isLightMode }) => {
                         </div>
                         <div className="modal-content">
                             {products.map(product => (
-                                <div key={product.barcode} className="product-box">
+                                <div key={product.name} className="product-box">
                                     <h4>{product.name}</h4>
-                                    <p>Barcode: {product.barcode}</p>
                                     <p>Price: ${product.price}</p>
                                     <p>Quantity: {product.quantity}</p>
                                 </div>

@@ -26,6 +26,23 @@ function Nav({ isLightMode, toggleMode }) {
             });
     };
 
+    const handleDeleteInventory = () => {
+        if (window.confirm('Are you sure you want to delete your entire inventory?')) {
+            axios.delete('http://localhost:8000/api/delete_inventory', { withCredentials: true })
+                .then(response => {
+                    if (response.data.success) {
+                        console.log('Inventory deleted successfully');
+                        // Optionally navigate or refresh the page to show the updated state
+                    } else {
+                        console.log('Failed to delete inventory');
+                    }
+                })
+                .catch(error => {
+                    console.log('Error deleting inventory', error);
+                });
+        }
+    };
+
     useEffect(() => {
         const menu = document.querySelector('.menu');
         if (menu) {
@@ -45,6 +62,7 @@ function Nav({ isLightMode, toggleMode }) {
             <div className="menu">
                 <ul>
                     <li onClick={toggleMode}>Toggle Mode</li>
+                    <li onClick={handleDeleteInventory}>Delete Inventory</li>
                     <li onClick={handleLogout}>Logout</li>
                 </ul>
                 <div className="close-button" onClick={closeMenu}>
