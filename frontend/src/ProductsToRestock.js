@@ -6,26 +6,32 @@ const ProductsToRestock = ({ isLightMode }) => {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/products_to_restock', { withCredentials: true })
-            .then(response => {
+        const fetchProductsToRestock = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/api/products_to_restock', { withCredentials: true });
                 setProducts(response.data);
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error fetching products to restock:', error);
-            });
+            }
+        };
+
+        fetchProductsToRestock();
     }, []);
 
     return (
         <div className={`products-container ${isLightMode ? 'light' : 'dark'}`}>
             <h3>Products to Restock</h3>
             <div className="products-list">
-                {products.map(product => (
-                    <div key={product.id} className="product-box">
-                        <h4>{product.name}</h4>
-                        <p>Quantity: {product.quantity}</p>
-                        <p>Reorder Level: {product.reorderLevel}</p>
-                    </div>
-                ))}
+                <div className="scroll-container">
+                    {products.map(product => (
+                        <div key={product.barcode} className="product-box">
+                            <h4>{product.name}</h4>
+                            <p>Barcode: {product.barcode}</p>
+                            <p>Price: ${product.price}</p>
+                            <p>Quantity: {product.quantity}</p>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );

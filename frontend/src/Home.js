@@ -88,7 +88,7 @@ function Home() {
     };
 
     if (loading) {
-        return <div>Loading...</div>; // or a loading spinner
+        return <div>Loading...</div>;
     }
 
     if (!user) {
@@ -101,7 +101,7 @@ function Home() {
             <div className="container">
                 <h1>{user.ShopName}'s Statistics</h1>
                 <div className="sales">
-                    <h3>SALES</h3>
+                    <h3>Sales</h3>
                     <h4 className="chart-title">Monthly Sales Data</h4>
                     <div className="chart">
                         <SalesChart isLightMode={isLightMode} />

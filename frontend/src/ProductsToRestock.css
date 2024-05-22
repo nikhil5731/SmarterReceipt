@@ -1,5 +1,5 @@
 .products-container {
-    margin: 20px;
+    transition: background-color 1s, color 1s;
 }
 
 .products-container.light {
@@ -11,13 +11,31 @@
     padding: 0;
     background-color: #000;
     color: #fff;
-    margin: 0;
 }
 
 .products-list {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+.first-box {
+    margin-bottom: 20px;
+}
+
+.scroll-container {
+    display: flex;
+    overflow-x: auto;
     gap: 10px;
+    padding-bottom: 10px;
+}
+
+.scroll-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
 }
 
 .product-box {
@@ -26,6 +44,7 @@
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
+    min-width: 150px; /* Adjust the width as needed */
 }
 
 .product-box:hover {
