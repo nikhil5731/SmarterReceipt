@@ -71,7 +71,9 @@
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
-    min-width: 150px; /* Adjust the width as needed */
+    min-width: 200px; 
+    background-color: white;
+    color: black;
 }
 
 .product-box:hover {
@@ -104,6 +106,8 @@
     color: #000;
     border-radius: 10px;
     padding: 20px;
+    margin-left: 1em;
+    margin-right: 1em;
     max-height: 90vh;
     overflow-y: auto;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -144,4 +148,9 @@
 
 .x-button:hover {
     color: red;
+}
+
+.product-price {
+    display: flex;
+    justify-content: space-around;
 }

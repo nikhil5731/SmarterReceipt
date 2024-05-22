@@ -206,7 +206,7 @@ app.get('/api/products_to_restock', async (req, res) => {
 
 app.get('/api/product_details/:barcode', async (req, res) => {
     try {
-        const apiKey = 'crl0y7wsflrwkiky4cpjy83eza8gxc';
+        const apiKey = 'jb0h522qg6qy63qsejx4w1gr0zgvo4';
         const response = await axios.get(`https://api.barcodelookup.com/v3/products?barcode=${req.params.barcode}&key=${apiKey}`);
         if (response.data.products && response.data.products.length > 0) {
             res.send({
