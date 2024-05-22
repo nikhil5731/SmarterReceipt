@@ -1,4 +1,3 @@
-import './App.css';
 import Home from './Home.js';
 import Login from './Login.js';
 import ProductsPage from './ProductsPage.js';

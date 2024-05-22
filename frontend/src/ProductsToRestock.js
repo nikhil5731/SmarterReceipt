@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './ProductsToRestock.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const ProductsToRestock = ({ isLightMode }) => {
     const [products, setProducts] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchProductsToRestock = async () => {
@@ -18,9 +21,23 @@ const ProductsToRestock = ({ isLightMode }) => {
         fetchProductsToRestock();
     }, []);
 
+    useEffect(() => {
+        const expand = document.querySelector('.products-title p');
+        if (expand) {
+            expand.style.borderColor = isLightMode ? '#000' : '#fff';
+        }
+    }, [isLightMode]);
+
+    const toggleModal = () => {
+        setIsModalOpen(!isModalOpen);
+    };
+
     return (
         <div className={`products-container ${isLightMode ? 'light' : 'dark'}`}>
-            <h3>Products to Restock</h3>
+            <div className="products-title">
+                <h3>Products to Restock</h3>
+                <p className="expand-button" onClick={toggleModal}>Expand</p>
+            </div>
             <div className="products-list">
                 <div className="scroll-container">
                     {products.map(product => (
@@ -33,6 +50,27 @@ const ProductsToRestock = ({ isLightMode }) => {
                     ))}
                 </div>
             </div>
+            {isModalOpen && (
+                <div className="modal-backdrop">
+                    <div className={`modal ${isLightMode ? 'light' : 'dark'}`}>
+                        <div className="modal-header">
+                            <button className="x-button" onClick={toggleModal}>
+                                <FontAwesomeIcon icon={faTimes} />
+                            </button>
+                        </div>
+                        <div className="modal-content">
+                            {products.map(product => (
+                                <div key={product.barcode} className="product-box">
+                                    <h4>{product.name}</h4>
+                                    <p>Barcode: {product.barcode}</p>
+                                    <p>Price: ${product.price}</p>
+                                    <p>Quantity: {product.quantity}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

@@ -5,6 +5,7 @@ import Nav from './Nav';
 import { toggleMode as helperToggleMode } from './helpers';
 import axios from 'axios';
 import ProductsToRestock from './ProductsToRestock';
+import './App.css';
 
 function Home() {
     const [isLightMode, setIsLightMode] = useState(() => {
