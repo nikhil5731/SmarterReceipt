@@ -1,8 +1,8 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faX } from '@fortawesome/free-solid-svg-icons';
-import ModeToggler from './ModeToggler';
-import { openMenu, closeMenu } from './helpers';
+import ModeToggler from '../ModeToggler';
+import { openMenu, closeMenu } from '../helpers';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';

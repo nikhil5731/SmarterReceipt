@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './Login.css';
-import Nav from './Nav';
-import { toggleMode as helperToggleMode } from './helpers';
+import '../css/Login.css';
+import Nav from '../components/Nav';
+import { toggleMode as helperToggleMode } from '../helpers';
 
 const Login = () => {
     const [user, setUser] = useState(null);

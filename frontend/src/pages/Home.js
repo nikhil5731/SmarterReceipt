@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SalesChart from './SalesChart';
-import Nav from './Nav';
-import { toggleMode as helperToggleMode } from './helpers';
+import SalesChart from '../components/SalesChart';
+import Nav from '../components/Nav';
+import { toggleMode as helperToggleMode } from '../helpers';
 import axios from 'axios';
-import ProductsToRestock from './ProductsToRestock';
-import './App.css';
+import ProductsToRestock from '../components/ProductsToRestock';
+import '../css/App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 

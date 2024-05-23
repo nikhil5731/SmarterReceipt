@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import AddProduct from './AddProduct';
+import AddProduct from '../components/AddProduct';
 import axios from 'axios';
 
 const ProductsPage = () => {
