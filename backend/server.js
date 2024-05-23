@@ -86,20 +86,20 @@ app.get('/auth/google/callback', passport.authenticate('google', { failureRedire
     console.log('Google authentication successful');
     res.redirect('http://localhost:3000');
 });
-
-app.get('/api/current_user', (req, res) => {
+function isAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
-        console.log('User is authenticated:', req.user);
-        res.send(req.user);
-    } else {
-        console.log('User is not authenticated');
-        res.send(null);
+        return next();
     }
+    res.redirect('/auth/google');  // Redirect to Google login if not authenticated
+}
+
+app.get('/api/current_user',isAuthenticated, (req, res) => {
+        res.send(req.user);
 });
 
-app.post('/api/addShopName', async (req, res) => {
+app.post('/api/addShopName',isAuthenticated, async (req, res) => {
     const { shopName } = req.body;
-    if (req.isAuthenticated()) {
+
         try {
             const user = await User.findById(req.user.id);
             user.ShopName = shopName;
@@ -110,9 +110,7 @@ app.post('/api/addShopName', async (req, res) => {
             console.log('Error saving shop name:', err);
             res.status(500).send('Error saving shop name');
         }
-    } else {
-        res.status(401).send('User not authenticated');
-    }
+
 });
 
 app.get('/api/logout', (req, res) => {
@@ -122,8 +120,8 @@ app.get('/api/logout', (req, res) => {
 });
 
 // Endpoint to add a product to the user's inventory
-app.post('/api/inventory', async (req, res) => {
-    if (req.isAuthenticated()) {
+app.post('/api/inventory',isAuthenticated,async (req, res) => {
+
         try {
             const { product } = req.body;
             console.log('Received product data:', product);
@@ -146,13 +144,11 @@ app.post('/api/inventory', async (req, res) => {
             console.log('Error updating inventory:', err);
             res.status(500).send('Error updating inventory');
         }
-    } else {
-        res.status(401).send('User not authenticated');
-    }
+
 });
 
 // Endpoint to get the inventory by ID
-app.get('/api/inventory/:id', async (req, res) => {
+app.get('/api/inventory/:id',isAuthenticated,async (req, res) => {
     try {
         let inventory = await Inventory.findById(req.params.id);
         
@@ -169,8 +165,8 @@ app.get('/api/inventory/:id', async (req, res) => {
     }
 });
 
-app.delete('/api/delete_inventory', async (req, res) => {
-    if (req.isAuthenticated()) {
+app.delete('/api/delete_inventory',isAuthenticated, async (req, res) => {
+
         try {
             await Inventory.findByIdAndDelete(req.user.InventoryId);
             req.user.InventoryId = await generateUniqueInventoryId();
@@ -180,14 +176,12 @@ app.delete('/api/delete_inventory', async (req, res) => {
             console.log('Error deleting inventory:', err);
             res.status(500).send('Error deleting inventory');
         }
-    } else {
-        res.status(401).send('User not authenticated');
-    }
+
 });
 
 // Endpoint to get the products to restock (quantity = 0)
-app.get('/api/products_to_restock', async (req, res) => {
-    if (req.isAuthenticated()) {
+app.get('/api/products_to_restock',isAuthenticated, async (req, res) => {
+
         try {
             const inventory = await Inventory.findById(req.user.InventoryId);
             if (!inventory) {
@@ -199,12 +193,10 @@ app.get('/api/products_to_restock', async (req, res) => {
             console.log('Error fetching products to restock:', err);
             res.status(500).send('Error fetching products to restock');
         }
-    } else {
-        res.status(401).send('User not authenticated');
-    }
+
 });
 
-app.get('/api/product_details/:barcode', async (req, res) => {
+app.get('/api/product_details/:barcode',isAuthenticated, async (req, res) => {
     try {
         const apiKey = 'jb0h522qg6qy63qsejx4w1gr0zgvo4';
         const response = await axios.get(`https://api.barcodelookup.com/v3/products?barcode=${req.params.barcode}&key=${apiKey}`);
