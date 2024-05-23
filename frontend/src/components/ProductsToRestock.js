@@ -42,15 +42,11 @@ const ProductsToRestock = ({ isLightMode }) => {
                 <div className="scroll-container">
                     {products.map(product => (
                         <div key={product.name} className={`product-box ${isLightMode ? 'light' : 'dark'}`}>
-                            <h4>{product.name}</h4>
-                            <div className='product-price'>
-                                <div className='product-metrics-row'>
-                                    <div><h3>Price</h3></div>
-                                    <div><h3>Quantity</h3></div>
-                                </div>
-                                <div className='product-metrics-row'>
-                                    <div><h4>${product.price}</h4></div>
-                                    <div><h4>{product.quantity}</h4></div>
+                            <div className='toggler'>
+                                <img src={product.image} height={"100em"} width={"50%"}></img>
+                                <div className='name-image'>
+                                    <h4>{product.name}</h4>
+                                    <h4 className="red">{product.quantity} left</h4>
                                 </div>
                             </div>
                         </div>
@@ -68,15 +64,11 @@ const ProductsToRestock = ({ isLightMode }) => {
                         <div className="modal-content">
                             {products.map(product => (
                                 <div key={product.name} className={`product-box ${isLightMode ? 'light' : 'dark'}`}>
-                                    <h4>{product.name}</h4>
-                                    <div className='product-price'>
-                                        <div className='product-metrics-row'>
-                                            <div><h3>Price</h3></div>
-                                            <div><h3>Quantity</h3></div>
-                                        </div>
-                                        <div className='product-metrics-row'>
-                                            <div><h4>${product.price}</h4></div>
-                                            <div><h4>{product.quantity}</h4></div>
+                                    <div className='toggler'>
+                                        <img src={product.image} height={"100em"} width={"50%"}></img>
+                                        <div className='name-image'>
+                                            <h4>{product.name}</h4>
+                                            <h4 className="red">{product.quantity} left</h4>
                                         </div>
                                     </div>
                                 </div>

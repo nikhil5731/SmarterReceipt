@@ -65,6 +65,10 @@ const InventorySchema = new mongoose.Schema({
         price: {
             type: Number,
             required: true
+        },
+        image: {
+            type: String,
+            required: false
         }
     }],
     MonthlySales: {

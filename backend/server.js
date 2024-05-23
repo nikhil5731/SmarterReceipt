@@ -195,8 +195,12 @@ app.get('/api/product_details/:barcode', async (req, res) => {
         const response = await axios.get(`https://world.openfoodfacts.org/api/v0/product/${barcode}`);
 
         if (response.data && response.data.product && response.data.product.product_name) {
+            const product = response.data.product;
+            const frontImageUrl = product.selected_images?.front?.display?.en || product.selected_images?.front?.display?.fr;
+
             res.send({
-                name: response.data.product.product_name
+                name: product.product_name,
+                image: frontImageUrl
             });
         } else {
             res.status(404).send('Product not found');
@@ -206,6 +210,7 @@ app.get('/api/product_details/:barcode', async (req, res) => {
         res.status(500).send('Error fetching product details');
     }
 });
+
 
 app.get('/api/user/monthly-sales/:userId', async (req, res) => {
     const userId = req.params.userId;

@@ -31,6 +31,24 @@ function Nav({ isLightMode, toggleMode }) {
             });
     };
 
+    const handleDeleteInventory = () => {
+        axios.delete('http://localhost:8000/api/delete_inventory', { withCredentials: true })
+            .then(response => {
+                if (response.data.success) {
+                    console.log('Delete successful');
+                    alert('Inventory deleted successfully');
+                } else {
+                    console.log('Delete failed');
+                    alert('Failed to delete inventory');
+                }
+            })
+            .catch(error => {
+                console.log('Delete error', error);
+                alert('Error deleting inventory');
+            });
+    };
+    
+
     useEffect(() => {
         const menu = document.querySelector('.menu');
         if (menu) {
@@ -64,6 +82,7 @@ function Nav({ isLightMode, toggleMode }) {
                             <li>My Inventory</li>
                             <li>New Order</li>
                             <li onClick={handleLogout}>Logout</li>
+                            <li onClick={handleDeleteInventory}>Delete Inventory</li>
                         </>
                     )}
                 </ul>

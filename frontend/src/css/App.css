@@ -279,6 +279,8 @@ nav {
 .small {
   font-size: 25px !important;
   margin-top: 0 !important;
+  animation: none !important;
+  opacity: 1 !important;
 }
 
 .toggler {

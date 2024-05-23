@@ -68,8 +68,9 @@
     justify-content: space-between;
     background-color: #fff;
     color: #333;
-    min-width: 200px;
+    min-width: 250px;
     transition: background-color 1s, color 1s;
+    height: 6em;
 }
 
 .product-box.dark {
@@ -165,4 +166,14 @@
 
 .x-button:hover {
     color: red;
+}
+
+.name-image {
+    width: 60%;
+    text-align: center;
+    margin-left: 10%;
+}
+
+.red {
+    color: #FF204E;
 }
