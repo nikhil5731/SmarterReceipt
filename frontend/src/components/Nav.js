@@ -41,15 +41,20 @@ function Nav({ isLightMode, toggleMode }) {
     return (
         <div>
             <nav>
-                <ModeToggler isLightMode={isLightMode} toggleMode={toggleMode} />
+            <div className="box-text login-heading small"><span className="special-heading1">S</span>marter<span className="special-heading1">R</span>eceipt</div>
+                {/* <ModeToggler isLightMode={isLightMode} toggleMode={toggleMode} /> */}
                 <div className="burger" onClick={openMenu}>
                     <FontAwesomeIcon icon={faBars} size="3x" />
                 </div>
             </nav>
             <div className="menu">
-                <div className="close-button" onClick={closeMenu}>
-                    <FontAwesomeIcon icon={faX} />
+                <div className='toggler'>
+                    <div className="close-button" onClick={closeMenu}>
+                        <FontAwesomeIcon icon={faX} />
+                    </div>
+                    <ModeToggler isLightMode={isLightMode} toggleMode={toggleMode} />
                 </div>
+                
                 <ul>
                     {location.pathname === '/login' ? (
                         <li onClick={handleLogin}>Login with Google</li>

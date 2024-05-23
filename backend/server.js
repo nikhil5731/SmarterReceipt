@@ -207,25 +207,29 @@ app.get('/api/product_details/:barcode', async (req, res) => {
     }
 });
 
-app.get('api/user/:userId/monthly-sales', async (req, res) => {
+app.get('/api/user/monthly-sales/:userId', async (req, res) => {
     const userId = req.params.userId;
     try {
-        if (User.findById(userId)) {
-            const user = User.findById(userId);
-            const inventoryId = user.InventoryId;
+        const user = await User.findById(userId); // Use await here
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
 
-            const inventory = Inventory.findById(inventoryId);
-            const monthlySales = inventory.monthlySales;
-            res.json({ monthlySales })
+        const inventory = await Inventory.findById(user.InventoryId); // Use await here
+        if (!inventory) {
+            return res.status(404).send('Inventory not found');
         }
-        else {
-            console.log("Could not find inventory");
-        }
-    }
-    catch {
-        console.log("Could not find inventory");
+
+        // Assuming you want to get monthly sales data from the inventory
+        const monthlySales = inventory.MonthlySales;
+
+        res.json({ monthlySales });
+    } catch (err) {
+        console.log('Error fetching monthly sales:', err);
+        res.status(500).send('Error fetching monthly sales');
     }
 });
+
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));

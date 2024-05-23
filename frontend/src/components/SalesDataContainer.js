@@ -8,8 +8,9 @@ const SalesDataContainer = ({ userId, isLightMode }) => {
     useEffect(() => {
         const fetchMonthlySales = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/user/${userId}/monthly-sales`, { withCredentials: true });
-                setMonthlySales(response.data);
+                const response = await axios.get(`http://localhost:8000/api/user/monthly-sales/${userId}`, { withCredentials: true });
+                setMonthlySales(response.data.monthlySales);
+                console.log(monthlySales); // Ensure you're setting the correct data
             } catch (error) {
                 console.error('Error fetching monthly sales:', error);
             }

@@ -87,7 +87,6 @@ nav {
 }
 
 .close-button {
-  margin-bottom: 1em;
   cursor: pointer;
   color: white;
 }
@@ -148,7 +147,7 @@ nav {
 }
 
 .toggle-container.dark {
-  background-color: #34495e;
+  background-color: #000;
 }
 
 .icon {
@@ -275,4 +274,17 @@ nav {
 
 .white {
   color: white !important;
+}
+
+.small {
+  font-size: 25px !important;
+  margin-top: 0 !important;
+}
+
+.toggler {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1em;
 }
