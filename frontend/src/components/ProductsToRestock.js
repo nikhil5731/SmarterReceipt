@@ -34,19 +34,19 @@ const ProductsToRestock = ({ isLightMode }) => {
 
     return (
         <div className={`products-container ${isLightMode ? 'light' : 'dark'}`}>
-            <div className="products-title">
+            {products.length >= 1 && (<div className="products-title">
                 <h3>Products to Restock</h3>
                 <p className="expand-button" onClick={toggleModal}>Expand</p>
-            </div>
-            <div className="products-list">
+            </div>)}
+             <div className="products-list">
                 <div className="scroll-container">
                     {products.map(product => (
                         <div key={product.name} className={`product-box ${isLightMode ? 'light' : 'dark'}`}>
-                            <div className='toggler'>
-                                <img src={product.image} height={"100em"} width={"50%"}></img>
+                            <div className="product-data">
+                                <img src={product.image} height={"100em"} width={"100em"}></img>
                                 <div className='name-image'>
                                     <h4>{product.name}</h4>
-                                    <h4 className="red">{product.quantity} left</h4>
+                                    <h4 className="red quant">{product.quantity} left</h4>
                                 </div>
                             </div>
                         </div>
@@ -64,11 +64,11 @@ const ProductsToRestock = ({ isLightMode }) => {
                         <div className="modal-content">
                             {products.map(product => (
                                 <div key={product.name} className={`product-box ${isLightMode ? 'light' : 'dark'}`}>
-                                    <div className='toggler'>
-                                        <img src={product.image} height={"100em"} width={"50%"}></img>
+                                    <div className="product-data">
+                                        <img src={product.image} height={"100em"} width={"100em"}></img>
                                         <div className='name-image'>
                                             <h4>{product.name}</h4>
-                                            <h4 className="red">{product.quantity} left</h4>
+                                            <h4 className="red quant">{product.quantity} left</h4>
                                         </div>
                                     </div>
                                 </div>

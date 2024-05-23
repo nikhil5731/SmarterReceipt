@@ -196,7 +196,7 @@ app.get('/api/product_details/:barcode', async (req, res) => {
 
         if (response.data && response.data.product && response.data.product.product_name) {
             const product = response.data.product;
-            const frontImageUrl = product.selected_images?.front?.display?.en || product.selected_images?.front?.display?.fr;
+            const frontImageUrl = product.selected_images?.front?.display?.en || product.selected_images?.front?.display?.fr || product.selected_images?.front?.display?.es;
 
             res.send({
                 name: product.product_name,

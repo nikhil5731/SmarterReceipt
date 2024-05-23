@@ -40,6 +40,7 @@ const SalesChart = ({ isLightMode, monthlySales }) => {
                     'rgba(64, 64, 255, 1)',
                 ],
                 borderWidth: 1,
+                borderRadius: 8
             },
         ],
     };
