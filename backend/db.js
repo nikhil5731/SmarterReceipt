@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect("mongodb+srv://kinshuokmunjal:kmunjal654@cluster0.kzwzut4.mongodb.net/", {
+mongoose.connect("mongodb+srv://kinshuokmunjal:kmunjal654@cluster0.kzwzut4.mongodb.net/SmarterReceipt", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -48,8 +48,8 @@ const userSchema = new mongoose.Schema({
     InventoryId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Inventory',
-        required: false, // Make InventoryId optional
-    }
+        required: false // Make InventoryId optional
+    },
 });
 
 const InventorySchema = new mongoose.Schema({
@@ -66,7 +66,12 @@ const InventorySchema = new mongoose.Schema({
             type: Number,
             required: true
         }
-    }]
+    }],
+    MonthlySales: {
+        type: [Number],
+        required: false, // Optional: Add required if necessary
+        default: [10, 0, 0, 0, 0 ,0 ,0 ,0, 0, 0, 0, 0] // Optional: Default value as an empty array
+    }
 });
 
 const User = mongoose.model('User', userSchema);

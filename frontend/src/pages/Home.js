@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SalesChart from '../components/SalesChart';
+import SalesDataContainer from '../components/SalesDataContainer';
 import Nav from '../components/Nav';
 import { toggleMode as helperToggleMode } from '../helpers';
 import axios from 'axios';
@@ -103,7 +104,7 @@ function Home() {
                     <h3>Sales</h3>
                     <h4 className="chart-title">Monthly Sales Data</h4>
                     <div className="chart">
-                        <SalesChart isLightMode={isLightMode} />
+                        <SalesDataContainer userId={user._id} isLightMode={isLightMode} />
                     </div>
                 </div>
                 <ProductsToRestock isLightMode={isLightMode} />

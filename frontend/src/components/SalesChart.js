@@ -4,13 +4,13 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const SalesChart = ({ isLightMode }) => {
+const SalesChart = ({ isLightMode, monthlySales }) => {
     const data = {
         labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         datasets: [
             {
                 label: 'Sales',
-                data: [1200, 1900, 3000, 500, 2500, 3200, 2800, 1500, 2200, 1700, 2600, 3100],
+                data: monthlySales,
                 backgroundColor: [
                     'rgba(255, 99, 132, 1)',
                     'rgba(54, 162, 235, 1)',

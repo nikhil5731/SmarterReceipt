@@ -67,7 +67,6 @@ passport.use(new GoogleStrategy({
             OwnerFirstName: profile.name.givenName,
             OwnerLastName: profile.name.familyName,
             password: undefined,
-            InventoryId: inventoryId
         });
 
         await newUser.save();
@@ -86,6 +85,7 @@ app.get('/auth/google/callback', passport.authenticate('google', { failureRedire
     console.log('Google authentication successful');
     res.redirect('http://localhost:3000');
 });
+
 function isAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
@@ -93,24 +93,23 @@ function isAuthenticated(req, res, next) {
     res.redirect('/auth/google');  // Redirect to Google login if not authenticated
 }
 
-app.get('/api/current_user',isAuthenticated, (req, res) => {
-        res.send(req.user);
+app.get('/api/current_user', isAuthenticated, (req, res) => {
+    res.send(req.user);
 });
 
-app.post('/api/addShopName',isAuthenticated, async (req, res) => {
+app.post('/api/addShopName', isAuthenticated, async (req, res) => {
     const { shopName } = req.body;
 
-        try {
-            const user = await User.findById(req.user.id);
-            user.ShopName = shopName;
-            await user.save();
-            console.log('Shop name saved:', user);
-            res.send(user);
-        } catch (err) {
-            console.log('Error saving shop name:', err);
-            res.status(500).send('Error saving shop name');
-        }
-
+    try {
+        const user = await User.findById(req.user.id);
+        user.ShopName = shopName;
+        await user.save();
+        console.log('Shop name saved:', user);
+        res.send(user);
+    } catch (err) {
+        console.log('Error saving shop name:', err);
+        res.status(500).send('Error saving shop name');
+    }
 });
 
 app.get('/api/logout', (req, res) => {
@@ -120,44 +119,42 @@ app.get('/api/logout', (req, res) => {
 });
 
 // Endpoint to add a product to the user's inventory
-app.post('/api/inventory',isAuthenticated,async (req, res) => {
-
-        try {
-            const { product } = req.body;
-            console.log('Received product data:', product);
-            if (!product.name || !product.price || product.quantity === undefined) {
-                console.log('Invalid product data:', product);
-                return res.status(400).send('Invalid product data');
-            }
-
-            let inventory = await Inventory.findById(req.user.InventoryId);
-            
-            // Check if inventory exists, if not create a new one
-            if (!inventory) {
-                inventory = new Inventory({ _id: req.user.InventoryId, products: [] });
-            }
-            
-            inventory.products.push(product);
-            await inventory.save();
-            res.send(inventory);
-        } catch (err) {
-            console.log('Error updating inventory:', err);
-            res.status(500).send('Error updating inventory');
+app.post('/api/inventory', isAuthenticated, async (req, res) => {
+    try {
+        const { product } = req.body;
+        console.log('Received product data:', product);
+        if (!product.name || !product.price || product.quantity === undefined) {
+            console.log('Invalid product data:', product);
+            return res.status(400).send('Invalid product data');
         }
 
+        let inventory = await Inventory.findById(req.user.InventoryId);
+
+        // Check if inventory exists, if not create a new one
+        if (!inventory) {
+            inventory = new Inventory({ _id: req.user.InventoryId, products: [] });
+        }
+
+        inventory.products.push(product);
+        await inventory.save();
+        res.send(inventory);
+    } catch (err) {
+        console.log('Error updating inventory:', err);
+        res.status(500).send('Error updating inventory');
+    }
 });
 
 // Endpoint to get the inventory by ID
-app.get('/api/inventory/:id',isAuthenticated,async (req, res) => {
+app.get('/api/inventory/:id', isAuthenticated, async (req, res) => {
     try {
         let inventory = await Inventory.findById(req.params.id);
-        
+
         // Check if inventory exists, if not create a new one
         if (!inventory) {
             inventory = new Inventory({ _id: req.params.id, products: [] });
             await inventory.save();
         }
-        
+
         res.send(inventory);
     } catch (err) {
         console.log('Error fetching inventory:', err);
@@ -165,45 +162,41 @@ app.get('/api/inventory/:id',isAuthenticated,async (req, res) => {
     }
 });
 
-app.delete('/api/delete_inventory',isAuthenticated, async (req, res) => {
-
-        try {
-            await Inventory.findByIdAndDelete(req.user.InventoryId);
-            req.user.InventoryId = await generateUniqueInventoryId();
-            await req.user.save();
-            res.send({ success: true });
-        } catch (err) {
-            console.log('Error deleting inventory:', err);
-            res.status(500).send('Error deleting inventory');
-        }
-
+app.delete('/api/delete_inventory', isAuthenticated, async (req, res) => {
+    try {
+        await Inventory.findByIdAndDelete(req.user.InventoryId);
+        req.user.InventoryId = await generateUniqueInventoryId();
+        await req.user.save();
+        res.send({ success: true });
+    } catch (err) {
+        console.log('Error deleting inventory:', err);
+        res.status(500).send('Error deleting inventory');
+    }
 });
 
 // Endpoint to get the products to restock (quantity = 0)
-app.get('/api/products_to_restock',isAuthenticated, async (req, res) => {
-
-        try {
-            const inventory = await Inventory.findById(req.user.InventoryId);
-            if (!inventory) {
-                return res.status(404).send('Inventory not found');
-            }
-            const productsToRestock = inventory.products.filter(product => product.quantity === 0);
-            res.send(productsToRestock);
-        } catch (err) {
-            console.log('Error fetching products to restock:', err);
-            res.status(500).send('Error fetching products to restock');
+app.get('/api/products_to_restock', isAuthenticated, async (req, res) => {
+    try {
+        const inventory = await Inventory.findById(req.user.InventoryId);
+        if (!inventory) {
+            return res.status(404).send('Inventory not found');
         }
-
+        const productsToRestock = inventory.products.filter(product => product.quantity <= 5);
+        res.send(productsToRestock);
+    } catch (err) {
+        console.log('Error fetching products to restock:', err);
+        res.status(500).send('Error fetching products to restock');
+    }
 });
 
-app.get('/api/product_details/:barcode',isAuthenticated, async (req, res) => {
+app.get('/api/product_details/:barcode', async (req, res) => {
     try {
-        const apiKey = 'jb0h522qg6qy63qsejx4w1gr0zgvo4';
-        const response = await axios.get(`https://api.barcodelookup.com/v3/products?barcode=${req.params.barcode}&key=${apiKey}`);
-        if (response.data.products && response.data.products.length > 0) {
+        const barcode = req.params.barcode;
+        const response = await axios.get(`https://world.openfoodfacts.org/api/v0/product/${barcode}`);
+
+        if (response.data && response.data.product && response.data.product.product_name) {
             res.send({
-                name: response.data.products[0].title, // Use title instead of product_name
-                image: response.data.products[0].images[0]
+                name: response.data.product.product_name
             });
         } else {
             res.status(404).send('Product not found');
@@ -213,7 +206,26 @@ app.get('/api/product_details/:barcode',isAuthenticated, async (req, res) => {
         res.status(500).send('Error fetching product details');
     }
 });
- 
+
+app.get('api/user/:userId/monthly-sales', async (req, res) => {
+    const userId = req.params.userId;
+    try {
+        if (User.findById(userId)) {
+            const user = User.findById(userId);
+            const inventoryId = user.InventoryId;
+
+            const inventory = Inventory.findById(inventoryId);
+            const monthlySales = inventory.monthlySales;
+            res.json({ monthlySales })
+        }
+        else {
+            console.log("Could not find inventory");
+        }
+    }
+    catch {
+        console.log("Could not find inventory");
+    }
+});
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
