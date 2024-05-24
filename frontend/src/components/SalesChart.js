@@ -66,7 +66,8 @@ const SalesChart = ({ isLightMode, monthlySales }) => {
                     color: isLightMode ? '#000' : '#fff'
                 },
                 grid: {
-                    color: isLightMode ? '#ccc' : '#555'
+                    // color: isLightMode ? '#ccc' : '#555'
+                    display: false
                 }
             },
             y: {
@@ -74,13 +75,14 @@ const SalesChart = ({ isLightMode, monthlySales }) => {
                     color: isLightMode ? '#000' : '#fff'
                 },
                 grid: {
-                    color: isLightMode ? '#ccc' : '#555'
+                    // color: isLightMode ? '#ccc' : '#555'
+                    display: false
                 }
             }
         }
     };
 
-    return <div className="bar"><Bar data={data} options={options} height={125} /></div>;
+    return <div className="bar"><Bar data={data} options={options} height={80} /></div>;
 };
 
 export default SalesChart;

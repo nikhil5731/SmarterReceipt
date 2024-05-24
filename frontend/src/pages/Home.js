@@ -101,7 +101,7 @@ function Home() {
             <div className="container">
                 <div className='toggler'>
                     
-                    <h2 style={{"color": "gray"}}><FontAwesomeIcon icon={faPlus}/> New Order</h2>
+                    <h2 style={{"color": "gray", "margin": "0"}}><FontAwesomeIcon icon={faPlus}/> New Order</h2>
                 </div>
                 
                 <h1>{user.ShopName}'s Statistics</h1>
