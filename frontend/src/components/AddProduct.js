@@ -35,7 +35,7 @@ function AddProduct() {
             image: productImage
         };
 
-        axios.post('http://localhost:8000/api/inventory', { product }, { withCredentials: true })
+        axios.post('http://localhost:8000/api/addProduct', { product }, { withCredentials: true })
             .then(response => {
                 console.log('Product added to inventory:', response.data);
             })

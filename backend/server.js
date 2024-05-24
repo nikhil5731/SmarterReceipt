@@ -119,7 +119,7 @@ app.get('/api/logout', (req, res) => {
 });
 
 // Endpoint to add a product to the user's inventory
-app.post('/api/inventory', isAuthenticated, async (req, res) => {
+app.post('/api/addProduct', isAuthenticated, async (req, res) => {
     try {
         const { product } = req.body;
         console.log('Received product data:', product);
@@ -210,6 +210,7 @@ app.get('/api/user/monthly-sales/:userId', async (req, res) => {
         res.status(500).send('Error fetching monthly sales');
     }
 });
+
 app.get('/api/product_details/:barcode', async (req, res) => {
     try {
         const barcode = req.params.barcode;
