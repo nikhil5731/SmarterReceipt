@@ -25,8 +25,6 @@ app.use(cookieSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/api/v1', rootRouter); // Register routes
-
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
 

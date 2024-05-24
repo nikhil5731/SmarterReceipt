@@ -45,7 +45,7 @@ const ProductsToRestock = ({ isLightMode }) => {
                             <div className="product-data">
                                 <img src={product.image} height={"100em"} width={"100em"}></img>
                                 <div className='name-image'>
-                                    <h4>{product.name}</h4>
+                                    <h4>{product.name.length >= 18 ? product.name.substring(0, 15) + "..." : product.name}</h4>
                                     <h4 className="red quant">{product.quantity} left</h4>
                                 </div>
                             </div>

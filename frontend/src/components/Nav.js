@@ -60,7 +60,6 @@ function Nav({ isLightMode, toggleMode }) {
         <div>
             <nav>
             <div className="box-text login-heading small"><span className="special-heading1">S</span>marter<span className="special-heading1">R</span>eceipt</div>
-                {/* <ModeToggler isLightMode={isLightMode} toggleMode={toggleMode} /> */}
                 <div className="burger" onClick={openMenu}>
                     <FontAwesomeIcon icon={faBars} size="3x" />
                 </div>
@@ -78,6 +77,7 @@ function Nav({ isLightMode, toggleMode }) {
                         <li onClick={handleLogin}>Login with Google</li>
                     ) : (
                         <>
+                            <li><a href="/">Home</a></li>
                             <li><a href="/account">My Account</a></li>
                             <li>My Inventory</li>
                             <li>New Order</li>
