@@ -12,12 +12,12 @@ function Nav({ isLightMode, toggleMode }) {
     const location = useLocation();
 
     const handleLogin = () => {
-        window.location.href = 'http://localhost:8000/auth/google';
+        window.location.href = 'http://localhost:8000/api/v1/auth/google';
     };
 
     const handleLogout = () => {
         console.log('Logging out');
-        axios.get('http://localhost:8000/api/logout', { withCredentials: true })
+        axios.get('http://localhost:8000/api/v1/auth/logout', { withCredentials: true })
             .then(response => {
                 if (response.data.success) {
                     console.log('Logout successful');
@@ -32,7 +32,7 @@ function Nav({ isLightMode, toggleMode }) {
     };
 
     const handleDeleteInventory = () => {
-        axios.delete('http://localhost:8000/api/delete_inventory', { withCredentials: true })
+        axios.delete('http://localhost:8000/api/v1/inventory/delete_inventory', { withCredentials: true })
             .then(response => {
                 if (response.data.success) {
                     console.log('Delete successful');

@@ -4,11 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d9541b68-26e5-4e45-ac41-7b740e8fa41d" name="Changes" comment="" />
+    <list default="true" id="d9541b68-26e5-4e45-ac41-7b740e8fa41d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/helpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/helpers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/AddProduct.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/AddProduct.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Nav.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Nav.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/ProductsToRestock.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ProductsToRestock.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SalesDataContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SalesDataContainer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/ProductsPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/ProductsPage.js" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -20,6 +38,9 @@
   &quot;associatedIndex&quot;: 8
 }</component>
   <component name="ProjectId" id="2gsGIwlfIHeTNcEDHWrtIWPCP0p" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -48,7 +69,8 @@
       <option name="presentableId" value="Default" />
       <updated>1716478795149</updated>
       <workItem from="1716478796336" duration="3170000" />
-      <workItem from="1716545791339" duration="13000" />
+      <workItem from="1716545802229" duration="44000" />
+      <workItem from="1716546025983" duration="5047000" />
     </task>
     <servers />
   </component>
