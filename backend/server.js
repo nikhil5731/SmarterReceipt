@@ -3,7 +3,7 @@ const cors = require('cors');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const path = require('path');
-const rootRouter = require('./routes');
+const rootRouter = require('./routes'); // Import rootRouter
 
 require('./config/passport'); // Initialize Passport configuration
 
@@ -24,6 +24,9 @@ app.use(cookieSession({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Register routes
+app.use('/api/v1', rootRouter);
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));

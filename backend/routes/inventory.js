@@ -1,9 +1,9 @@
 const express = require('express');
-const { isAuthenticated } = require('../middleware/auth');
-const { Inventory, User} = require('../db');
+const { isAuthenticated } = require('../middleware/auth'); // Correct import
+const { Inventory, User } = require('../db');
 const axios = require("axios");
 const router = express.Router();
-const {generateUniqueInventoryId} = require('../helpers');
+const { generateUniqueInventoryId } = require('../helpers');
 
 router.post('/addProduct', isAuthenticated, async (req, res) => {
     try {
@@ -49,7 +49,7 @@ router.delete('/delete_inventory', isAuthenticated, async (req, res) => {
     }
 });
 
-router.get('/products_to_restock',isAuthenticated, async (req, res) => {
+router.get('/products_to_restock', isAuthenticated, async (req, res) => {
     try {
         const inventory = await Inventory.findById(req.user.InventoryId);
         if (!inventory) {
@@ -61,7 +61,8 @@ router.get('/products_to_restock',isAuthenticated, async (req, res) => {
         res.status(500).send('Error fetching products to restock');
     }
 });
-router.get('/product_details/:barcode', isAuthenticated,async (req, res) => {
+
+router.get('/product_details/:barcode', isAuthenticated, async (req, res) => {
     try {
         const barcode = req.params.barcode;
         const response = await axios.get(`https://world.openfoodfacts.org/api/v0/product/${barcode}`);
@@ -82,6 +83,7 @@ router.get('/product_details/:barcode', isAuthenticated,async (req, res) => {
         res.status(500).send('Error fetching product details');
     }
 });
+
 router.get('/monthly-sales/:userId', async (req, res) => {
     const userId = req.params.userId;
     try {

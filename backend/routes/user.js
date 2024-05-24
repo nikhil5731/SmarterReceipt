@@ -1,6 +1,6 @@
 const express = require('express');
-const { isAuthenticated } = require('../middleware/auth');
 const { User } = require('../db');
+const { isAuthenticated } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -20,8 +20,5 @@ router.post('/addShopName', isAuthenticated, async (req, res) => {
         res.status(500).send('Error saving shop name');
     }
 });
-
-
-
 
 module.exports = router;
