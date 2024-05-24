@@ -79,7 +79,7 @@ function Nav({ isLightMode, toggleMode }) {
                         <>
                             <li><a href="/">Home</a></li>
                             <li><a href="/account">My Account</a></li>
-                            <li>My Inventory</li>
+                            <li><a href="/inventory">My Inventory</a></li>
                             <li>New Order</li>
                             <li onClick={handleLogout}>Logout</li>
                             <li onClick={handleDeleteInventory}>Delete Inventory</li>
