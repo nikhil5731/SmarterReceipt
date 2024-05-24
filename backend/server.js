@@ -188,7 +188,28 @@ app.get('/api/products_to_restock', isAuthenticated, async (req, res) => {
         res.status(500).send('Error fetching products to restock');
     }
 });
+app.get('/api/user/monthly-sales/:userId', async (req, res) => {
+    const userId = req.params.userId;
+    try {
+        const user = await User.findById(userId); // Use await here
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
 
+        const inventory = await Inventory.findById(user.InventoryId); // Use await here
+        if (!inventory) {
+            return res.status(404).send('Inventory not found');
+        }
+
+        // Assuming you want to get monthly sales data from the inventory
+        const monthlySales = inventory.MonthlySales;
+
+        res.json({ monthlySales });
+    } catch (err) {
+        console.log('Error fetching monthly sales:', err);
+        res.status(500).send('Error fetching monthly sales');
+    }
+});
 app.get('/api/product_details/:barcode', async (req, res) => {
     try {
         const barcode = req.params.barcode;
@@ -212,28 +233,7 @@ app.get('/api/product_details/:barcode', async (req, res) => {
 });
 
 
-app.get('/api/user/monthly-sales/:userId', async (req, res) => {
-    const userId = req.params.userId;
-    try {
-        const user = await User.findById(userId); // Use await here
-        if (!user) {
-            return res.status(404).send('User not found');
-        }
 
-        const inventory = await Inventory.findById(user.InventoryId); // Use await here
-        if (!inventory) {
-            return res.status(404).send('Inventory not found');
-        }
-
-        // Assuming you want to get monthly sales data from the inventory
-        const monthlySales = inventory.MonthlySales;
-
-        res.json({ monthlySales });
-    } catch (err) {
-        console.log('Error fetching monthly sales:', err);
-        res.status(500).send('Error fetching monthly sales');
-    }
-});
 
 
 if (process.env.NODE_ENV === 'production') {
