@@ -104,4 +104,29 @@ router.get('/monthly-sales/:userId', async (req, res) => {
     }
 });
 
+router.post('/update', async (req, res) => {
+    const { userId, index, name, price, quantity, image } = req.body;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        const inventory = await Inventory.findById(user.InventoryId);
+        if (!inventory) {
+            return res.status(404).json({ success: false, message: 'Inventory not found' });
+        }
+
+        // Update the specific item by index
+        inventory.products[index] = { ...inventory.products[index], name, price, quantity, image };
+        
+        await inventory.save();
+
+        res.json({ success: true, item: inventory.products[index] });
+    } catch (err) {
+        res.status(500).json({ success: false, message: 'Error updating item', error: err });
+    }
+});
+
 module.exports = router;

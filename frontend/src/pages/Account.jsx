@@ -63,7 +63,7 @@ function Account() {
     return (
         <div>
             <Nav isLightMode={isLightMode} toggleMode={toggleMode} />
-            <div className="container">
+            <div className="acc-container">
                 <div className={`account-info ${isLightMode ? 'light' : 'dark'}`}>
                     <h1>Account</h1>
                     <p>Here you can view and edit your account information.</p>

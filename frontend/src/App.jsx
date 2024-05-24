@@ -1,7 +1,8 @@
-import Account from './pages/Account.js';
-import Home from './pages/Home.js';
-import Login from './pages/Login.js';
-import ProductsPage from './pages/ProductsPage.js';
+import Account from './pages/Account.jsx';
+import Home from './pages/Home.jsx';
+import Inventory from './pages/Inventory.jsx';
+import Login from './pages/Login.jsx';
+import ProductsPage from './pages/ProductsPage.jsx';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/prod" element={<ProductsPage />} />
         <Route path="/account" element={<Account />} />
+        <Route path="/inventory" element={<Inventory />} />
       </Routes>
     </BrowserRouter>
   );
