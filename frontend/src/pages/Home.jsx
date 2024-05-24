@@ -9,7 +9,7 @@ import ProductsToRestock from '../components/ProductsToRestock';
 import '../css/App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import ModeToggler from '../ModeToggler';
+
 
 function Home() {
     const [isLightMode, setIsLightMode] = useState(() => {
@@ -101,7 +101,7 @@ function Home() {
             <div className="container">
                 <div className='toggler'>
                     
-                    <h2 style={{"color": "gray", "margin": "0"}}><FontAwesomeIcon icon={faPlus}/> New Order</h2>
+                    <a href="/prod"><h2 style={{"color": "gray", "margin": "0"}}><FontAwesomeIcon icon={faPlus}/> New Order</h2></a>
                 </div>
                 
                 <h1>{user.ShopName}'s Statistics</h1>
