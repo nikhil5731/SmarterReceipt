@@ -26,7 +26,7 @@ function Home() {
 
     useEffect(() => {
         console.log('Fetching current user');
-        axios.get('http://localhost:8000/api/current_user', { withCredentials: true })
+        axios.get('http://localhost:8000/api/v1/user/current_user', { withCredentials: true })
             .then(response => {
                 if (response.data) {
                     console.log('User is authenticated:', response.data);
@@ -50,7 +50,7 @@ function Home() {
     }, [navigate]);
 
     const fetchInventory = (inventoryId) => {
-        axios.get(`http://localhost:8000/api/inventory/${inventoryId}`, { withCredentials: true })
+        axios.get(`http://localhost:8000/api/v1/inventory/get/${inventoryId}`, { withCredentials: true })
             .then(response => {
                 setInventory(response.data.products);
             })
@@ -76,7 +76,7 @@ function Home() {
     };
 
     const handleShopNameSubmit = () => {
-        axios.post('http://localhost:8000/api/addShopName', { shopName }, { withCredentials: true })
+        axios.post('http://localhost:8000/api/v1/user/addShopName', { shopName }, { withCredentials: true })
             .then(response => {
                 console.log('Shop name added:', response.data);
                 setUser(response.data);

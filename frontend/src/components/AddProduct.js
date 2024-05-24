@@ -9,7 +9,7 @@ function AddProduct() {
     const [quantity, setQuantity] = useState('');
 
     const handleFetchProductDetails = () => {
-        axios.get(`http://localhost:8000/api/product_details/${productId}`)
+        axios.get(`http://localhost:8000/api/v1/inventory/product_details/${productId}`,{withCredentials: true})
             .then(response => {
                 const { name, image } = response.data;
                 setProductName(name);
@@ -34,8 +34,8 @@ function AddProduct() {
             quantity,
             image: productImage
         };
-
-        axios.post('http://localhost:8000/api/addProduct', { product }, { withCredentials: true })
+      
+        axios.post('http://localhost:8000/api/v1/inventory/addProduct', { product }, { withCredentials: true })
             .then(response => {
                 console.log('Product added to inventory:', response.data);
             })

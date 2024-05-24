@@ -17,3 +17,4 @@ async function generateUniqueInventoryId() {
 }
 
 module.exports = { generateUniqueInventoryId };
+
