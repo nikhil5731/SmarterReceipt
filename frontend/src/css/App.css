@@ -290,3 +290,8 @@ nav {
   align-items: center;
   margin-bottom: 1em;
 }
+
+a {
+  text-decoration: none;
+  color: inherit; 
+}
