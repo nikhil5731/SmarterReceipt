@@ -4,6 +4,8 @@
     align-items: center;
     height: 70vh;
     color: white;
+    width: 85%;
+    margin-left: 7.5%;
 }
 
 .account-info {

@@ -65,7 +65,7 @@ function Account() {
             <Nav isLightMode={isLightMode} toggleMode={toggleMode} />
             <div className="acc-container">
                 <div className={`account-info ${isLightMode ? 'light' : 'dark'}`}>
-                    <h1>Account</h1>
+                    <h1 style={{"marginTop" : "0"}}>Account</h1>
                     <p>Here you can view and edit your account information.</p>
                     <form className="account-form" onSubmit={handleSubmit}>
                         <label htmlFor="firstName">First Name</label>

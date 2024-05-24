@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import '../css/AddProduct.css'; // Import the CSS file
 
 function AddProduct() {
     const [productId, setProductId] = useState('');
@@ -8,17 +9,19 @@ function AddProduct() {
     const [price, setPrice] = useState('');
     const [quantity, setQuantity] = useState('');
 
-    const handleFetchProductDetails = () => {
-        axios.get(`http://localhost:8000/api/v1/inventory/product_details/${productId}`,{withCredentials: true})
-            .then(response => {
-                const { name, image } = response.data;
-                setProductName(name);
-                setProductImage(image);
-            })
-            .catch(error => {
-                console.error('Error fetching product details:', error);
-            });
-    };
+    useEffect(() => {
+        if (productId) {
+            axios.get(`http://localhost:8000/api/v1/inventory/product_details/${productId}`, { withCredentials: true })
+                .then(response => {
+                    const { name, image } = response.data;
+                    setProductName(name);
+                    setProductImage(image);
+                })
+                .catch(error => {
+                    console.error('Error fetching product details:', error);
+                });
+        }
+    }, [productId]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -34,7 +37,7 @@ function AddProduct() {
             quantity,
             image: productImage
         };
-      
+
         axios.post('http://localhost:8000/api/v1/inventory/addProduct', { product }, { withCredentials: true })
             .then(response => {
                 console.log('Product added to inventory:', response.data);
@@ -45,9 +48,9 @@ function AddProduct() {
     };
 
     return (
-        <div>
+        <div className="add-product-container">
             <h1>Add Product</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="add-product-form">
                 <label>
                     Product ID:
                     <input 
@@ -55,7 +58,6 @@ function AddProduct() {
                         value={productId} 
                         onChange={e => setProductId(e.target.value)} 
                     />
-                    <button type="button" onClick={handleFetchProductDetails}>Fetch Details</button>
                 </label>
                 <label>
                     Price:
@@ -76,10 +78,10 @@ function AddProduct() {
                 <button type="submit">Add to Inventory</button>
             </form>
             {productName && (
-                <div>
+                <div className="product-details">
                     <h2>Product Details</h2>
                     <p>Name: {productName}</p>
-                    <img src={productImage} alt={productName} style={{ maxWidth: '200px' }} />
+                    <img src={productImage} alt={productName} className="product-image" />
                 </div>
             )}
         </div>
