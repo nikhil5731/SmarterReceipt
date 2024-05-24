@@ -20,5 +20,17 @@ router.post('/addShopName', isAuthenticated, async (req, res) => {
         res.status(500).send('Error saving shop name');
     }
 });
-
+router.put("/update", isAuthenticated, async (req, res) => {
+    const {OwnerFirstName,OwnerLastName,ShopName} = req.body;
+    try{
+        const user = await User.findById(req.user.id);
+        user.OwnerFirstName = OwnerFirstName;
+        user.OwnerLastName = OwnerLastName;
+        user.ShopName = ShopName;
+        await user.save();
+        res.send(user);
+    }catch(err){
+        res.status(500).send('Error updating user');
+    }
+})
 module.exports = router;
