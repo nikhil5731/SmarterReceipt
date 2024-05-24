@@ -104,7 +104,7 @@ function Inventory() {
                     {inventory.map((product, index) => (
                         <div key={product.name} className={`product-box ${isLightMode ? 'light' : 'dark'}`}>
                             <div className="product-data">
-                                <img src={product.image} height={"80em"} width={"100em"} alt={product.name} />
+                                <img src={product.image} height={"100em"} width={"100em"} alt={product.name} />
                                 <div className='name-image'>
                                     <h4>{product.name.length >= 30 ? product.name.substring(0, 27) + "..." : product.name}</h4>
                                     <div className="flex">
