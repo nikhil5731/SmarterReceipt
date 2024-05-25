@@ -137,3 +137,10 @@
     align-items: center;
     margin-top: 0.5em;
 }
+
+.search-input {
+    height: 2em;
+    margin-top: 8%;
+    border-radius: 0.5em;
+    margin-left: 1em;
+}

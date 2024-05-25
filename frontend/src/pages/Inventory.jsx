@@ -18,6 +18,7 @@ function Inventory() {
     const [showEditPopup, setShowEditPopup] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(null);
     const [currentItem, setCurrentItem] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
 
     const toggleMode = () => {
@@ -30,20 +31,16 @@ function Inventory() {
     }, [isLightMode]);
 
     useEffect(() => {
-        console.log('Fetching current user');
         axios.get('http://localhost:8000/api/v1/user/current_user', { withCredentials: true })
             .then(response => {
                 if (response.data) {
-                    console.log('User is authenticated:', response.data);
                     setUser(response.data);
                     fetchInventory(response.data.InventoryId);
                 } else {
-                    console.log('User is not authenticated, redirecting to login');
                     navigate('/login');
                 }
             })
             .catch(error => {
-                console.log('Error fetching current user', error);
                 navigate('/login');
             })
     }, [navigate]);
@@ -74,7 +71,6 @@ function Inventory() {
             image: currentItem.image
         }, { withCredentials: true })
             .then(response => {
-                console.log('Item updated:', response.data);
                 setShowEditPopup(false);
                 fetchInventory(user.InventoryId);
             })
@@ -91,6 +87,14 @@ function Inventory() {
         });
     };
 
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const filteredInventory = inventory.filter(product =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     if (!user) {
         return null;
     }
@@ -100,8 +104,15 @@ function Inventory() {
             <Nav isLightMode={isLightMode} toggleMode={toggleMode} />
             <div className="inventory-container">
                 <h1>Inventory</h1>
+                <input
+                    type="text"
+                    placeholder="Search products..."
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    className={`search-input ${isLightMode ? 'light' : 'dark'}`}
+                />
                 <div className="inventory-list">
-                    {inventory.map((product, index) => (
+                    {filteredInventory.map((product, index) => (
                         <div key={product.name} className={`product-box ${isLightMode ? 'light' : 'dark'}`}>
                             <div className="product-data">
                                 <img src={product.image} height={"100em"} width={"100em"} alt={product.name} />
@@ -109,7 +120,7 @@ function Inventory() {
                                     <h4>{product.name.length >= 30 ? product.name.substring(0, 27) + "..." : product.name}</h4>
                                     <div className="flex">
                                         <h4 className="red quant">{product.quantity} left</h4>
-                                        <button className={`inv-edit-btn ${isLightMode ? 'light' : 'dark'}`} onClick={() => handleEditClick(index, product)}><FontAwesomeIcon icon={faPen}/></button>
+                                        <button className={`inv-edit-btn ${isLightMode ? 'light' : 'dark'}`} onClick={() => handleEditClick(index, product)}><FontAwesomeIcon icon={faPen} /></button>
                                     </div>
                                 </div>
                             </div>
@@ -122,7 +133,7 @@ function Inventory() {
                     <div className={`inv-modal-content ${isLightMode ? 'light' : 'dark'}`}>
                         <div className="inv-modal-header">
                             <h2>Edit Item</h2>
-                            <button className="inv-modal-close" onClick={() => setShowEditPopup(false)}><FontAwesomeIcon icon={faX}/></button>
+                            <button className="inv-modal-close" onClick={() => setShowEditPopup(false)}><FontAwesomeIcon icon={faX} /></button>
                         </div>
                         <div className="inv-modal-body">
                             <label htmlFor="inv-name">Name</label>
