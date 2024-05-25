@@ -3,7 +3,8 @@ const cors = require('cors');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const path = require('path');
-const rootRouter = require('./routes'); // Import rootRouter
+const rootRouter = require('./routes')
+const bodyParser = require('body-parser');
 
 require('./config/passport'); // Initialize Passport configuration
 

@@ -84,7 +84,7 @@ router.get('/product_details/:barcode', isAuthenticated, async (req, res) => {
     }
 });
 
-router.get('/monthly-sales/:userId', async (req, res) => {
+router.get('/monthly-sales/:userId', isAuthenticated, async (req, res) => {
     const userId = req.params.userId;
     try {
         const user = await User.findById(userId);
@@ -104,7 +104,7 @@ router.get('/monthly-sales/:userId', async (req, res) => {
     }
 });
 
-router.post('/update', async (req, res) => {
+router.post('/update', isAuthenticated, async (req, res) => {
     const { userId, index, name, price, quantity, image } = req.body;
 
     try {
@@ -126,6 +126,31 @@ router.post('/update', async (req, res) => {
         res.json({ success: true, item: inventory.products[index] });
     } catch (err) {
         res.status(500).json({ success: false, message: 'Error updating item', error: err });
+    }
+});
+
+router.delete('/delete', async (req, res) => {
+    const { userId, index } = req.body;
+    
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        const inventory = await Inventory.findById(user.InventoryId);
+        if (!inventory) {
+            return res.status(404).json({ success: false, message: 'Inventory not found' });
+        }
+
+        // Remove the specific item by index
+        inventory.products.splice(index, 1);
+        
+        await inventory.save();
+
+        res.json({ success: true });
+    } catch (err) {
+        res.status(500).json({ success: false, message: 'Error deleting item', error: err });
     }
 });
 

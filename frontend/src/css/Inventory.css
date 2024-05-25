@@ -8,6 +8,11 @@
 
 .inventory-container .product-box {
     margin-bottom: 1em;
+    max-width: 100%;
+}
+
+.inventory-list {
+    width: 100%;
 }
 
 .inventory-container .product-box h4 {
@@ -101,11 +106,11 @@
 
 .inv-modal-footer {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
 }
 
-.inv-save-btn {
+.inv-save-btn, .inv-delete-btn {
     background-color: #6e5494;
     color: #fff;
     border: none;
@@ -113,10 +118,14 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    width: 50%;
+    width: 40%;
 }
 
-.inv-save-btn.light {
+.inv-delete-btn {
+    background-color: #ff4d4d;
+}
+
+.inv-save-btn.light, .inv-delete-btn.light {
     background-color: #FFC470;
     color: #fff;
     border: none;
@@ -124,7 +133,11 @@
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    width: 50%;
+    width: 40%;
+}
+
+.inv-delete-btn.light {
+    background-color: #ff4d4d;
 }
 
 .inv-save-btn:hover {
@@ -140,7 +153,20 @@
 
 .search-input {
     height: 2em;
-    margin-top: 8%;
     border-radius: 0.5em;
-    margin-left: 1em;
+    background: none;
+}
+
+.search-input.dark {
+    color: white;
+    border: 2px solid white;
+    background: none;
+}
+
+.inv-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
 }

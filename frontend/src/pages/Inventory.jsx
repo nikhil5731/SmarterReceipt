@@ -5,7 +5,7 @@ import Nav from '../components/Nav';
 import { toggleMode as helperToggleMode } from '../helpers';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faX } from '@fortawesome/free-solid-svg-icons';
+import { faPen, faX, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 function Inventory() {
     const [user, setUser] = useState(null);
@@ -19,6 +19,7 @@ function Inventory() {
     const [currentIndex, setCurrentIndex] = useState(null);
     const [currentItem, setCurrentItem] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
+    const [isSearchActive, setIsSearchActive] = useState(false);
     const navigate = useNavigate();
 
     const toggleMode = () => {
@@ -79,6 +80,24 @@ function Inventory() {
             });
     };
 
+    const handleDeleteClick = () => {
+        console.log('Deleting item:', currentIndex);
+        axios.delete('http://localhost:8000/api/v1/inventory/delete', {
+            data: {
+                userId: user._id,
+                index: currentIndex
+            },
+            withCredentials: true
+        })
+            .then(response => {
+                setShowEditPopup(false);
+                fetchInventory(user.InventoryId);
+            })
+            .catch(error => {
+                console.log('Error deleting item', error);
+            });
+    };
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setCurrentItem({
@@ -89,6 +108,14 @@ function Inventory() {
 
     const handleSearchChange = (e) => {
         setSearchQuery(e.target.value);
+    };
+
+    const handleSearchIconClick = () => {
+        setIsSearchActive(true);
+    };
+
+    const handleSearchBlur = () => {
+        setIsSearchActive(false);
     };
 
     const filteredInventory = inventory.filter(product =>
@@ -103,14 +130,22 @@ function Inventory() {
         <div>
             <Nav isLightMode={isLightMode} toggleMode={toggleMode} />
             <div className="inventory-container">
-                <h1>Inventory</h1>
-                <input
-                    type="text"
-                    placeholder="Search products..."
-                    value={searchQuery}
-                    onChange={handleSearchChange}
-                    className={`search-input ${isLightMode ? 'light' : 'dark'}`}
-                />
+                <div className="inv-header">
+                    <h1>Inventory</h1>
+                    {isSearchActive ? (
+                        <input
+                            type="text"
+                            placeholder="Search products..."
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                            onBlur={handleSearchBlur}
+                            autoFocus
+                            className={`search-input ${isLightMode ? 'light' : 'dark'}`}
+                        />
+                    ) : (
+                        <FontAwesomeIcon icon={faSearch} onClick={handleSearchIconClick} style={{"fontSize" : "24px"}} />
+                    )}
+                </div>
                 <div className="inventory-list">
                     {filteredInventory.map((product, index) => (
                         <div key={product.name} className={`product-box ${isLightMode ? 'light' : 'dark'}`}>
@@ -145,6 +180,7 @@ function Inventory() {
                         </div>
                         <div className="inv-modal-footer">
                             <button className={`inv-save-btn ${isLightMode ? 'light' : 'dark'}`} onClick={handleSaveClick}>Save</button>
+                            <button className={`inv-delete-btn ${isLightMode ? 'light' : 'dark'}`} onClick={handleDeleteClick}>Delete</button>
                         </div>
                     </div>
                 </div>
