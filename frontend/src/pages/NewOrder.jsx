@@ -6,7 +6,7 @@ import Nav from '../components/Nav';
 import '../css/NewOrder.css';
 import { toggleMode as helperToggleMode } from '../helpers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
 function NewOrder() {
     const [isLightMode, setIsLightMode] = useState(() => {
@@ -14,12 +14,10 @@ function NewOrder() {
         return savedMode ? JSON.parse(savedMode) : true;
     });
     const [isCameraOpen, setIsCameraOpen] = useState(false);
-    const [barcode, setBarcode] = useState('');
-    const [productName, setProductName] = useState('');
-    const [productImage, setProductImage] = useState('');
+    const [products, setProducts] = useState([]);
+    const [resultMessage, setResultMessage] = useState('');
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
-    const [resultMessage, setResultMessage] = useState('Scanning...');
 
     const toggleMode = () => {
         helperToggleMode(isLightMode, setIsLightMode);
@@ -30,23 +28,9 @@ function NewOrder() {
         document.body.style.color = isLightMode ? "#000" : "#fff";
     }, [isLightMode]);
 
-    useEffect(() => {
-        if (barcode) {
-            axios.get(`http://localhost:8000/api/v1/inventory/product_details/${barcode}`, { withCredentials: true })
-                .then(response => {
-                    const { name, image } = response.data;
-                    setProductName(name);
-                    setProductImage(image);
-                    setIsCameraOpen(false); // Close camera once the product details are fetched
-                })
-                .catch(error => {
-                    console.error('Error fetching product details:', error);
-                });
-        }
-    }, [barcode]);
-
     const handlePlusClick = () => {
         setIsCameraOpen(true);
+        setResultMessage('');
     };
 
     const handleCaptureClick = () => {
@@ -69,18 +53,74 @@ function NewOrder() {
                     readers: ["ean_reader", "upc_reader"]
                 },
                 locator: {
-                    patchSize: "medium", // x-small, small, medium, large, x-large
+                    patchSize: "medium",
                     halfSample: true
                 }
             }, (result) => {
                 if (result && result.codeResult) {
-                    setBarcode(result.codeResult.code);
-                    setResultMessage('Barcode: ' + result.codeResult.code);
+                    const barcode = result.codeResult.code;
+                    setResultMessage('Barcode: ' + barcode);
+                    fetchProductDetails(barcode);
                 } else {
                     setResultMessage('No barcode detected');
                 }
             });
         };
+    };
+
+    const fetchProductDetails = (barcode) => {
+        axios.get(`http://localhost:8000/api/v1/inventory/product_details/${barcode}`, { withCredentials: true })
+            .then(response => {
+                const { name, image } = response.data;
+                fetchProductPrice(name, barcode, image);
+            })
+            .catch(error => {
+                console.error('Error fetching product details:', error);
+            });
+    };
+
+    const fetchProductPrice = (name, barcode, image) => {
+        axios.get(`http://localhost:8000/api/v1/inventory/product_price/${name}`, { withCredentials: true })
+            .then(response => {
+                const price = response.data.price;
+                setProducts(prevProducts => {
+                    const existingProductIndex = prevProducts.findIndex(product => product.barcode === barcode);
+                    if (existingProductIndex !== -1) {
+                        return prevProducts.map((product, index) =>
+                            index === existingProductIndex
+                                ? { ...product, quantity: product.quantity + 1 }
+                                : product
+                        );
+                    } else {
+                        const newProduct = { barcode, name, image, price, quantity: 1 };
+                        return [...prevProducts, newProduct];
+                    }
+                });
+                setIsCameraOpen(false); // Close camera once the product details are fetched
+            })
+            .catch(error => {
+                console.error('Error fetching product price:', error);
+            });
+    };
+
+    const handleIncrement = (barcode) => {
+        setProducts(prevProducts =>
+            prevProducts.map(product =>
+                product.barcode === barcode
+                    ? { ...product, quantity: product.quantity + 1 }
+                    : product
+            )
+        );
+    };
+
+    const handleDecrement = (barcode) => {
+        setProducts(prevProducts =>
+            prevProducts.map(product =>
+                product.barcode === barcode && product.quantity > 1
+                    ? { ...product, quantity: product.quantity - 1 }
+                    : product
+            )
+        );
     };
 
     return (
@@ -102,13 +142,29 @@ function NewOrder() {
                         <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
                     </div>
                 )}
-                <div id="result">{resultMessage}</div>
-                {productName && (
-                    <div className="product-details">
-                        <h2>{productName}</h2>
-                        {productImage && <img src={productImage} alt={productName} />}
-                    </div>
-                )}
+                {resultMessage && <div id="result">{resultMessage}</div>}
+                <div className="products-list">
+                    {products.map((product, index) => (
+                        <div key={index} className="product-details">
+                            {product.image && <img src={product.image} alt={product.name} />}
+                            <div className="product-info">
+                            <h2>{product.name}</h2>
+                                <div className="price-quantity">
+                            <p>Price: ${product.price}</p>
+                            <div className="quantity-control">
+                                <button className={"quality-button"} onClick={() => handleDecrement(product.barcode)}>
+                                    <FontAwesomeIcon icon={faMinus} />
+                                </button>
+                                <p>{product.quantity}</p>
+                                <button className={"quality-button"} onClick={() => handleIncrement(product.barcode)}>
+                                    <FontAwesomeIcon icon={faPlus} />
+                                </button>
+                            </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
     );
