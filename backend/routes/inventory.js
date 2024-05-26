@@ -1,5 +1,5 @@
 const express = require('express');
-const { isAuthenticated } = require('../middleware/auth'); // Correct import
+const { isAuthenticated } = require('../middleware/auth');
 const { Inventory, User } = require('../db');
 const axios = require("axios");
 const router = express.Router();
@@ -129,7 +129,7 @@ router.post('/update', isAuthenticated, async (req, res) => {
     }
 });
 
-router.delete('/delete', async (req, res) => {
+router.delete('/delete', isAuthenticated, async (req, res) => {
     const { userId, index } = req.body;
     
     try {
@@ -143,7 +143,6 @@ router.delete('/delete', async (req, res) => {
             return res.status(404).json({ success: false, message: 'Inventory not found' });
         }
 
-        // Remove the specific item by index
         inventory.products.splice(index, 1);
         
         await inventory.save();

@@ -170,3 +170,30 @@
     align-items: center;
     margin-bottom: 1em;
 }
+
+.notification {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.notification button {
+    margin-left: 20px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+.notification button:hover {
+    text-decoration: underline;
+}

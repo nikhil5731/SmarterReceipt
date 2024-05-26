@@ -18,8 +18,10 @@ function Inventory() {
     const [showEditPopup, setShowEditPopup] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(null);
     const [currentItem, setCurrentItem] = useState(null);
+    const [deletedItem, setDeletedItem] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [isSearchActive, setIsSearchActive] = useState(false);
+    const [showNotification, setShowNotification] = useState(false);
     const navigate = useNavigate();
 
     const toggleMode = () => {
@@ -82,6 +84,9 @@ function Inventory() {
 
     const handleDeleteClick = () => {
         console.log('Deleting item:', currentIndex);
+        const itemToDelete = inventory[currentIndex];
+        setDeletedItem({ item: itemToDelete, index: currentIndex });
+
         axios.delete('http://localhost:8000/api/v1/inventory/delete', {
             data: {
                 userId: user._id,
@@ -92,10 +97,31 @@ function Inventory() {
             .then(response => {
                 setShowEditPopup(false);
                 fetchInventory(user.InventoryId);
+                setShowNotification(true);
+                setTimeout(() => {
+                    setShowNotification(false);
+                }, 5000);
             })
             .catch(error => {
                 console.log('Error deleting item', error);
             });
+    };
+
+    const handleUndoClick = () => {
+        if (deletedItem) {
+            axios.post('http://localhost:8000/api/v1/inventory/addProduct', {
+                userId: user._id,
+                product: deletedItem.item
+            }, { withCredentials: true })
+                .then(response => {
+                    setDeletedItem(null);
+                    fetchInventory(user.InventoryId);
+                })
+                .catch(error => {
+                    console.log('Error adding item', error);
+                });
+        }
+        setShowNotification(false);
     };
 
     const handleInputChange = (e) => {
@@ -183,6 +209,12 @@ function Inventory() {
                             <button className={`inv-delete-btn ${isLightMode ? 'light' : 'dark'}`} onClick={handleDeleteClick}>Delete</button>
                         </div>
                     </div>
+                </div>
+            )}
+            {showNotification && (
+                <div className="notification">
+                    <p>Item deleted successfully</p>
+                    <button onClick={handleUndoClick}>Undo</button>
                 </div>
             )}
         </div>
