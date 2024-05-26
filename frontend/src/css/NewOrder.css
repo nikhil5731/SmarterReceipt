@@ -17,6 +17,7 @@
     z-index: 1000;
 }
 
+
 .camera-container {
     position: fixed;
     top: 0;
@@ -44,16 +45,47 @@
 .product-details {
     text-align: center;
     margin-top: 20px;
+    display: flex;
+
+
 }
 
 .product-details img {
-    max-width: 200px;
-    height: auto;
-    margin-top: 10px;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+
+}
+.product-info{
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
 }
 
 #result {
     text-align: center;
     font-size: 1.5em;
     margin-top: 20px;
+}
+.price-quantity{
+    display: flex;
+    justify-content: space-between;
+}
+.product-info h2{
+    margin-top : 0;
+    margin-bottom: 0;
+    text-align: left;
+
+}
+.quantity-control{
+    display: flex;
+    align-items: center;
+}
+.quality-button{
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+#result{
+    display: none;
 }

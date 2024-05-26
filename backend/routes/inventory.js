@@ -152,5 +152,30 @@ router.delete('/delete', isAuthenticated, async (req, res) => {
         res.status(500).json({ success: false, message: 'Error deleting item', error: err });
     }
 });
+router.get('/product_price/:name', isAuthenticated, async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        console.log(user);
+        const inventory = await Inventory.findById(user.InventoryId);
+
+        if (!inventory) {
+            return res.status(404).json({ success: false, message: 'Inventory not found' });
+        }
+
+        const name = decodeURIComponent(req.params.name);
+
+        const product = inventory.products.find(product => product.name === name);
+        if (!product) {
+            return res.status(404).json({ success: false, message: 'Product not found' });
+        }
+
+        const price = product.price;
+        res.json({ success: true, price: price });
+    } catch (error) {
+        console.error('Error fetching product price:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+});
+
 
 module.exports = router;

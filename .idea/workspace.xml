@@ -6,6 +6,157 @@
   <component name="ChangeListManager">
     <list default="true" id="d9541b68-26e5-4e45-ac41-7b740e8fa41d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/routes/inventory.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/inventory.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/css/NewOrder.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/css/NewOrder.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/NewOrder.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/NewOrder.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.bin/loose-envify" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/.package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hamt_plus/CHANGELOG.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hamt_plus/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hamt_plus/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hamt_plus/hamt.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hamt_plus/hamt.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/hamt_plus/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/js-tokens/CHANGELOG.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/js-tokens/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/js-tokens/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/js-tokens/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/js-tokens/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/loose-envify/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/loose-envify/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/loose-envify/cli.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/loose-envify/custom.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/loose-envify/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/loose-envify/loose-envify.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/loose-envify/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/loose-envify/replace.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react-jsx-dev-runtime.development.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react-jsx-dev-runtime.production.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react-jsx-dev-runtime.profiling.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react-jsx-runtime.development.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react-jsx-runtime.production.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react-jsx-runtime.profiling.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react.development.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react.production.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react.shared-subset.development.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/cjs/react.shared-subset.production.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/jsx-dev-runtime.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/jsx-runtime.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/react.shared-subset.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/umd/react.development.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/umd/react.production.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/react/umd/react.profiling.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/adt/Recoil_ArrayKeyedMap.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/adt/Recoil_Loadable.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/adt/Recoil_PersistentMap.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/adt/Recoil_Queue.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/adt/Recoil_Wrapper.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/adt/__tests__/Recoil_ArrayKeyedMap-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/adt/__tests__/Recoil_Loadable-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/caches/Recoil_CacheImplementationType.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/caches/Recoil_CachePolicy.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/caches/Recoil_LRUCache.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/caches/Recoil_MapCache.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/caches/Recoil_TreeCache.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/caches/Recoil_TreeCacheImplementationType.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/caches/Recoil_cacheFromPolicy.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/caches/Recoil_treeCacheFromPolicy.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/caches/Recoil_treeCacheLRU.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/caches/__tests__/Recoil_LRUCache-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/caches/__tests__/Recoil_MapCache-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/caches/__tests__/Recoil_TreeCache-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/caches/__tests__/Recoil_cacheFromPolicy-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/caches/__tests__/Recoil_treeCacheFromPolicy-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/caches/__tests__/Recoil_treeCacheLRU-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/contrib/devtools_connector/RecoilDevTools_Connector.react.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/contrib/uri_persistence/Recoil_Link.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/contrib/uri_persistence/__tests__/Recoil_Link-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/Recoil_AtomicUpdates.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/Recoil_Batching.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/Recoil_FunctionalCore.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/Recoil_Graph.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/Recoil_GraphTypes.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/Recoil_Keys.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/Recoil_Node.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/Recoil_ReactMode.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/Recoil_RecoilRoot.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/Recoil_RecoilValue.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/Recoil_RecoilValueInterface.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/Recoil_RetainedBy.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/Recoil_Retention.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/Recoil_RetentionZone.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/Recoil_Snapshot.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/Recoil_SnapshotCache.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/Recoil_State.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/__tests__/Recoil_RecoilRoot-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/__tests__/Recoil_RecoilValueInterface-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/__tests__/Recoil_Retention-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/__tests__/Recoil_Snapshot-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/__tests__/Recoil_batcher-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/__tests__/Recoil_core-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/__tests__/Recoil_perf-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/core/__tests__/Recoil_useRecoilStoreID-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/Recoil_Hooks.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/Recoil_SnapshotHooks.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/Recoil_useGetRecoilValueInfo.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/Recoil_useRecoilBridgeAcrossReactRoots.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/Recoil_useRecoilCallback.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/Recoil_useRecoilRefresher.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/Recoil_useRecoilTransaction.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/Recoil_useRetain.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/__tests__/Recoil_Hooks_TRANSITION_SUPPORT_UNSTABLE-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/__tests__/Recoil_PublicHooks-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/__tests__/Recoil_React-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/__tests__/Recoil_useGetRecoilValueInfo-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/__tests__/Recoil_useGotoRecoilSnapshot-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/__tests__/Recoil_useRecoilBridgeAcrossReactRoots-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/__tests__/Recoil_useRecoilCallback-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/__tests__/Recoil_useRecoilInterface-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/__tests__/Recoil_useRecoilRefresher-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/__tests__/Recoil_useRecoilSnapshot-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/__tests__/Recoil_useRecoilStateReset-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/__tests__/Recoil_useRecoilTransaction-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/__tests__/Recoil_useRecoilTransactionObserver-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/__tests__/Recoil_useRecoilValueLoadable-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/__tests__/Recoil_useTransactionObservation_DEPRECATED-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/hooks/__tests__/Recoil_useTransition-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/index.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/Recoil_WaitFor.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/Recoil_atom.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/Recoil_atomFamily.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/Recoil_callbackTypes.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/Recoil_constSelector.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/Recoil_errorSelector.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/Recoil_readOnlySelector.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/Recoil_selector.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/Recoil_selectorFamily.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/__flowtests__/Recoil_WaitFor-flowtest.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/__tests__/Recoil_WaitFor-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/__tests__/Recoil_atom-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/__tests__/Recoil_atomFamily-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/__tests__/Recoil_atomWithFallback-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/__tests__/Recoil_constSelector-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/__tests__/Recoil_errorSelector-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/__tests__/Recoil_selector-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/__tests__/Recoil_selectorFamily-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/cjs/recoil_values/__tests__/Recoil_selectorHooks-test.js.flow" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/es/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/es/index.mjs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/index.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/native/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/umd/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/recoil/umd/index.min.js" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,11 +212,24 @@
       <updated>1716478795149</updated>
       <workItem from="1716478796336" duration="3170000" />
       <workItem from="1716545802229" duration="44000" />
-      <workItem from="1716546025983" duration="8205000" />
+      <workItem from="1716546025983" duration="11081000" />
+      <workItem from="1716742729518" duration="16264000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/backend/routes/inventory.js</url>
+          <line>134</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
