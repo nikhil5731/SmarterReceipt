@@ -127,9 +127,7 @@ function NewOrder() {
         <div>
             <Nav isLightMode={isLightMode} toggleMode={toggleMode} />
             <div className="order-container">
-                <button className="plus-button" onClick={handlePlusClick}>
-                    <FontAwesomeIcon icon={faPlus} />
-                </button>
+                <h1>New Order</h1>
                 {isCameraOpen && (
                     <div className="camera-container">
                         <Webcam
@@ -145,26 +143,29 @@ function NewOrder() {
                 {resultMessage && <div id="result">{resultMessage}</div>}
                 <div className="products-list">
                     {products.map((product, index) => (
-                        <div key={index} className="product-details">
-                            {product.image && <img src={product.image} alt={product.name} />}
-                            <div className="product-info">
-                            <h2>{product.name}</h2>
+                        <div key={index} className="item-details">
+                            {product.image && <img src={product.image} alt={product.name} height={"100em"} />}
+                            <div className="item-info">
+                                <h2>{product.name}</h2>
                                 <div className="price-quantity">
-                            <p>Price: ${product.price}</p>
-                            <div className="quantity-control">
-                                <button className={"quality-button"} onClick={() => handleDecrement(product.barcode)}>
-                                    <FontAwesomeIcon icon={faMinus} />
-                                </button>
-                                <p>{product.quantity}</p>
-                                <button className={"quality-button"} onClick={() => handleIncrement(product.barcode)}>
-                                    <FontAwesomeIcon icon={faPlus} />
-                                </button>
-                            </div>
+                                    <p>₹{product.price}</p>
+                                    <div className="quantity-control">
+                                        <button className={"quality-button"} onClick={() => handleDecrement(product.barcode)}>
+                                            <FontAwesomeIcon icon={faMinus} />
+                                        </button>
+                                        <p>{product.quantity}</p>
+                                        <button className={"quality-button"} onClick={() => handleIncrement(product.barcode)}>
+                                            <FontAwesomeIcon icon={faPlus} />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
+                <button className="plus-button" onClick={handlePlusClick}>
+                    <FontAwesomeIcon icon={faPlus} />
+                </button>
             </div>
         </div>
     );
