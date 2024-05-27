@@ -16,6 +16,7 @@ function NewOrder() {
     const [isCameraOpen, setIsCameraOpen] = useState(false);
     const [products, setProducts] = useState([]);
     const [resultMessage, setResultMessage] = useState('');
+    const [totalPrice, setTotalPrice] = useState(0);
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
 
@@ -29,6 +30,12 @@ function NewOrder() {
     }, [isLightMode]);
 
     useEffect(() => {
+        // increase the total price every time the products array changes
+        setTotalPrice(products.reduce((total, product) => total + product.price * product.quantity, 0));
+    }, [products]);
+        
+
+    useEffect(() => {
         if (products.length === 0) {
             return;
         }
@@ -38,18 +45,11 @@ function NewOrder() {
         };
 
         window.addEventListener('beforeunload', handleBeforeUnload);
-
+        console.log(products);
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
     }, [products]);
-
-    useEffect(() => {
-        const savedProducts = localStorage.getItem('products');
-        if (savedProducts) {
-            setProducts(JSON.parse(savedProducts));
-        }
-    }, [JSON.stringify(products)]);
 
     const handlePlusClick = () => {
         setIsCameraOpen(true);
@@ -106,12 +106,13 @@ function NewOrder() {
         axios.get(`http://localhost:8000/api/v1/inventory/product_price/${name}`, { withCredentials: true })
             .then(response => {
                 const price = response.data.price;
+                const quantity = response.data.quantity;
                 setProducts(prevProducts => {
                     const existingProductIndex = prevProducts.findIndex(product => product.barcode === barcode);
                     if (existingProductIndex !== -1) {
                         return prevProducts.map((product, index) =>
                             index === existingProductIndex
-                                ? { ...product, quantity: product.quantity + 1 }
+                                ? { ...product, quantity: product.quantity + 1 > quantity ? quantity : product.quantity + 1 }
                                 : product
                         );
                     } else {
@@ -120,32 +121,42 @@ function NewOrder() {
                     }
                 });
                 setIsCameraOpen(false);
-                localStorage.setItem('products', JSON.stringify(products));
             })
             .catch(error => {
                 console.error('Error fetching product price:', error);
             });
     };
 
-    const handleIncrement = (barcode) => {
-        setProducts(prevProducts =>
-            prevProducts.map(product =>
-                product.barcode === barcode
-                    ? { ...product, quantity: product.quantity + 1 }
-                    : product
-            )
-        );
+    const handleIncrement = (barcode, index) => {
+        const name = products[index].name;
+        axios.get(`http://localhost:8000/api/v1/inventory/product_price/${name}`, { withCredentials: true })
+            .then(response => {
+                const maxQuantity = response.data.quantity;
+                setProducts(prevProducts =>
+                    prevProducts.map(product =>
+                        product.barcode === barcode && product.quantity < maxQuantity
+                            ? { ...product, quantity: product.quantity + 1 }
+                            : product
+                    )
+                );
+            })
+            .catch(error => {
+                console.error('Error fetching product price:', error);
+            });
     };
 
-    const handleDecrement = (barcode) => {
+    const handleDecrement = (barcode, index) => {
         setProducts(prevProducts =>
-            prevProducts.map(product =>
-                product.barcode === barcode && product.quantity > 1
-                    ? { ...product, quantity: product.quantity - 1 }
-                    : product
-            )
+            prevProducts
+                .map(product =>
+                    product.barcode === barcode
+                        ? { ...product, quantity: product.quantity - 1 }
+                        : product
+                )
+                .filter(product => product.quantity > 0)
         );
     };
+    
 
     return (
         <div>
@@ -180,11 +191,11 @@ function NewOrder() {
                                 <div className="price-quantity">
                                     <p>₹{product.price}</p>
                                     <div className="quantity-control">
-                                        <button className={"quantity-button"} onClick={() => handleDecrement(product.barcode)}>
+                                        <button className={"quantity-button"} onClick={() => handleDecrement(product.barcode, index)}>
                                             <FontAwesomeIcon icon={faMinus} />
                                         </button>
                                         <p>{product.quantity}</p>
-                                        <button className={"quantity-button"} onClick={() => handleIncrement(product.barcode)}>
+                                        <button className={"quantity-button"} onClick={() => handleIncrement(product.barcode, index)}>
                                             <FontAwesomeIcon icon={faPlus} />
                                         </button>
                                     </div>
@@ -192,6 +203,9 @@ function NewOrder() {
                             </div>
                         </div>
                     ))}
+                </div>
+                <div className={`total-price ${isLightMode ? 'light' : 'dark'}`}>
+                    <h2>Total Price: ₹{totalPrice}</h2>
                 </div>
             </div>
         </div>

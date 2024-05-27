@@ -197,8 +197,6 @@ function Inventory() {
                             <button className="inv-modal-close" onClick={() => setShowEditPopup(false)}><FontAwesomeIcon icon={faX} /></button>
                         </div>
                         <div className="inv-modal-body">
-                            <label htmlFor="inv-name">Name</label>
-                            <input type="text" id="inv-name" name="name" value={currentItem.name} onChange={handleInputChange} />
                             <label htmlFor="inv-price">Price</label>
                             <input type="number" id="inv-price" name="price" value={currentItem.price} onChange={handleInputChange} />
                             <label htmlFor="inv-quantity">Quantity</label>

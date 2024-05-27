@@ -170,7 +170,8 @@ router.get('/product_price/:name', isAuthenticated, async (req, res) => {
         }
 
         const price = product.price;
-        res.json({ success: true, price: price });
+        const quantity = product.quantity;
+        res.json({ success: true, price: price, quantity: quantity});
     } catch (error) {
         console.error('Error fetching product price:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
