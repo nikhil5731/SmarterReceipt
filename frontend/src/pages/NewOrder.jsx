@@ -6,7 +6,7 @@ import Nav from '../components/Nav';
 import '../css/NewOrder.css';
 import { toggleMode as helperToggleMode } from '../helpers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faX } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faX, faKeyboard } from '@fortawesome/free-solid-svg-icons';
 
 function NewOrder() {
     const [isLightMode, setIsLightMode] = useState(() => {
@@ -14,9 +14,11 @@ function NewOrder() {
         return savedMode ? JSON.parse(savedMode) : true;
     });
     const [isCameraOpen, setIsCameraOpen] = useState(false);
+    const [isManualEntryOpen, setIsManualEntryOpen] = useState(false);
     const [products, setProducts] = useState([]);
     const [resultMessage, setResultMessage] = useState('');
     const [totalPrice, setTotalPrice] = useState(0);
+    const [manualBarcode, setManualBarcode] = useState('');
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
 
@@ -33,7 +35,6 @@ function NewOrder() {
         // increase the total price every time the products array changes
         setTotalPrice(products.reduce((total, product) => total + product.price * product.quantity, 0));
     }, [products]);
-        
 
     useEffect(() => {
         if (products.length === 0) {
@@ -121,6 +122,7 @@ function NewOrder() {
                     }
                 });
                 setIsCameraOpen(false);
+                setIsManualEntryOpen(false);
             })
             .catch(error => {
                 console.error('Error fetching product price:', error);
@@ -158,7 +160,7 @@ function NewOrder() {
     };
 
     const submit = () => {
-        axios.put('http://localhost:8000/api/v1/order/new', { products }, {totalPrice} , { withCredentials: true })
+        axios.put('http://localhost:8000/api/v1/inventory/update_inventory', { products, totalPrice } , { withCredentials: true })
             .then(response => {
                 console.log('Order placed:', response.data);
                 setProducts([]);
@@ -168,7 +170,15 @@ function NewOrder() {
                 console.error('Error placing order:', error);
             });
     }
-    
+
+    const handleManualEntryClick = () => {
+        setIsManualEntryOpen(true);
+    };
+
+    const handleManualEntrySubmit = () => {
+        fetchProductDetails(manualBarcode);
+        setManualBarcode('');
+    };
 
     return (
         <div>
@@ -183,6 +193,7 @@ function NewOrder() {
                 {isCameraOpen && (
                     <div className="camera-container">
                         <button className="close-button" onClick={() => setIsCameraOpen(false)}><FontAwesomeIcon icon={faX} /></button>
+                        <button className="manual-entry-button" onClick={handleManualEntryClick}><FontAwesomeIcon icon={faKeyboard} /></button>
                         <Webcam
                             audio={false}
                             ref={webcamRef}
@@ -191,6 +202,17 @@ function NewOrder() {
                         />
                         <button className="capture-button" onClick={handleCaptureClick}>Capture Photo</button>
                         <canvas ref={canvasRef} style={{ display: 'none' }}></canvas>
+                    </div>
+                )}
+                {isManualEntryOpen && (
+                    <div className="manual-entry-popup">
+                        <input 
+                            type="text" 
+                            value={manualBarcode} 
+                            onChange={(e) => setManualBarcode(e.target.value)} 
+                            placeholder="Enter Barcode" 
+                        />
+                        <button onClick={handleManualEntrySubmit}>Submit</button>
                     </div>
                 )}
                 {resultMessage && <div id="result">{resultMessage}</div>}

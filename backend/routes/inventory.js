@@ -154,7 +154,7 @@ router.delete('/delete', isAuthenticated, async (req, res) => {
 });
 router.get('/product_price/:name', isAuthenticated, async (req, res) => {
     try {
-        const user = await User.findById(req.user.id);
+        const user = await User.findById(req.user._id);
         console.log(user);
         const inventory = await Inventory.findById(user.InventoryId);
 
@@ -177,6 +177,7 @@ router.get('/product_price/:name', isAuthenticated, async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });
+
 router.put('/update_inventory', isAuthenticated, async (req, res) => {
     const { products, totalPrice } = req.body;
 
@@ -202,6 +203,14 @@ router.put('/update_inventory', isAuthenticated, async (req, res) => {
 
         // Update the sales for the current month
         inventory.MonthlySales[currentMonth] += totalPrice;
+
+        // Reduce the quantity of each product in the inventory
+        products.forEach(purchasedProduct => {
+            const inventoryProduct = inventory.products.find(prod => prod.name === purchasedProduct.name);
+            if (inventoryProduct) {
+                inventoryProduct.quantity -= purchasedProduct.quantity;
+            }
+        });
 
         // Save the updated inventory
         await inventory.save();

@@ -74,8 +74,8 @@ const InventorySchema = new mongoose.Schema({
     }],
     MonthlySales: {
         type: [Number],
-        required: false, // Optional: Add required if necessary
-        default: [10, 0, 0, 0, 0 ,0 ,0 ,0, 0, 0, 0, 0] // Optional: Default value as an empty array
+        required: false,
+        default: [0, 0, 0, 0, 0 ,0 ,0 ,0, 0, 0, 0, 0]
     }
 });
 
