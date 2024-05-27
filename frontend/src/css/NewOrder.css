@@ -135,6 +135,10 @@
     position: fixed;
     bottom: 0;
     left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px black solid;
 }
 
 .total-price h2 {
@@ -144,4 +148,16 @@
 
 .total-price.dark {
     color: white;
+    border: 1px white solid;
+}
+
+.checkout-button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 1em;
+    cursor: pointer;
+    margin-right: 1em;
+    border-radius: 2em;
+    width: 10em;
 }

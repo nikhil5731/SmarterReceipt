@@ -156,6 +156,18 @@ function NewOrder() {
                 .filter(product => product.quantity > 0)
         );
     };
+
+    const submit = () => {
+        axios.put('http://localhost:8000/api/v1/order/new', { products }, {totalPrice} , { withCredentials: true })
+            .then(response => {
+                console.log('Order placed:', response.data);
+                setProducts([]);
+                setTotalPrice(0);
+            })
+            .catch(error => {
+                console.error('Error placing order:', error);
+            });
+    }
     
 
     return (
@@ -206,6 +218,7 @@ function NewOrder() {
                 </div>
                 <div className={`total-price ${isLightMode ? 'light' : 'dark'}`}>
                     <h2>Total Price: ₹{totalPrice}</h2>
+                    <button className="checkout-button" onClick={submit}>Checkout</button>
                 </div>
             </div>
         </div>
