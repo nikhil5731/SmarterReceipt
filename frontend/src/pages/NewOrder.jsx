@@ -44,6 +44,13 @@ function NewOrder() {
         };
     }, [products]);
 
+    useEffect(() => {
+        const savedProducts = localStorage.getItem('products');
+        if (savedProducts) {
+            setProducts(JSON.parse(savedProducts));
+        }
+    });
+
     const handlePlusClick = () => {
         setIsCameraOpen(true);
         setResultMessage('');
@@ -112,7 +119,8 @@ function NewOrder() {
                         return [...prevProducts, newProduct];
                     }
                 });
-                setIsCameraOpen(false); // Close camera once the product details are fetched
+                setIsCameraOpen(false);
+                localStorage.setItem('products', JSON.stringify(products));
             })
             .catch(error => {
                 console.error('Error fetching product price:', error);
