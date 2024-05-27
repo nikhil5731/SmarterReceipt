@@ -6,7 +6,7 @@ import Nav from '../components/Nav';
 import '../css/NewOrder.css';
 import { toggleMode as helperToggleMode } from '../helpers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faX } from '@fortawesome/free-solid-svg-icons';
 
 function NewOrder() {
     const [isLightMode, setIsLightMode] = useState(() => {
@@ -27,6 +27,22 @@ function NewOrder() {
         document.body.style.background = isLightMode ? "#fff" : "#000";
         document.body.style.color = isLightMode ? "#000" : "#fff";
     }, [isLightMode]);
+
+    useEffect(() => {
+        if (products.length === 0) {
+            return;
+        }
+        const handleBeforeUnload = (event) => {
+            event.preventDefault();
+            event.returnValue = 'Your cart will be cleared if you leave this page. Are you sure?';
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, [products]);
 
     const handlePlusClick = () => {
         setIsCameraOpen(true);
@@ -127,9 +143,15 @@ function NewOrder() {
         <div>
             <Nav isLightMode={isLightMode} toggleMode={toggleMode} />
             <div className="order-container">
-                <h1>New Order</h1>
+                <div className="order-header">
+                    <h1>New Order</h1>
+                    <button className="plus-button" onClick={handlePlusClick}>
+                        <FontAwesomeIcon icon={faPlus} />
+                    </button>
+                </div>
                 {isCameraOpen && (
                     <div className="camera-container">
+                        <button className="close-button" onClick={() => setIsCameraOpen(false)}><FontAwesomeIcon icon={faX} /></button>
                         <Webcam
                             audio={false}
                             ref={webcamRef}
@@ -150,11 +172,11 @@ function NewOrder() {
                                 <div className="price-quantity">
                                     <p>₹{product.price}</p>
                                     <div className="quantity-control">
-                                        <button className={"quality-button"} onClick={() => handleDecrement(product.barcode)}>
+                                        <button className={"quantity-button"} onClick={() => handleDecrement(product.barcode)}>
                                             <FontAwesomeIcon icon={faMinus} />
                                         </button>
                                         <p>{product.quantity}</p>
-                                        <button className={"quality-button"} onClick={() => handleIncrement(product.barcode)}>
+                                        <button className={"quantity-button"} onClick={() => handleIncrement(product.barcode)}>
                                             <FontAwesomeIcon icon={faPlus} />
                                         </button>
                                     </div>
@@ -163,9 +185,6 @@ function NewOrder() {
                         </div>
                     ))}
                 </div>
-                <button className="plus-button" onClick={handlePlusClick}>
-                    <FontAwesomeIcon icon={faPlus} />
-                </button>
             </div>
         </div>
     );

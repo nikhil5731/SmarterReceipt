@@ -86,7 +86,7 @@ function Nav({ isLightMode, toggleMode }) {
                         </>
                     )}
                 </ul>
-                <h2 className="move-down login-heading white">Welcome to <span className="special-heading1">S</span>marter<span className="special-heading1">R</span>eceipt</h2>
+                <h2 className="login-heading white">Welcome to <span className="special-heading1">S</span>marter<span className="special-heading1">R</span>eceipt</h2>
             </div>
         </div>
     );
