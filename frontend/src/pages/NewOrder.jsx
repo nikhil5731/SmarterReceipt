@@ -49,7 +49,7 @@ function NewOrder() {
         if (savedProducts) {
             setProducts(JSON.parse(savedProducts));
         }
-    });
+    }, [JSON.stringify(products)]);
 
     const handlePlusClick = () => {
         setIsCameraOpen(true);
