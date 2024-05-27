@@ -177,6 +177,41 @@ router.get('/product_price/:name', isAuthenticated, async (req, res) => {
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
 });
+router.put('/update_inventory', isAuthenticated, async (req, res) => {
+    const { products, totalPrice } = req.body;
+
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        const inventory = await Inventory.findById(user.InventoryId);
+        if (!inventory) {
+            return res.status(404).json({ success: false, message: 'Inventory not found' });
+        }
+
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentDate = now.getDate();
+
+        // Reset MonthlySales array if today is January 1st
+        if (currentMonth === 0 && currentDate === 1) {
+            inventory.MonthlySales = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        }
+
+        // Update the sales for the current month
+        inventory.MonthlySales[currentMonth] += totalPrice;
+
+        // Save the updated inventory
+        await inventory.save();
+
+        res.status(200).json({ success: true, message: 'Inventory updated successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
 
 
 module.exports = router;

@@ -50,6 +50,7 @@ const userSchema = new mongoose.Schema({
         ref: 'Inventory',
         required: false // Make InventoryId optional
     },
+
 });
 
 const InventorySchema = new mongoose.Schema({
