@@ -7,6 +7,8 @@ import '../css/NewOrder.css';
 import { toggleMode as helperToggleMode } from '../helpers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faX, faKeyboard } from '@fortawesome/free-solid-svg-icons';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function NewOrder() {
     const [isLightMode, setIsLightMode] = useState(() => {
@@ -32,7 +34,6 @@ function NewOrder() {
     }, [isLightMode]);
 
     useEffect(() => {
-        // increase the total price every time the products array changes
         setTotalPrice(products.reduce((total, product) => total + product.price * product.quantity, 0));
     }, [products]);
 
@@ -108,6 +109,10 @@ function NewOrder() {
             .then(response => {
                 const price = response.data.price;
                 const quantity = response.data.quantity;
+                if (quantity === 0) {
+                    toast.error('Product out of stock');
+                    return;
+                }
                 setProducts(prevProducts => {
                     const existingProductIndex = prevProducts.findIndex(product => product.barcode === barcode);
                     if (existingProductIndex !== -1) {
@@ -171,13 +176,48 @@ function NewOrder() {
             });
     }
 
+    const close = () => {
+        setIsCameraOpen(false);
+        setIsManualEntryOpen(false);
+    };
+
     const handleManualEntryClick = () => {
         setIsManualEntryOpen(true);
+        setIsCameraOpen(false);
     };
 
     const handleManualEntrySubmit = () => {
         fetchProductDetails(manualBarcode);
         setManualBarcode('');
+    };
+
+    const handleQuantityChange = (e, barcode, index) => {
+        const newQuantity = parseInt(e.target.textContent, 10);
+        if (isNaN(newQuantity) || newQuantity < 0) {
+            e.target.textContent = products[index].quantity; // Revert to previous valid value
+            return;
+        }
+        const name = products[index].name;
+        axios.get(`http://localhost:8000/api/v1/inventory/product_price/${name}`, { withCredentials: true })
+            .then(response => {
+                const maxQuantity = response.data.quantity;
+                if (newQuantity <= maxQuantity) {
+                    setProducts(prevProducts =>
+                        prevProducts.map(product =>
+                            product.barcode === barcode
+                                ? { ...product, quantity: newQuantity }
+                                : product
+                        )
+                    );
+                } else {
+                    e.target.textContent = products[index].quantity; // Revert to previous valid value
+                    toast.error(`Maximum quantity for this product is ${maxQuantity}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching product price:', error);
+                e.target.textContent = products[index].quantity; // Revert to previous valid value
+            });
     };
 
     return (
@@ -192,8 +232,10 @@ function NewOrder() {
                 </div>
                 {isCameraOpen && (
                     <div className="camera-container">
-                        <button className="close-button" onClick={() => setIsCameraOpen(false)}><FontAwesomeIcon icon={faX} /></button>
-                        <button className="manual-entry-button" onClick={handleManualEntryClick}><FontAwesomeIcon icon={faKeyboard} /></button>
+                        <div className="cam-flex">
+                            <button className="close-button cam-close" onClick={close}><FontAwesomeIcon icon={faX}  style={{"amrgin-left" : "2em"}}/></button>
+                            <button className="manual-entry-button open-popup" onClick={handleManualEntryClick}><FontAwesomeIcon icon={faKeyboard} /></button>
+                        </div>
                         <Webcam
                             audio={false}
                             ref={webcamRef}
@@ -206,11 +248,13 @@ function NewOrder() {
                 )}
                 {isManualEntryOpen && (
                     <div className="manual-entry-popup">
+                        <button className="close-popup" onClick={close}><FontAwesomeIcon icon={faX} /></button>
                         <input 
                             type="text" 
                             value={manualBarcode} 
                             onChange={(e) => setManualBarcode(e.target.value)} 
                             placeholder="Enter Barcode" 
+                            style={{ marginTop: "3em" }}
                         />
                         <button onClick={handleManualEntrySubmit}>Submit</button>
                     </div>
@@ -228,7 +272,13 @@ function NewOrder() {
                                         <button className={"quantity-button"} onClick={() => handleDecrement(product.barcode, index)}>
                                             <FontAwesomeIcon icon={faMinus} />
                                         </button>
-                                        <p>{product.quantity}</p>
+                                        <span
+                                            contentEditable="true"
+                                            suppressContentEditableWarning={true}
+                                            onBlur={(e) => handleQuantityChange(e, product.barcode, index)}
+                                        >
+                                            {product.quantity}
+                                        </span>
                                         <button className={"quantity-button"} onClick={() => handleIncrement(product.barcode, index)}>
                                             <FontAwesomeIcon icon={faPlus} />
                                         </button>
@@ -243,6 +293,7 @@ function NewOrder() {
                     <button className="checkout-button" onClick={submit}>Checkout</button>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 }

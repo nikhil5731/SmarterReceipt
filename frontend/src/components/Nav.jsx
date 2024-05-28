@@ -77,10 +77,10 @@ function Nav({ isLightMode, toggleMode }) {
                         <li onClick={handleLogin}>Login with Google</li>
                     ) : (
                         <>
-                            <li><a href="/">Home</a></li>
-                            <li><a href="/account">My Account</a></li>
-                            <li><a href="/inventory">My Inventory</a></li>
-                            <li><a href="/new-order">New Order</a></li>
+                            <a href="/"><li>Home</li></a>
+                            <a href="/account"><li>My Account</li></a>
+                            <a href="/inventory"><li>My Inventory</li></a>
+                            <a href="/new-order"><li>New Order</li></a>
                             <li onClick={handleLogout}>Logout</li>
                             <li onClick={handleDeleteInventory}>Delete Inventory</li>
                         </>

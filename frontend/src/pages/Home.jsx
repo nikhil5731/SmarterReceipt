@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import SalesChart from '../components/SalesChart';
 import SalesDataContainer from '../components/SalesDataContainer';
 import Nav from '../components/Nav';
 import { toggleMode as helperToggleMode } from '../helpers';
@@ -9,7 +8,6 @@ import ProductsToRestock from '../components/ProductsToRestock';
 import '../css/App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-
 
 function Home() {
     const [isLightMode, setIsLightMode] = useState(() => {
@@ -22,6 +20,7 @@ function Home() {
     const [showPopup, setShowPopup] = useState(false);
     const [shopName, setShopName] = useState('');
     const [inventory, setInventory] = useState([]);
+    const chartRef = useRef(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -71,6 +70,21 @@ function Home() {
         }
     }, [isLightMode]);
 
+    useEffect(() => {
+        if (!loading) {
+            console.log('Scrolling to current month');
+            const date = new Date();
+            const month = date.getMonth() + 1;
+            console.log('Current month:', month);
+            if (month > 4) {
+                const scrollPosition = month * 55;
+                if (chartRef.current) {
+                    chartRef.current.scrollTo({ left: scrollPosition, behavior: 'smooth' });
+                }
+            }
+        }
+    }, [loading]);
+
     const toggleMode = () => {
         helperToggleMode(isLightMode, setIsLightMode);
     };
@@ -108,7 +122,7 @@ function Home() {
                 <div className="sales">
                     <h3>Sales</h3>
                     <h4 className="chart-title">Monthly Sales Data</h4>
-                    <div className="chart">
+                    <div className="chart" ref={chartRef}>
                         <SalesDataContainer userId={user._id} isLightMode={isLightMode} />
                     </div>
                 </div>
