@@ -148,7 +148,7 @@
 
 .total-price.dark {
     color: white;
-    border: 1px white solid;
+    border-top: 1px white solid;
 }
 
 .checkout-button {
