@@ -170,9 +170,11 @@ function NewOrder() {
                 console.log('Order placed:', response.data);
                 setProducts([]);
                 setTotalPrice(0);
+                toast.success('Order placed successfully');
             })
             .catch(error => {
                 console.error('Error placing order:', error);
+                toast.error('Error placing order');
             });
     }
 

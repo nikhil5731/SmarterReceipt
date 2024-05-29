@@ -179,7 +179,7 @@ router.get('/product_price/:name', isAuthenticated, async (req, res) => {
 });
 
 router.put('/update_inventory', isAuthenticated, async (req, res) => {
-    const { products, totalPrice } = req.body;
+    const { products, totalPrice} = req.body;
 
     try {
         const user = await User.findById(req.user.id);
@@ -193,8 +193,9 @@ router.put('/update_inventory', isAuthenticated, async (req, res) => {
         }
 
         const now = new Date();
-        const currentMonth = now.getMonth();
         const currentDate = now.getDate();
+        const currentMonth = now.getMonth();
+        inventory.transactions.push({ date: currentDate, items: products });
 
         // Reset MonthlySales array if today is January 1st
         if (currentMonth === 0 && currentDate === 1) {

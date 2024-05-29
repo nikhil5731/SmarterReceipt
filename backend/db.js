@@ -1,3 +1,4 @@
+const { json } = require('body-parser');
 const mongoose = require('mongoose');
 
 mongoose.connect("mongodb+srv://kinshuokmunjal:kmunjal654@cluster0.kzwzut4.mongodb.net/SmarterReceipt", {
@@ -76,7 +77,31 @@ const InventorySchema = new mongoose.Schema({
         type: [Number],
         required: false,
         default: [0, 0, 0, 0, 0 ,0 ,0 ,0, 0, 0, 0, 0]
-    }
+    },
+    transactions: [{
+        date: {
+            type: Date,
+            required: true
+        },
+        items: [{
+            name: {
+                type: String,
+                required: true
+            },
+            quantity: {
+                type: Number,
+                required: true
+            },
+            price: {
+                type: Number,
+                required: true
+            },
+            image: {
+                type: String,
+                required: false
+            }
+        }]
+    }]
 });
 
 const User = mongoose.model('User', userSchema);
