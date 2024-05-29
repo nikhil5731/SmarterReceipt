@@ -193,7 +193,7 @@ router.put('/update_inventory', isAuthenticated, async (req, res) => {
         }
 
         const now = new Date();
-        const currentDate = now.getDate();
+        const currentDate = now.toISOString();
         const currentMonth = now.getMonth();
         inventory.transactions.push({ date: currentDate, items: products });
 
@@ -220,6 +220,20 @@ router.put('/update_inventory', isAuthenticated, async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
+
+router.get('/transactions', async (req, res) => {
+    try {
+        const user = req.user; // Assuming user is authenticated and user data is available
+        const inventory = await Inventory.findById(user.InventoryId);
+        if (!inventory) {
+            return res.status(404).send('Inventory not found');
+        }
+        res.json(inventory.transactions);
+    } catch (error) {
+        console.error('Error fetching transactions:', error);
+        res.status(500).send('Error fetching transactions');
     }
 });
 

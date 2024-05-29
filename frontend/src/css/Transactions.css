@@ -1,0 +1,197 @@
+body {
+    margin: 0;
+    padding: 0;
+    transition: background-color 1s, color 1s;
+}
+
+.transaction-container {
+    width: 85%;
+    margin: 0 auto;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.transaction-box {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    box-sizing: border-box;
+    position: relative;
+    
+}
+
+.image-container {
+    position: relative;
+    width: 50%;
+    height: 6em;
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    z-index: 0;
+}
+
+.card-background {
+    position: absolute;
+    height: 100%;
+    width: 100px;
+    background-color: #ccc;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    z-index: -1;
+    border: 1px solid none;
+}
+
+.card-background:nth-child(1) {
+    transform: translateX(-20px) scale(0.8);
+    opacity: 0.8;
+    z-index: 1;
+}
+
+.card-background:nth-child(2) {
+    transform: translateX(20px) scale(0.8);
+    opacity: 0.8;
+    z-index: 1;
+}
+
+.card-background:nth-child(3) {
+    transform: translateX(-32px) scale(0.7);
+    opacity: 0.4;
+    z-index: -1;
+}
+
+.card-background:nth-child(4) {
+    transform: translateX(32px) scale(0.7);
+    opacity: 0.4;
+    z-index: -1;
+}
+
+.transaction-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+    z-index: 1; /* Ensure the image is above the backgrounds */
+}
+
+.transaction-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.transaction-info h4 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.transaction-info p {
+    margin: 5px 0 0;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.popup-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 600px;
+    width: 80%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    color: black;
+}
+
+.popup-header h2 {
+    margin: 0;
+}
+
+.popup-modal .close-button {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: black;
+}
+
+.popup-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.popup-modal .product-box {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    box-sizing: border-box;
+    height: 7.5em;
+}
+
+.popup-modal .product-box.light {
+    background-color: #fff;
+    color: #000;
+}
+
+.popup-modal .product-box.dark {
+    background-color: #fff;
+    color: #000;
+}
+
+.popup-modal .product-data {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+
+.popup-modal .product-data img {
+    border-radius: 10px;
+}
+
+.popup-modal .name-image {
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-modal .flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popup-modal.quant {
+    color: #8576FF;
+}
+
+.price {
+    color: green;
+}
