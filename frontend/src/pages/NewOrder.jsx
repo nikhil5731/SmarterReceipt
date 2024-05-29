@@ -6,7 +6,7 @@ import Nav from '../components/Nav';
 import '../css/NewOrder.css';
 import { toggleMode as helperToggleMode } from '../helpers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faX, faKeyboard } from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faMinus, faX, faKeyboard, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -195,7 +195,7 @@ function NewOrder() {
 
     const handleQuantityChange = (e, barcode, index) => {
         const newQuantity = parseInt(e.target.textContent, 10);
-        if (isNaN(newQuantity) || newQuantity < 0) {
+        if (isNaN(newQuantity) || newQuantity <= 0) {
             e.target.textContent = products[index].quantity; // Revert to previous valid value
             return;
         }
@@ -272,7 +272,7 @@ function NewOrder() {
                                     <p>₹{product.price}</p>
                                     <div className="quantity-control">
                                         <button className={"quantity-button"} onClick={() => handleDecrement(product.barcode, index)}>
-                                            <FontAwesomeIcon icon={faMinus} />
+                                            {product.quantity != 1 ? <FontAwesomeIcon icon={faMinus} /> : <FontAwesomeIcon icon={faTrash} />}
                                         </button>
                                         <span
                                             contentEditable="true"

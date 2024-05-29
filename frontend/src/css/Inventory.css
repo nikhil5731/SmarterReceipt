@@ -202,3 +202,14 @@
     flex-direction: column;
     justify-content: space-around;
 }
+
+.inventory-list .product-box {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.inventory-list .product-data {
+    transform: translateY(-0.5em);
+}
