@@ -47,6 +47,23 @@ function Nav({ isLightMode, toggleMode }) {
                 alert('Error deleting inventory');
             });
     };
+
+    const deleteTransactions = () => {
+        axios.delete('http://localhost:8000/api/v1/inventory/delete_transactions', { withCredentials: true })
+            .then(response => {
+                if (response.data.success) {
+                    console.log('Delete successful');
+                    alert('Transactions deleted successfully');
+                } else {
+                    console.log('Delete failed');
+                    alert('Failed to delete transactions');
+                }
+            })
+            .catch(error => {
+                console.log('Delete error', error);
+                alert('Error deleting transactions');
+            });
+    }
     
 
     useEffect(() => {
@@ -81,8 +98,10 @@ function Nav({ isLightMode, toggleMode }) {
                             <a href="/account"><li>My Account</li></a>
                             <a href="/inventory"><li>My Inventory</li></a>
                             <a href="/new-order"><li>New Order</li></a>
+                            <a href="/transactions"><li>My Transactions</li></a>
                             <li onClick={handleLogout}>Logout</li>
                             <li onClick={handleDeleteInventory}>Delete Inventory</li>
+                            <li onClick={deleteTransactions}>Delete Transacrtions</li>
                         </>
                     )}
                 </ul>

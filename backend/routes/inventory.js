@@ -237,5 +237,18 @@ router.get('/transactions', async (req, res) => {
     }
 });
 
+router.delete("/delete_transactions", isAuthenticated, async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        const inventory = await Inventory.findById(user.InventoryId);
+        inventory.transactions = [];
+        await inventory.save();
+        res.json({ success: true, message: 'Transactions deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting transactions:', error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
+
 
 module.exports = router;
