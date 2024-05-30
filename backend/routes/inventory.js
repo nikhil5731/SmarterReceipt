@@ -9,6 +9,7 @@ const { generateUniqueInventoryId } = require('../helpers');
 router.post('/addProduct', isAuthenticated, async (req, res) => {
     try {
         const { product } = req.body;
+        console.log(product);
         if (!product.name || !product.price || product.quantity === undefined) {
             return res.status(400).send('Invalid product data');
         }
@@ -18,13 +19,25 @@ router.post('/addProduct', isAuthenticated, async (req, res) => {
             inventory = new Inventory({ _id: req.user.InventoryId, products: [] });
         }
 
-        inventory.products.push(product);
+        // Check if the product already exists in the inventory
+        const existingProduct = inventory.products.find(p => p.name === product.name);
+        console.log(existingProduct);
+
+        if (existingProduct) {
+            // Product exists, update its quantity
+            existingProduct.quantity += product.quantity;
+        } else {
+            // Product does not exist, add it to the inventory
+            inventory.products.push(product);
+        }
+
         await inventory.save();
         res.send(inventory);
     } catch (err) {
         res.status(500).send('Error updating inventory');
     }
 });
+
 
 // Get Inventory by ID Route
 router.get('/get/:id', isAuthenticated, async (req, res) => {

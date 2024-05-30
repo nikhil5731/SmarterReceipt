@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import axios from 'axios';
 import '../css/Inventory.css';
 import Nav from '../components/Nav';
-import { toggleMode as helperToggleMode } from '../helpers';
-import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPen, faX, faSearch } from '@fortawesome/free-solid-svg-icons';
+import {toggleMode as helperToggleMode} from '../helpers';
+import {useNavigate} from 'react-router-dom';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faPen, faX, faSearch, faPlus, faKeyboard} from '@fortawesome/free-solid-svg-icons';
+import Webcam from 'react-webcam';
+import Quagga from 'quagga';
+import {toast} from "react-toastify";
+
 
 function Inventory() {
     const [user, setUser] = useState(null);
@@ -22,6 +26,20 @@ function Inventory() {
     const [searchQuery, setSearchQuery] = useState('');
     const [isSearchActive, setIsSearchActive] = useState(false);
     const [showNotification, setShowNotification] = useState(false);
+    const [isCameraOpen, setIsCameraOpen] = useState(false);
+    const [isManualEntryOpen, setIsManualEntryOpen] = useState(false);
+    const [products, setProducts] = useState([]);
+    const [resultMessage, setResultMessage] = useState('');
+    const [scannedBarcode, setscannedBarcode] = useState('');
+    const [manualBarcode, setManualBarcode] = useState('');
+    const [scannedPopup, setscannedPopup] = useState(false);
+    const [quantity, setquantity] = useState('');
+    const [price, setprice] = useState('');
+    const [productName, setProductName] = useState('');
+    const [image, setProductImage] = useState('');
+    const [Fetched, setFetched] = useState(false);
+    const webcamRef = useRef(null);
+    const canvasRef = useRef(null);
     const navigate = useNavigate();
 
     const toggleMode = () => {
@@ -34,7 +52,7 @@ function Inventory() {
     }, [isLightMode]);
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/v1/user/current_user', { withCredentials: true })
+        axios.get('http://localhost:8000/api/v1/user/current_user', {withCredentials: true})
             .then(response => {
                 if (response.data) {
                     setUser(response.data);
@@ -49,7 +67,7 @@ function Inventory() {
     }, [navigate]);
 
     const fetchInventory = (inventoryId) => {
-        axios.get(`http://localhost:8000/api/v1/inventory/get/${inventoryId}`, { withCredentials: true })
+        axios.get(`http://localhost:8000/api/v1/inventory/get/${inventoryId}`, {withCredentials: true})
             .then(response => {
                 setInventory(response.data.products);
             })
@@ -72,7 +90,7 @@ function Inventory() {
             price: currentItem.price,
             quantity: currentItem.quantity,
             image: currentItem.image
-        }, { withCredentials: true })
+        }, {withCredentials: true})
             .then(response => {
                 setShowEditPopup(false);
                 fetchInventory(user.InventoryId);
@@ -81,11 +99,107 @@ function Inventory() {
                 console.log('Error updating item', error);
             });
     };
+    const handleCaptureClick = () => {
+        const imageSrc = webcamRef.current.getScreenshot();
+        decodeBarcode(imageSrc);
+    };
+    const decodeBarcode = (imageSrc) => {
+        const img = new Image();
+        img.src = imageSrc;
+
+        img.onload = () => {
+            Quagga.decodeSingle({
+                src: img.src,
+                numOfWorkers: 0,
+                inputStream: {
+                    size: 800
+                },
+                decoder: {
+                    readers: ["ean_reader", "upc_reader"]
+                },
+                locator: {
+                    patchSize: "medium",
+                    halfSample: true
+                }
+            }, (result) => {
+                if (result && result.codeResult) {
+                    const barcode = result.codeResult.code;
+                    setResultMessage('Barcode: ' + barcode);
+                    setscannedBarcode(barcode);
+                    fetchProductDetails(barcode);
+                    setIsCameraOpen(false);
+                    setscannedPopup(true);
+                    console.log(scannedBarcode);
+                } else {
+                    setResultMessage('No barcode detected');
+                }
+            });
+        };
+    };
+    const fetchProductDetails = (barcode) => {
+        axios.get(`http://localhost:8000/api/v1/inventory/product_details/${barcode}`, {withCredentials: true})
+            .then(response => {
+                const {name, image} = response.data;
+                setProductName(name);
+                setProductImage(image);
+                setFetched(true);
+
+            })
+            .catch(error => {
+                console.error('Error fetching product details:', error);
+            });
+    };
+
+    const close = () => {
+        setIsCameraOpen(false);
+        setIsManualEntryOpen(false);
+        setscannedPopup(false);
+        setquantity('');
+        setprice('');
+        setProductName('');
+        setProductImage('');
+    };
+    const handleManualEntryClick = () => {
+        setIsManualEntryOpen(true);
+        setIsCameraOpen(false);
+    };
+    const handleScannedEntrySubmit = () => {
+        const product = {
+            name: productName,
+            price :parseFloat(price),
+            quantity: parseInt(quantity), // Ensure quantity is an integer
+            image: image
+        };
+        axios.post('http://localhost:8000/api/v1/inventory/addProduct', {product}, {withCredentials: true})
+            .then(response => {
+                console.log('Product added to inventory:', response.data);
+                fetchInventory(user.InventoryId);
+                setprice('');
+                setquantity('');
+                setProductName('');
+                setProductImage('');
+                setscannedBarcode('');
+                setManualBarcode('');
+                setscannedPopup(false);
+            })
+            .catch(error => {
+                console.error('Error updating inventory:', error);
+            });
+
+        setManualBarcode('');
+    };
+
+    const handleManualEntrySubmit = () => {
+        fetchProductDetails(manualBarcode);
+        handleScannedEntrySubmit(); // Submit the product after fetching its details
+        setIsManualEntryOpen(false);
+    };
+
 
     const handleDeleteClick = () => {
         console.log('Deleting item:', currentIndex);
         const itemToDelete = inventory[currentIndex];
-        setDeletedItem({ item: itemToDelete, index: currentIndex });
+        setDeletedItem({item: itemToDelete, index: currentIndex});
 
         axios.delete('http://localhost:8000/api/v1/inventory/delete', {
             data: {
@@ -112,7 +226,7 @@ function Inventory() {
             axios.post('http://localhost:8000/api/v1/inventory/addProduct', {
                 userId: user._id,
                 product: deletedItem.item
-            }, { withCredentials: true })
+            }, {withCredentials: true})
                 .then(response => {
                     setDeletedItem(null);
                     fetchInventory(user.InventoryId);
@@ -125,7 +239,7 @@ function Inventory() {
     };
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setCurrentItem({
             ...currentItem,
             [name]: value
@@ -144,6 +258,7 @@ function Inventory() {
         setIsSearchActive(false);
     };
 
+
     const filteredInventory = inventory.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -151,13 +266,21 @@ function Inventory() {
     if (!user) {
         return null;
     }
+    const handlePlusClick = () => {
+        setIsCameraOpen(true);
+        setResultMessage('');
+    };
+
 
     return (
         <div>
-            <Nav isLightMode={isLightMode} toggleMode={toggleMode} />
+            <Nav isLightMode={isLightMode} toggleMode={toggleMode}/>
             <div className="inventory-container">
                 <div className="inv-header">
                     <h1>Inventory</h1>
+                    <button onClick={handlePlusClick} className="plus-button"><FontAwesomeIcon
+                        icon={faPlus}></FontAwesomeIcon></button>
+
                     {isSearchActive ? (
                         <input
                             type="text"
@@ -169,19 +292,93 @@ function Inventory() {
                             className={`search-input ${isLightMode ? 'light' : 'dark'}`}
                         />
                     ) : (
-                        <FontAwesomeIcon icon={faSearch} onClick={handleSearchIconClick} style={{"fontSize" : "24px"}} />
+                        <FontAwesomeIcon icon={faSearch} onClick={handleSearchIconClick} style={{"fontSize": "24px"}}/>
                     )}
                 </div>
+                {isCameraOpen && (
+                    <div className="camera-container">
+                        <div className="cam-flex">
+                            <button className="close-button cam-close" onClick={close}><FontAwesomeIcon icon={faX}
+                                                                                                        style={{"margin-left": "2em"}}/>
+                            </button>
+                            <button className="manual-entry-button open-popup" onClick={handleManualEntryClick}>
+                                <FontAwesomeIcon icon={faKeyboard}/></button>
+                        </div>
+                        <Webcam
+                            audio={false}
+                            ref={webcamRef}
+                            screenshotFormat="image/jpeg"
+                            videoConstraints={{facingMode: "environment"}}
+                        />
+                        <button className="capture-button" onClick={handleCaptureClick}>Capture Photo</button>
+                        <canvas ref={canvasRef} style={{display: 'none'}}></canvas>
+                    </div>
+                )}
+                {scannedPopup && (
+                    <div className="manual-entry-popup">
+                        <button className="close-popup" onClick={close}><FontAwesomeIcon icon={faX}/></button>
+                        <h1 className={`name ${isLightMode ? 'light' : 'dark'}`}
+                        >{productName}</h1>
+                        <img src={image} alt="product image"/>
+                        <input
+                            type="string"
+                            value={price}
+                            onChange={(e) => setprice(e.target.value)}
+                            placeholder="Enter Price"
+                            style={{marginTop: "3em"}}
+                        />
+                        <input
+                            type="number"
+                            value={quantity}
+                            onChange={(e) => setquantity(e.target.value)}
+                            placeholder="Enter Quantity"
+
+                        />
+
+                        <button onClick={handleScannedEntrySubmit}>Submit</button>
+
+                    </div>
+                )}
+                {isManualEntryOpen && (
+                    <div className="manual-entry-popup">
+                        <button className="close-popup" onClick={close}><FontAwesomeIcon icon={faX}/></button>
+                        <input
+                            type="text"
+                            value={manualBarcode}
+                            onChange={(e) => setManualBarcode(e.target.value)}
+                            placeholder="Enter Barcode"
+                            style={{marginTop: "3em"}}
+                        />
+                        <input
+                            type="string"
+                            value={price}
+                            onChange={(e) => setprice(e.target.value)}
+                            placeholder="Enter Price"
+
+                        />
+                        <input
+                            type="number"
+                            value={quantity}
+                            onChange={(e) => setquantity(e.target.value)}
+                            placeholder="Enter Quantity"
+
+                        />
+
+                        <button onClick={handleManualEntrySubmit}>Submit</button>
+                    </div>
+                )}
                 <div className="inventory-list">
                     {filteredInventory.map((product, index) => (
                         <div key={product.name} className={`product-box ${isLightMode ? 'light' : 'dark'}`}>
                             <div className="product-data">
-                                <img src={product.image} height={"100em"} width={"100em"} alt={product.name} />
+                                <img src={product.image} height={"100em"} width={"100em"} alt={product.name}/>
                                 <div className='name-image'>
                                     <h4>{product.name.length >= 30 ? product.name.substring(0, 27) + "..." : product.name}</h4>
                                     <div className="flex">
                                         <h4 className="red quant">{product.quantity} left</h4>
-                                        <button className={`inv-edit-btn ${isLightMode ? 'light' : 'dark'}`} onClick={() => handleEditClick(index, product)}><FontAwesomeIcon icon={faPen} /></button>
+                                        <button className={`inv-edit-btn ${isLightMode ? 'light' : 'dark'}`}
+                                                onClick={() => handleEditClick(index, product)}><FontAwesomeIcon
+                                            icon={faPen}/></button>
                                     </div>
                                 </div>
                             </div>
@@ -194,17 +391,24 @@ function Inventory() {
                     <div className={`inv-modal-content ${isLightMode ? 'light' : 'dark'}`}>
                         <div className="inv-modal-header">
                             <h2>Edit Item</h2>
-                            <button className="inv-modal-close" onClick={() => setShowEditPopup(false)}><FontAwesomeIcon icon={faX} /></button>
+                            <button className="inv-modal-close" onClick={() => setShowEditPopup(false)}><FontAwesomeIcon
+                                icon={faX}/></button>
                         </div>
                         <div className="inv-modal-body">
                             <label htmlFor="inv-price">Price</label>
-                            <input type="number" id="inv-price" name="price" value={currentItem.price} onChange={handleInputChange} />
+                            <input type="number" id="inv-price" name="price" value={currentItem.price}
+                                   onChange={handleInputChange}/>
                             <label htmlFor="inv-quantity">Quantity</label>
-                            <input type="number" id="inv-quantity" name="quantity" value={currentItem.quantity} onChange={handleInputChange} />
+                            <input type="number" id="inv-quantity" name="quantity" value={currentItem.quantity}
+                                   onChange={handleInputChange}/>
                         </div>
                         <div className="inv-modal-footer">
-                            <button className={`inv-save-btn ${isLightMode ? 'light' : 'dark'}`} onClick={handleSaveClick}>Save</button>
-                            <button className={`inv-delete-btn ${isLightMode ? 'light' : 'dark'}`} onClick={handleDeleteClick}>Delete</button>
+                            <button className={`inv-save-btn ${isLightMode ? 'light' : 'dark'}`}
+                                    onClick={handleSaveClick}>Save
+                            </button>
+                            <button className={`inv-delete-btn ${isLightMode ? 'light' : 'dark'}`}
+                                    onClick={handleDeleteClick}>Delete
+                            </button>
                         </div>
                     </div>
                 </div>
