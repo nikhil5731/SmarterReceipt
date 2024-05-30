@@ -5,6 +5,7 @@ const axios = require("axios");
 const router = express.Router();
 const { generateUniqueInventoryId } = require('../helpers');
 
+// Add Product Route
 router.post('/addProduct', isAuthenticated, async (req, res) => {
     try {
         const { product } = req.body;
@@ -25,6 +26,7 @@ router.post('/addProduct', isAuthenticated, async (req, res) => {
     }
 });
 
+// Get Inventory by ID Route
 router.get('/get/:id', isAuthenticated, async (req, res) => {
     try {
         let inventory = await Inventory.findById(req.params.id);
@@ -38,6 +40,7 @@ router.get('/get/:id', isAuthenticated, async (req, res) => {
     }
 });
 
+// Delete Inventory Route
 router.delete('/delete_inventory', isAuthenticated, async (req, res) => {
     try {
         await Inventory.findByIdAndDelete(req.user.InventoryId);
@@ -49,6 +52,7 @@ router.delete('/delete_inventory', isAuthenticated, async (req, res) => {
     }
 });
 
+// Get Products to Restock Route
 router.get('/products_to_restock', isAuthenticated, async (req, res) => {
     try {
         const inventory = await Inventory.findById(req.user.InventoryId);
@@ -62,6 +66,7 @@ router.get('/products_to_restock', isAuthenticated, async (req, res) => {
     }
 });
 
+// Get Product Details by Barcode Route
 router.get('/product_details/:barcode', isAuthenticated, async (req, res) => {
     try {
         const barcode = req.params.barcode;
@@ -84,6 +89,7 @@ router.get('/product_details/:barcode', isAuthenticated, async (req, res) => {
     }
 });
 
+// Get Monthly Sales Route
 router.get('/monthly-sales/:userId', isAuthenticated, async (req, res) => {
     const userId = req.params.userId;
     try {
@@ -104,6 +110,7 @@ router.get('/monthly-sales/:userId', isAuthenticated, async (req, res) => {
     }
 });
 
+// Update Product Route
 router.post('/update', isAuthenticated, async (req, res) => {
     const { userId, index, name, price, quantity, image } = req.body;
 
@@ -129,6 +136,7 @@ router.post('/update', isAuthenticated, async (req, res) => {
     }
 });
 
+// Delete Product Route
 router.delete('/delete', isAuthenticated, async (req, res) => {
     const { userId, index } = req.body;
     
@@ -152,10 +160,11 @@ router.delete('/delete', isAuthenticated, async (req, res) => {
         res.status(500).json({ success: false, message: 'Error deleting item', error: err });
     }
 });
+
+// Get Product Price Route
 router.get('/product_price/:name', isAuthenticated, async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
-        console.log(user);
         const inventory = await Inventory.findById(user.InventoryId);
 
         if (!inventory) {
@@ -171,7 +180,7 @@ router.get('/product_price/:name', isAuthenticated, async (req, res) => {
 
         const price = product.price;
         const quantity = product.quantity;
-        res.json({ success: true, price: price, quantity: quantity});
+        res.json({ success: true, price: price, quantity: quantity });
     } catch (error) {
         console.error('Error fetching product price:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
@@ -195,6 +204,8 @@ router.put('/update_inventory', isAuthenticated, async (req, res) => {
         const now = new Date();
         const currentDate = now.toISOString();
         const currentMonth = now.getMonth();
+        const newOrderNumber = inventory.transactions.length + 1;
+
         inventory.transactions.push({ date: currentDate, items: products });
 
         // Reset MonthlySales array if today is January 1st
@@ -216,20 +227,26 @@ router.put('/update_inventory', isAuthenticated, async (req, res) => {
         // Save the updated inventory
         await inventory.save();
 
-        res.status(200).json({ success: true, message: 'Inventory updated successfully' });
+        res.status(200).json({ success: true, message: 'Inventory updated successfully', shopName: user.ShopName, orderNumber: newOrderNumber });
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: 'Server error' });
     }
 });
 
-router.get('/transactions', async (req, res) => {
+// Get Transactions Route
+router.get('/transactions', isAuthenticated, async (req, res) => {
     try {
-        const user = req.user; // Assuming user is authenticated and user data is available
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
         const inventory = await Inventory.findById(user.InventoryId);
         if (!inventory) {
-            return res.status(404).send('Inventory not found');
+            return res.status(404).json({ success: false, message: 'Inventory not found' });
         }
+
         res.json(inventory.transactions);
     } catch (error) {
         console.error('Error fetching transactions:', error);
@@ -237,7 +254,8 @@ router.get('/transactions', async (req, res) => {
     }
 });
 
-router.delete("/delete_transactions", isAuthenticated, async (req, res) => {
+// Delete Transactions Route
+router.delete('/delete_transactions', isAuthenticated, async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
         const inventory = await Inventory.findById(user.InventoryId);
@@ -250,5 +268,32 @@ router.delete("/delete_transactions", isAuthenticated, async (req, res) => {
     }
 });
 
+// Fetch transaction by shop name and order number
+router.get('/:shopName/:orderNumber', async (req, res) => {
+    const { shopName, orderNumber } = req.params;
+
+    try {
+        const user = await User.findOne({ ShopName: shopName });
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'Shop not found' });
+        }
+
+        const inventory = await Inventory.findById(user.InventoryId);
+        if (!inventory) {
+            return res.status(404).json({ success: false, message: 'Inventory not found' });
+        }
+
+        const orderIndex = parseInt(orderNumber, 10); // Convert orderNumber to zero-based index
+        if (orderIndex < 0 || orderIndex >= inventory.transactions.length) {
+            return res.status(404).json({ success: false, message: 'Order not found' });
+        }
+
+        const transaction = inventory.transactions[orderIndex];
+        res.status(200).json({ success: true, transaction });
+    } catch (error) {
+        console.error('Error fetching transaction:', error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
 
 module.exports = router;

@@ -21,6 +21,8 @@ function NewOrder() {
     const [resultMessage, setResultMessage] = useState('');
     const [totalPrice, setTotalPrice] = useState(0);
     const [manualBarcode, setManualBarcode] = useState('');
+    const [email, setEmail] = useState('');
+    const [shopName, setShopName] = useState('');
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
 
@@ -165,16 +167,43 @@ function NewOrder() {
     };
 
     const submit = () => {
-        axios.put('http://localhost:8000/api/v1/inventory/update_inventory', { products, totalPrice } , { withCredentials: true })
-            .then(response => {
-                console.log('Order placed:', response.data);
-                setProducts([]);
-                setTotalPrice(0);
-                toast.success('Order placed successfully');
+        // Fetch the current user to get the shop name
+        axios.get('http://localhost:8000/api/v1/user/current_user', { withCredentials: true })
+            .then(userResponse => {
+                const shopName = userResponse.data.ShopName;
+
+                // Prompt for an email address
+                const email = prompt('Enter the email address to send the link to:');
+                if (!email) {
+                    return;
+                }
+
+                // Update the inventory and get the new order number
+                axios.put('http://localhost:8000/api/v1/inventory/update_inventory', { products, totalPrice }, { withCredentials: true })
+                    .then(response => {
+                        const orderNumber = response.data.orderNumber;
+                        const link = `http://localhost:3000/${shopName}/${orderNumber}`;
+
+                        // Send the link using email
+                        axios.post('http://localhost:8000/api/v1/send_link/send_link', { email, link })
+                            .then(() => {
+                                setProducts([]);
+                                setTotalPrice(0);
+                                toast.success('Order placed successfully and link sent');
+                            })
+                            .catch(error => {
+                                console.error('Error sending link:', error);
+                                toast.error('Error sending link');
+                            });
+                    })
+                    .catch(error => {
+                        console.error('Error placing order:', error);
+                        toast.error('Error placing order');
+                    });
             })
             .catch(error => {
-                console.error('Error placing order:', error);
-                toast.error('Error placing order');
+                console.error('Error fetching user:', error);
+                toast.error('Error fetching user');
             });
     }
 
@@ -235,7 +264,7 @@ function NewOrder() {
                 {isCameraOpen && (
                     <div className="camera-container">
                         <div className="cam-flex">
-                            <button className="close-button cam-close" onClick={close}><FontAwesomeIcon icon={faX}  style={{"amrgin-left" : "2em"}}/></button>
+                            <button className="close-button cam-close" onClick={close}><FontAwesomeIcon icon={faX} style={{"margin-left" : "2em"}}/></button>
                             <button className="manual-entry-button open-popup" onClick={handleManualEntryClick}><FontAwesomeIcon icon={faKeyboard} /></button>
                         </div>
                         <Webcam
@@ -272,7 +301,7 @@ function NewOrder() {
                                     <p>₹{product.price}</p>
                                     <div className="quantity-control">
                                         <button className={"quantity-button"} onClick={() => handleDecrement(product.barcode, index)}>
-                                            {product.quantity != 1 ? <FontAwesomeIcon icon={faMinus} /> : <FontAwesomeIcon icon={faTrash} />}
+                                            {product.quantity !== 1 ? <FontAwesomeIcon icon={faMinus} /> : <FontAwesomeIcon icon={faTrash} />}
                                         </button>
                                         <span
                                             contentEditable="true"

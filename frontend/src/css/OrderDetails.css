@@ -1,0 +1,46 @@
+.order-details-container {
+    width: 85%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.order-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.order-items .product-box {
+    display: flex;
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.order-items .product-box.dark {
+    background: #333;
+}
+
+.order-items .product-data {
+    display: flex;
+    align-items: center;
+}
+
+.order-items .name-image {
+    margin-left: 10px;
+}
+
+.order-items .price {
+    color: #4CAF50;
+}
+
+.order-items .red.quant {
+    color: red;
+}
+
+.order-items .total-price {
+    margin-top: 20px;
+    font-size: 1.5em;
+    font-weight: bold;
+}

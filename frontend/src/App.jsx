@@ -5,6 +5,7 @@ import Login from './pages/Login.jsx';
 import ProductsPage from './pages/ProductsPage.jsx';
 import NewOrder from './pages/NewOrder.jsx';
 import Transactions from './pages/Transactions.jsx';
+import OrderDetails from './pages/OrderDetails.jsx';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/new-order" element={<NewOrder />} />
         <Route path="/transactions" element={<Transactions />} />
+        <Route path="/:shopName/:orderNumber" element={<OrderDetails />} />
         <Route path="*" element={<Home />} />
       </Routes>
     </BrowserRouter>
