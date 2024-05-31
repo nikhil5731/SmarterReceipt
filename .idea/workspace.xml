@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="d9541b68-26e5-4e45-ac41-7b740e8fa41d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/db.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/db.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/routes/inventory.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/inventory.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/css/Inventory.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/css/Inventory.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/Inventory.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/Inventory.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,21 +69,13 @@
       <workItem from="1716546025983" duration="11081000" />
       <workItem from="1716742729518" duration="21474000" />
       <workItem from="1717099174737" duration="14139000" />
+      <workItem from="1717113843730" duration="2070000" />
+      <workItem from="1717116578209" duration="1904000" />
+      <workItem from="1717183898519" duration="4753000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/backend/routes/inventory.js</url>
-          <line>147</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

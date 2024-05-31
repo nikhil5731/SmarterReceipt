@@ -89,6 +89,7 @@ function NewOrder() {
                     setResultMessage('Barcode: ' + barcode);
                     fetchProductDetails(barcode);
                 } else {
+                    toast.error("No barcode detected");
                     setResultMessage('No barcode detected');
                 }
             });
@@ -102,6 +103,7 @@ function NewOrder() {
                 fetchProductPrice(name, barcode, image);
             })
             .catch(error => {
+                toast.error("Error fetching product details")
                 console.error('Error fetching product details:', error);
             });
     };

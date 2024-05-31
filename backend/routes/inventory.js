@@ -1,14 +1,14 @@
 const express = require('express');
-const { isAuthenticated } = require('../middleware/auth');
-const { Inventory, User } = require('../db');
+const {isAuthenticated} = require('../middleware/auth');
+const {Inventory, User, Products} = require('../db');
 const axios = require("axios");
 const router = express.Router();
-const { generateUniqueInventoryId } = require('../helpers');
+const {generateUniqueInventoryId} = require('../helpers');
 
 // Add Product Route
 router.post('/addProduct', isAuthenticated, async (req, res) => {
     try {
-        const { product } = req.body;
+        const {product} = req.body;
         console.log(product);
         if (!product.name || !product.price || product.quantity === undefined) {
             return res.status(400).send('Invalid product data');
@@ -16,12 +16,12 @@ router.post('/addProduct', isAuthenticated, async (req, res) => {
 
         let inventory = await Inventory.findById(req.user.InventoryId);
         if (!inventory) {
-            inventory = new Inventory({ _id: req.user.InventoryId, products: [] });
+            inventory = new Inventory({_id: req.user.InventoryId, products: []});
         }
 
         // Check if the product already exists in the inventory
         const existingProduct = inventory.products.find(p => p.name === product.name);
-        console.log(existingProduct);
+        // console.log(existingProduct);
 
         if (existingProduct) {
             // Product exists, update its quantity
@@ -44,7 +44,7 @@ router.get('/get/:id', isAuthenticated, async (req, res) => {
     try {
         let inventory = await Inventory.findById(req.params.id);
         if (!inventory) {
-            inventory = new Inventory({ _id: req.params.id, products: [] });
+            inventory = new Inventory({_id: req.params.id, products: []});
             await inventory.save();
         }
         res.send(inventory);
@@ -59,7 +59,7 @@ router.delete('/delete_inventory', isAuthenticated, async (req, res) => {
         await Inventory.findByIdAndDelete(req.user.InventoryId);
         req.user.InventoryId = await generateUniqueInventoryId();
         await req.user.save();
-        res.send({ success: true });
+        res.send({success: true});
     } catch (err) {
         res.status(500).send('Error deleting inventory');
     }
@@ -81,24 +81,52 @@ router.get('/products_to_restock', isAuthenticated, async (req, res) => {
 
 // Get Product Details by Barcode Route
 router.get('/product_details/:barcode', isAuthenticated, async (req, res) => {
+    const barcode = req.params.barcode;
+
     try {
-        const barcode = req.params.barcode;
-        const response = await axios.get(`https://world.openfoodfacts.org/api/v0/product/${barcode}`);
+        // First, check if the product is in the local database
+        const product = await Products.findOne({ barcode: barcode });
 
-        if (response.data && response.data.product && response.data.product.product_name) {
-            const product = response.data.product;
-            const frontImageUrl = product.selected_images?.front?.display?.en || product.selected_images?.front?.display?.fr || product.selected_images?.front?.display?.es;
-
-            res.send({
-                name: product.product_name,
-                image: frontImageUrl
+        if (product) {
+            // If found in the local database, return it
+            return res.send({
+                name: product.name,
+                image: product.image,
             });
-        } else {
-            res.status(404).send('Product not found');
         }
-    } catch (error) {
-        console.error('Error fetching product details:', error);
-        res.status(500).send('Error fetching product details');
+
+        // If not found in the local database, fetch from the Open Food Facts API
+        try {
+            const response = await axios.get(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
+
+            if (response.data && response.data.product && response.data.product.product_name) {
+                const fetchedProduct = response.data.product;
+                const frontImageUrl = fetchedProduct.selected_images?.front?.display?.en || fetchedProduct.selected_images?.front?.display?.fr || fetchedProduct.selected_images?.front?.display?.es;
+
+                // Save the product to the database
+                const newProduct = new Products({
+                    barcode: fetchedProduct.code,
+                    name: fetchedProduct.product_name,
+                    image: frontImageUrl
+                });
+
+                await newProduct.save();
+
+                // Return the fetched product
+                return res.send({
+                    name: fetchedProduct.product_name,
+                    image: frontImageUrl
+                });
+            } else {
+                return res.status(404).send('Product not found');
+            }
+        } catch (apiError) {
+            console.error('Error fetching product details from API:', apiError);
+            return res.status(500).send('Error fetching product details from API');
+        }
+    } catch (dbError) {
+        console.error('Error fetching product details from database:', dbError);
+        return res.status(500).send('Error fetching product details from database');
     }
 });
 
@@ -117,7 +145,7 @@ router.get('/monthly-sales/:userId', isAuthenticated, async (req, res) => {
         }
 
         const monthlySales = inventory.MonthlySales;
-        res.json({ monthlySales });
+        res.json({monthlySales});
     } catch (err) {
         res.status(500).send('Error fetching monthly sales');
     }
@@ -125,52 +153,52 @@ router.get('/monthly-sales/:userId', isAuthenticated, async (req, res) => {
 
 // Update Product Route
 router.post('/update', isAuthenticated, async (req, res) => {
-    const { userId, index, name, price, quantity, image } = req.body;
+    const {userId, index, name, price, quantity, image} = req.body;
 
     try {
         const user = await User.findById(userId);
         if (!user) {
-            return res.status(404).json({ success: false, message: 'User not found' });
+            return res.status(404).json({success: false, message: 'User not found'});
         }
 
         const inventory = await Inventory.findById(user.InventoryId);
         if (!inventory) {
-            return res.status(404).json({ success: false, message: 'Inventory not found' });
+            return res.status(404).json({success: false, message: 'Inventory not found'});
         }
 
         // Update the specific item by index
-        inventory.products[index] = { ...inventory.products[index], name, price, quantity, image };
-        
+        inventory.products[index] = {...inventory.products[index], name, price, quantity, image};
+
         await inventory.save();
 
-        res.json({ success: true, item: inventory.products[index] });
+        res.json({success: true, item: inventory.products[index]});
     } catch (err) {
-        res.status(500).json({ success: false, message: 'Error updating item', error: err });
+        res.status(500).json({success: false, message: 'Error updating item', error: err});
     }
 });
 
 // Delete Product Route
 router.delete('/delete', isAuthenticated, async (req, res) => {
-    const { userId, index } = req.body;
-    
+    const {userId, index} = req.body;
+
     try {
         const user = await User.findById(userId);
         if (!user) {
-            return res.status(404).json({ success: false, message: 'User not found' });
+            return res.status(404).json({success: false, message: 'User not found'});
         }
 
         const inventory = await Inventory.findById(user.InventoryId);
         if (!inventory) {
-            return res.status(404).json({ success: false, message: 'Inventory not found' });
+            return res.status(404).json({success: false, message: 'Inventory not found'});
         }
 
         inventory.products.splice(index, 1);
-        
+
         await inventory.save();
 
-        res.json({ success: true });
+        res.json({success: true});
     } catch (err) {
-        res.status(500).json({ success: false, message: 'Error deleting item', error: err });
+        res.status(500).json({success: false, message: 'Error deleting item', error: err});
     }
 });
 
@@ -181,37 +209,37 @@ router.get('/product_price/:name', isAuthenticated, async (req, res) => {
         const inventory = await Inventory.findById(user.InventoryId);
 
         if (!inventory) {
-            return res.status(404).json({ success: false, message: 'Inventory not found' });
+            return res.status(404).json({success: false, message: 'Inventory not found'});
         }
 
         const name = decodeURIComponent(req.params.name);
 
         const product = inventory.products.find(product => product.name === name);
         if (!product) {
-            return res.status(404).json({ success: false, message: 'Product not found' });
+            return res.status(404).json({success: false, message: 'Product not found'});
         }
 
         const price = product.price;
         const quantity = product.quantity;
-        res.json({ success: true, price: price, quantity: quantity });
+        res.json({success: true, price: price, quantity: quantity});
     } catch (error) {
         console.error('Error fetching product price:', error);
-        res.status(500).json({ success: false, message: 'Internal server error' });
+        res.status(500).json({success: false, message: 'Internal server error'});
     }
 });
 
 router.put('/update_inventory', isAuthenticated, async (req, res) => {
-    const { products, totalPrice} = req.body;
+    const {products, totalPrice} = req.body;
 
     try {
         const user = await User.findById(req.user.id);
         if (!user) {
-            return res.status(404).json({ success: false, message: 'User not found' });
+            return res.status(404).json({success: false, message: 'User not found'});
         }
 
         const inventory = await Inventory.findById(user.InventoryId);
         if (!inventory) {
-            return res.status(404).json({ success: false, message: 'Inventory not found' });
+            return res.status(404).json({success: false, message: 'Inventory not found'});
         }
 
         const now = new Date();
@@ -219,7 +247,7 @@ router.put('/update_inventory', isAuthenticated, async (req, res) => {
         const currentMonth = now.getMonth();
         const newOrderNumber = inventory.transactions.length + 1;
 
-        inventory.transactions.push({ date: currentDate, items: products });
+        inventory.transactions.push({date: currentDate, items: products});
 
         // Reset MonthlySales array if today is January 1st
         if (currentMonth === 0 && currentDate === 1) {
@@ -240,10 +268,15 @@ router.put('/update_inventory', isAuthenticated, async (req, res) => {
         // Save the updated inventory
         await inventory.save();
 
-        res.status(200).json({ success: true, message: 'Inventory updated successfully', shopName: user.ShopName, orderNumber: newOrderNumber });
+        res.status(200).json({
+            success: true,
+            message: 'Inventory updated successfully',
+            shopName: user.ShopName,
+            orderNumber: newOrderNumber
+        });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: 'Server error' });
+        res.status(500).json({success: false, message: 'Server error'});
     }
 });
 
@@ -252,12 +285,12 @@ router.get('/transactions', isAuthenticated, async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
         if (!user) {
-            return res.status(404).json({ success: false, message: 'User not found' });
+            return res.status(404).json({success: false, message: 'User not found'});
         }
 
         const inventory = await Inventory.findById(user.InventoryId);
         if (!inventory) {
-            return res.status(404).json({ success: false, message: 'Inventory not found' });
+            return res.status(404).json({success: false, message: 'Inventory not found'});
         }
 
         res.json(inventory.transactions);
@@ -274,39 +307,68 @@ router.delete('/delete_transactions', isAuthenticated, async (req, res) => {
         const inventory = await Inventory.findById(user.InventoryId);
         inventory.transactions = [];
         await inventory.save();
-        res.json({ success: true, message: 'Transactions deleted successfully' });
+        res.json({success: true, message: 'Transactions deleted successfully'});
     } catch (error) {
         console.error('Error deleting transactions:', error);
-        res.status(500).json({ success: false, message: 'Server error' });
+        res.status(500).json({success: false, message: 'Server error'});
     }
 });
 
 // Fetch transaction by shop name and order number
 router.get('/:shopName/:orderNumber', async (req, res) => {
-    const { shopName, orderNumber } = req.params;
+    const {shopName, orderNumber} = req.params;
 
     try {
-        const user = await User.findOne({ ShopName: shopName });
+        const user = await User.findOne({ShopName: shopName});
         if (!user) {
-            return res.status(404).json({ success: false, message: 'Shop not found' });
+            return res.status(404).json({success: false, message: 'Shop not found'});
         }
 
         const inventory = await Inventory.findById(user.InventoryId);
         if (!inventory) {
-            return res.status(404).json({ success: false, message: 'Inventory not found' });
+            return res.status(404).json({success: false, message: 'Inventory not found'});
         }
 
         const orderIndex = parseInt(orderNumber, 10); // Convert orderNumber to zero-based index
         if (orderIndex < 0 || orderIndex >= inventory.transactions.length) {
-            return res.status(404).json({ success: false, message: 'Order not found' });
+            return res.status(404).json({success: false, message: 'Order not found'});
         }
 
         const transaction = inventory.transactions[orderIndex];
-        res.status(200).json({ success: true, transaction });
+        res.status(200).json({success: true, transaction});
     } catch (error) {
         console.error('Error fetching transaction:', error);
-        res.status(500).json({ success: false, message: 'Server error' });
+        res.status(500).json({success: false, message: 'Server error'});
     }
 });
+// router.get('/indian-products', async (req, res) => {
+//     try {
+//         const {data} = await axios.get('https://world.openfoodfacts.org/cgi/search.pl', {
+//             params: {
+//                 json: true,
+//                 page: 1,
+//                 action: 'process',
+//                 tagtype_0: 'countries',
+//                 tag_contains_0: 'contains',
+//                 tag_0: 'india',
+//                 page_size: 20, // Adjust the page size as needed
+//             },
+//         });
+//
+//         // Map through the products and create a JSON object with only barcode, name, and image
+//         const products = data.products.map(product => ({
+//             barcode: product.code,
+//             name: product.product_name,
+//             image: product.image_url,
+//         }));
+//
+//         // await Products.insertMany(products);
+//
+//         res.json(products);
+//     } catch (error) {
+//         console.error('Error fetching products:', error);
+//         res.status(500).send('Error fetching products');
+//     }
+// });
 
 module.exports = router;

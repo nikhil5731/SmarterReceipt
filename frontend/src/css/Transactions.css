@@ -23,7 +23,7 @@ body {
     padding: 10px;
     box-sizing: border-box;
     position: relative;
-    
+
 }
 
 .image-container {
@@ -194,4 +194,8 @@ body {
 
 .price {
     color: green;
+}
+
+.popup-content .product-box {
+    max-width: none;
 }
