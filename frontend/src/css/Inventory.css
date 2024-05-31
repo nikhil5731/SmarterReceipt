@@ -225,3 +225,7 @@
     height: 200px;
     border-radius: 10px;
 }
+
+.inventory-container .plus-button {
+    margin-top: -2em;
+}
