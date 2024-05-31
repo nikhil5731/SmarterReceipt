@@ -1,10 +1,11 @@
-const { json } = require('body-parser');
+const {json} = require('body-parser');
 const mongoose = require('mongoose');
 
 mongoose.connect("mongodb+srv://kinshuokmunjal:kmunjal654@cluster0.kzwzut4.mongodb.net/SmarterReceipt", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
+
 
 // Create a Schema for Users
 const userSchema = new mongoose.Schema({
@@ -23,7 +24,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: function() {
+        required: function () {
             return !this.googleId; // Password is required only if googleId is not present
         },
         minLength: 6
@@ -76,7 +77,7 @@ const InventorySchema = new mongoose.Schema({
     MonthlySales: {
         type: [Number],
         required: false,
-        default: [0, 0, 0, 0, 0 ,0 ,0 ,0, 0, 0, 0, 0]
+        default: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     },
     transactions: [{
         date: {
@@ -104,10 +105,24 @@ const InventorySchema = new mongoose.Schema({
     }]
 });
 
+const ProductSchema = new mongoose.Schema({
+    barcode: {
+        type: String,
+    },
+    name: {
+        type: String,
+    },
+    image: {
+        type: String,
+    }
+});
+
+const Products = mongoose.model('Products', ProductSchema);
 const User = mongoose.model('User', userSchema);
 const Inventory = mongoose.model('Inventory', InventorySchema);
 
 module.exports = {
     User,
-    Inventory
+    Inventory,
+    Products
 };
