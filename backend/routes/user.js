@@ -9,11 +9,12 @@ router.get('/current_user', isAuthenticated, (req, res) => {
 });
 
 router.post('/addShopName', isAuthenticated, async (req, res) => {
-    const { shopName } = req.body;
+    const { shopName, upiId } = req.body;
 
     try {
         const user = await User.findById(req.user.id);
         user.ShopName = shopName;
+        user.upiId = upiId;
         await user.save();
         res.send(user);
     } catch (err) {

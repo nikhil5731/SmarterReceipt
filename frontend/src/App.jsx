@@ -7,6 +7,7 @@ import NewOrder from './pages/NewOrder.jsx';
 import Transactions from './pages/Transactions.jsx';
 import OrderDetails from './pages/OrderDetails.jsx';
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import DynamicQRCodeGenerator from './pages/QRCode.jsx';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/new-order" element={<NewOrder />} />
         <Route path="/transactions" element={<Transactions />} />
         <Route path="/:shopName/:orderNumber" element={<OrderDetails />} />
+        <Route path="/qr" element={<DynamicQRCodeGenerator />} />
         <Route path="*" element={<Home />} />
       </Routes>
     </BrowserRouter>

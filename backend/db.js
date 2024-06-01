@@ -52,6 +52,10 @@ const userSchema = new mongoose.Schema({
         ref: 'Inventory',
         required: false // Make InventoryId optional
     },
+    upiId: {
+        type: String,
+        required: false
+    }
 
 });
 

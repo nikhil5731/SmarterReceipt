@@ -21,6 +21,7 @@ function Home() {
     const [shopName, setShopName] = useState('');
     const [inventory, setInventory] = useState([]);
     const chartRef = useRef(null);
+    const [upiId, setUpiId] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -90,7 +91,7 @@ function Home() {
     };
 
     const handleShopNameSubmit = () => {
-        axios.post('http://localhost:8000/api/v1/user/addShopName', { shopName }, { withCredentials: true })
+        axios.post('http://localhost:8000/api/v1/user/addShopName', { shopName, upiId }, { withCredentials: true })
             .then(response => {
                 console.log('Shop name added:', response.data);
                 setUser(response.data);
@@ -136,6 +137,12 @@ function Home() {
                             type="text"
                             value={shopName}
                             onChange={(e) => setShopName(e.target.value)}
+                        />
+                        <h2>Enter your upiId</h2>
+                        <input
+                            type="text"
+                            value={upiId}
+                            onChange={(e) => setUpiId(e.target.value)}
                         />
                         <button onClick={handleShopNameSubmit}>Submit</button>
                     </div>

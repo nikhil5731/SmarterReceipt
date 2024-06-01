@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faX, faKeyboard, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import QRCode from 'qrcode.react';
 
 function NewOrder() {
     const [isLightMode, setIsLightMode] = useState(() => {
@@ -25,6 +26,9 @@ function NewOrder() {
     const [shopName, setShopName] = useState('');
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
+    const [showQR, setShowQR] = useState(false);
+    const [qrLink, setQRLink] = useState('');
+    const [showEmailPrompt, setShowEmailPrompt] = useState(false);
 
     const toggleMode = () => {
         helperToggleMode(isLightMode, setIsLightMode);
@@ -169,39 +173,14 @@ function NewOrder() {
     };
 
     const submit = () => {
-        // Fetch the current user to get the shop name
         axios.get('http://localhost:8000/api/v1/user/current_user', { withCredentials: true })
             .then(userResponse => {
                 const shopName = userResponse.data.ShopName;
-
-                // Prompt for an email address
-                const email = prompt('Enter the email address to send the link to:');
-                if (!email) {
-                    return;
-                }
-
-                // Update the inventory and get the new order number
-                axios.put('http://localhost:8000/api/v1/inventory/update_inventory', { products, totalPrice }, { withCredentials: true })
-                    .then(response => {
-                        const orderNumber = response.data.orderNumber;
-                        const link = `http://localhost:3000/${shopName}/${orderNumber}`;
-
-                        // Send the link using email
-                        axios.post('http://localhost:8000/api/v1/send_link/send_link', { email, link })
-                            .then(() => {
-                                setProducts([]);
-                                setTotalPrice(0);
-                                toast.success('Order placed successfully and link sent');
-                            })
-                            .catch(error => {
-                                console.error('Error sending link:', error);
-                                toast.error('Error sending link');
-                            });
-                    })
-                    .catch(error => {
-                        console.error('Error placing order:', error);
-                        toast.error('Error placing order');
-                    });
+                const upiId = userResponse.data.upiId;
+                const ownerName = userResponse.data.OwnerFirstName;
+                const upiLink = `upi://pay?pa=${upiId}&pn=${ownerName}&am=${totalPrice}&cu=INR`;
+                setQRLink(upiLink);
+                setShowQR(true);
             })
             .catch(error => {
                 console.error('Error fetching user:', error);
@@ -222,6 +201,36 @@ function NewOrder() {
     const handleManualEntrySubmit = () => {
         fetchProductDetails(manualBarcode);
         setManualBarcode('');
+    };
+
+    const sendEmail = (valid) => {
+        setShowQR(false);
+        axios.put('http://localhost:8000/api/v1/inventory/update_inventory', { products, totalPrice }, { withCredentials: true })
+                    .then(response => {
+                        const orderNumber = response.data.orderNumber;
+                        const link = `http://localhost:3000/${shopName}/${orderNumber}`;
+                        setProducts([]);
+                        setTotalPrice(0);
+                        toast.success('Order placed successfully and link sent');
+                        setShowEmailPrompt(false);
+                        if (valid) {
+                            axios.post('http://localhost:8000/api/v1/send_link/send_link', { email, link })
+                            .then(() => {
+                                setProducts([]);
+                                setTotalPrice(0);
+                                toast.success('Order placed successfully and link sent');
+                                setShowEmailPrompt(false);
+                            })
+                            .catch(error => {
+                                console.error('Error sending link:', error);
+                                toast.error('Error sending link');
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error placing order:', error);
+                        toast.error('Error placing order');
+                    });
     };
 
     const handleQuantityChange = (e, barcode, index) => {
@@ -320,6 +329,35 @@ function NewOrder() {
                             </div>
                         </div>
                     ))}
+                    {showQR && (
+                        <div className="backdrop">
+                            <div className="manual-entry-popup qr-code-modal">
+                                <QRCode value={qrLink} size={300} />
+                                <h3 style={{ textAlign: "center", color: "gray" }}>
+                                    Please confirm that the payment has been made through this QR code or cash
+                                </h3>
+                                <button className="confirm" onClick={() => setShowEmailPrompt(true)}>Confirm</button>
+                            </div>
+                        </div>
+                    )}
+                    {showEmailPrompt && (
+                        <div className="backdrop">
+                            <div className="manual-entry-popup qr-code-modal">
+                                <button className="close-popup" onClick={()=>sendEmail(false)}><FontAwesomeIcon icon={faX} /></button>
+                                <h3 style={{ textAlign: "center", color: "gray" , marginTop: "2em"}}>
+                                    Please enter the email address to send the link to
+                                </h3>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder="Email"
+                                />
+                                <button className="confirm" onClick={()=>sendEmail(true)}>Send</button>
+                            </div>
+                        </div>
+                    )}
+
                 </div>
                 <div className={`total-price ${isLightMode ? 'light' : 'dark'}`}>
                     <h2>Total Price: ₹{totalPrice}</h2>

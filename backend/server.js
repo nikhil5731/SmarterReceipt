@@ -11,7 +11,7 @@ require('./config/passport'); // Initialize Passport configuration
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://smartereceipt.netlify.app',
     credentials: true
 }));
 

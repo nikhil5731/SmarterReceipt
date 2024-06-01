@@ -1,6 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const { User, generateUniqueInventoryId } = require('../db'); // Adjust the path to your User model and helper function
+const { User } = require('../db');
+const { generateUniqueInventoryId } = require('../helpers');
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
