@@ -18,7 +18,7 @@ const OrderDetails = () => {
     }, [isLightMode]);
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/api/v1/inventory/${shopName}/${orderNumber - 1}`)
+        axios.get(`https://smarterreceipt.onrender.com/api/v1/inventory/${shopName}/${orderNumber - 1}`)
             .then(response => {
                 setTransaction(response.data.transaction);
             })

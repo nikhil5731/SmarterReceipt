@@ -8,7 +8,7 @@ const ProductsPage = () => {
 
     const fetchCurrentUser = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/v1/user/current_user', { withCredentials: true });
+            const response = await axios.get('https://smarterreceipt.onrender.com/api/v1/user/current_user', { withCredentials: true });
             if (response.data && response.data.InventoryId) {
                 setInventoryId(response.data.InventoryId);
                 fetchProducts(response.data.InventoryId);
@@ -22,7 +22,7 @@ const ProductsPage = () => {
 
     const fetchProducts = async (inventoryId) => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/v1/inventory/get/${inventoryId}`, { withCredentials: true });
+            const response = await axios.get(`https://smarterreceipt.onrender.com/api/v1/inventory/get/${inventoryId}`, { withCredentials: true });
             setProducts(response.data.products);
         } catch (error) {
             console.error('Error fetching products:', error);

@@ -8,7 +8,7 @@ const SalesDataContainer = ({ userId, isLightMode }) => {
     useEffect(() => {
         const fetchMonthlySales = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/v1/inventory/monthly-sales/${userId}`, { withCredentials: true });
+                const response = await axios.get(`https://smarterreceipt.onrender.com/api/v1/inventory/monthly-sales/${userId}`, { withCredentials: true });
                 setMonthlySales(response.data.monthlySales);
                 console.log(monthlySales); // Ensure you're setting the correct data
             } catch (error) {

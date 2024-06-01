@@ -12,12 +12,12 @@ function Nav({ isLightMode, toggleMode }) {
     const location = useLocation();
 
     const handleLogin = () => {
-        window.location.href = 'http://localhost:8000/api/v1/auth/google';
+        window.location.href = 'https://smarterreceipt.onrender.com/api/v1/auth/google';
     };
 
     const handleLogout = () => {
         console.log('Logging out');
-        axios.get('http://localhost:8000/api/v1/auth/logout', { withCredentials: true })
+        axios.get('https://smarterreceipt.onrender.com/api/v1/auth/logout', { withCredentials: true })
             .then(response => {
                 if (response.data.success) {
                     console.log('Logout successful');
@@ -32,7 +32,7 @@ function Nav({ isLightMode, toggleMode }) {
     };
 
     const handleDeleteInventory = () => {
-        axios.delete('http://localhost:8000/api/v1/inventory/delete_inventory', { withCredentials: true })
+        axios.delete('https://smarterreceipt.onrender.com/api/v1/inventory/delete_inventory', { withCredentials: true })
             .then(response => {
                 if (response.data.success) {
                     console.log('Delete successful');
@@ -49,7 +49,7 @@ function Nav({ isLightMode, toggleMode }) {
     };
 
     const deleteTransactions = () => {
-        axios.delete('http://localhost:8000/api/v1/inventory/delete_transactions', { withCredentials: true })
+        axios.delete('https://smarterreceipt.onrender.com/api/v1/inventory/delete_transactions', { withCredentials: true })
             .then(response => {
                 if (response.data.success) {
                     console.log('Delete successful');

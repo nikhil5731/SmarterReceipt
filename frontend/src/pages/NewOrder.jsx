@@ -101,7 +101,7 @@ function NewOrder() {
     };
 
     const fetchProductDetails = (barcode) => {
-        axios.get(`http://localhost:8000/api/v1/inventory/product_details/${barcode}`, { withCredentials: true })
+        axios.get(`https://smarterreceipt.onrender.com/api/v1/inventory/product_details/${barcode}`, { withCredentials: true })
             .then(response => {
                 const { name, image } = response.data;
                 fetchProductPrice(name, barcode, image);
@@ -113,7 +113,7 @@ function NewOrder() {
     };
 
     const fetchProductPrice = (name, barcode, image) => {
-        axios.get(`http://localhost:8000/api/v1/inventory/product_price/${name}`, { withCredentials: true })
+        axios.get(`https://smarterreceipt.onrender.com/api/v1/inventory/product_price/${name}`, { withCredentials: true })
             .then(response => {
                 const price = response.data.price;
                 const quantity = response.data.quantity;
@@ -144,7 +144,7 @@ function NewOrder() {
 
     const handleIncrement = (barcode, index) => {
         const name = products[index].name;
-        axios.get(`http://localhost:8000/api/v1/inventory/product_price/${name}`, { withCredentials: true })
+        axios.get(`https://smarterreceipt.onrender.com/api/v1/inventory/product_price/${name}`, { withCredentials: true })
             .then(response => {
                 const maxQuantity = response.data.quantity;
                 setProducts(prevProducts =>
@@ -173,7 +173,7 @@ function NewOrder() {
     };
 
     const submit = () => {
-        axios.get('http://localhost:8000/api/v1/user/current_user', { withCredentials: true })
+        axios.get('https://smarterreceipt.onrender.com/api/v1/user/current_user', { withCredentials: true })
             .then(userResponse => {
                 const shopName = userResponse.data.ShopName;
                 const upiId = userResponse.data.upiId;
@@ -205,16 +205,16 @@ function NewOrder() {
 
     const sendEmail = (valid) => {
         setShowQR(false);
-        axios.put('http://localhost:8000/api/v1/inventory/update_inventory', { products, totalPrice }, { withCredentials: true })
+        axios.put('https://smarterreceipt.onrender.com/api/v1/inventory/update_inventory', { products, totalPrice }, { withCredentials: true })
                     .then(response => {
                         const orderNumber = response.data.orderNumber;
-                        const link = `http://localhost:3000/${shopName}/${orderNumber}`;
+                        const link = `https://smartereceipt.netlify.app/${shopName}/${orderNumber}`;
                         setProducts([]);
                         setTotalPrice(0);
                         toast.success('Order placed successfully and link sent');
                         setShowEmailPrompt(false);
                         if (valid) {
-                            axios.post('http://localhost:8000/api/v1/send_link/send_link', { email, link })
+                            axios.post('https://smarterreceipt.onrender.com/api/v1/send_link/send_link', { email, link })
                             .then(() => {
                                 setProducts([]);
                                 setTotalPrice(0);
@@ -240,7 +240,7 @@ function NewOrder() {
             return;
         }
         const name = products[index].name;
-        axios.get(`http://localhost:8000/api/v1/inventory/product_price/${name}`, { withCredentials: true })
+        axios.get(`https://smarterreceipt.onrender.com/api/v1/inventory/product_price/${name}`, { withCredentials: true })
             .then(response => {
                 const maxQuantity = response.data.quantity;
                 if (newQuantity <= maxQuantity) {

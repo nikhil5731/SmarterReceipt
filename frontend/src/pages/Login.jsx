@@ -36,7 +36,7 @@ const Login = () => {
 
     useEffect(() => {
         console.log('Checking current user status');
-        axios.get('http://localhost:8000/api/v1/user/current_user', { withCredentials: true })
+        axios.get('https://smarterreceipt.onrender.com/api/v1/user/current_user', { withCredentials: true })
             .then(response => {
                 if (response.data) {
                     console.log('User is authenticated:', response.data);
@@ -53,7 +53,7 @@ const Login = () => {
 
     const handleLogin = () => {
         console.log('Redirecting to Google login');
-        window.location.href = 'http://localhost:8000/api/v1/auth/google';
+        window.location.href = 'https://smarterreceipt.onrender.com/api/v1/auth/google';
     };
 
     const toggleMode = () => {

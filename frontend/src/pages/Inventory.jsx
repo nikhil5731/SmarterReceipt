@@ -51,7 +51,7 @@ function Inventory() {
     }, [isLightMode]);
 
     useEffect(() => {
-        axios.get('http://localhost:8000/api/v1/user/current_user', { withCredentials: true })
+        axios.get('https://smarterreceipt.onrender.com/api/v1/user/current_user', { withCredentials: true })
             .then(response => {
                 if (response.data) {
                     setUser(response.data);
@@ -66,7 +66,7 @@ function Inventory() {
     }, [navigate]);
 
     const fetchInventory = (inventoryId) => {
-        axios.get(`http://localhost:8000/api/v1/inventory/get/${inventoryId}`, { withCredentials: true })
+        axios.get(`https://smarterreceipt.onrender.com/api/v1/inventory/get/${inventoryId}`, { withCredentials: true })
             .then(response => {
                 setInventory(response.data.products);
             })
@@ -83,7 +83,7 @@ function Inventory() {
     };
 
     const handleSaveClick = () => {
-        axios.post('http://localhost:8000/api/v1/inventory/update', {
+        axios.post('https://smarterreceipt.onrender.com/api/v1/inventory/update', {
             userId: user._id,
             index: currentIndex,
             name: currentItem.name,
@@ -140,7 +140,7 @@ function Inventory() {
 
     const fetchProductDetails = (barcode) => {
         setFetched(false); // Reset fetched state to allow fetching new product details
-        axios.get(`http://localhost:8000/api/v1/inventory/product_details/${barcode}`, { withCredentials: true })
+        axios.get(`https://smarterreceipt.onrender.com/api/v1/inventory/product_details/${barcode}`, { withCredentials: true })
             .then(response => {
                 const { name, image } = response.data;
                 setProductName(name);
@@ -179,7 +179,7 @@ function Inventory() {
             quantity: parseInt(quantity),
             image: image
         };
-        axios.post('http://localhost:8000/api/v1/inventory/addProduct', { product }, { withCredentials: true })
+        axios.post('https://smarterreceipt.onrender.com/api/v1/inventory/addProduct', { product }, { withCredentials: true })
             .then(response => {
                 fetchInventory(user.InventoryId);
                 close();
@@ -199,7 +199,7 @@ function Inventory() {
         const itemToDelete = inventory[currentIndex];
         setDeletedItem({ item: itemToDelete, index: currentIndex });
 
-        axios.delete('http://localhost:8000/api/v1/inventory/delete', {
+        axios.delete('https://smarterreceipt.onrender.com/api/v1/inventory/delete', {
             data: {
                 userId: user._id,
                 index: currentIndex
@@ -222,7 +222,7 @@ function Inventory() {
 
     const handleUndoClick = () => {
         if (deletedItem) {
-            axios.post('http://localhost:8000/api/v1/inventory/addProduct', {
+            axios.post('https://smarterreceipt.onrender.com/api/v1/inventory/addProduct', {
                 userId: user._id,
                 product: deletedItem.item
             }, { withCredentials: true })

@@ -11,7 +11,7 @@ const ProductsToRestock = ({ isLightMode }) => {
     useEffect(() => {
         const fetchProductsToRestock = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/api/v1/inventory/products_to_restock', { withCredentials: true });
+                const response = await axios.get('https://smarterreceipt.onrender.com/api/v1/inventory/products_to_restock', { withCredentials: true });
                 setProducts(response.data);
             } catch (error) {
                 console.error('Error fetching products to restock:', error);

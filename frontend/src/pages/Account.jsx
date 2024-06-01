@@ -22,7 +22,7 @@ function Account() {
 
     useEffect(() => {
         console.log('Checking current user status');
-        axios.get('http://localhost:8000/api/v1/user/current_user', { withCredentials: true })
+        axios.get('https://smarterreceipt.onrender.com/api/v1/user/current_user', { withCredentials: true })
             .then(response => {
                 if (response.data) {
                     console.log('User is authenticated:', response.data);
@@ -51,7 +51,7 @@ function Account() {
                 OwnerLastName: lastName,
                 ShopName: shopName,
             };
-            const response = await axios.post('http://localhost:8000/api/v1/user/update', updatedUser, { withCredentials: true });
+            const response = await axios.post('https://smarterreceipt.onrender.com/api/v1/user/update', updatedUser, { withCredentials: true });
             setUser(response.data);
             alert('User information updated successfully');
         } catch (error) {

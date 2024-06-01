@@ -23,7 +23,7 @@ passport.deserializeUser(async (id, done) => {
 passport.use(new GoogleStrategy({
     clientID: '660075968403-9erhme7sfjlosak5soglvmm7kivli605.apps.googleusercontent.com',
     clientSecret: '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',
-    callbackURL: 'http://localhost:8000/api/v1/auth/google/callback' // Ensure the callback URL matches
+    callbackURL: 'https://smarterreceipt.onrender.com/api/v1/auth/google/callback' // Ensure the callback URL matches
 }, async (token, tokenSecret, profile, done) => {
     try {
         let user = await User.findOne({ googleId: profile.id });

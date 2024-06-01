@@ -24,7 +24,7 @@ function Transactions() {
     }, [isLightMode]);
 
     useEffect(() => {
-        axios.get("http://localhost:8000/api/v1/inventory/transactions", { withCredentials: true })
+        axios.get("https://smarterreceipt.onrender.com/api/v1/inventory/transactions", { withCredentials: true })
             .then(response => {
                 console.log('Transactions:', response.data);
                 setTransactions(response.data);
