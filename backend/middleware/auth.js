@@ -2,7 +2,7 @@ function isAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect('/api/v1/auth/google'); // Adjust redirect as necessary
+    res.redirect('https://smartereceipt.netlify.app');
 }
 
 module.exports = { isAuthenticated };
