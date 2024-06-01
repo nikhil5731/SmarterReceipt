@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/' }), (req, res) => {
+router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/inventory' }), (req, res) => {
     res.redirect('https://smartereceipt.netlify.app');
 });
 
