@@ -28,7 +28,10 @@ app.use(express.json());
 app.use(cookieSession({
     name: 'session',
     keys: ['56fb7a12f566d26973accd3014ba65e66db60ddf445a5f98f0837400aa916b34'],
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    maxAge: 24 * 60 * 60 * 1000,
+    secure: true,
+    httpOnly: true,
+    sameSite: 'none' 
 }));
 
 app.use(passport.initialize());
