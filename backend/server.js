@@ -11,7 +11,7 @@ require('./config/passport'); // Initialize Passport configuration
 const app = express();
 
 app.use(cors({
-    origin: 'https://smarterreceipt.netlify.app', // Specific domain instead of '*'
+    origin: 'https://smartereceipt.netlify.app', // Specific domain instead of '*'
     credentials: true, // To accept credentials like cookies from the client
 }));
 
