@@ -4,8 +4,7 @@ const { isAuthenticated } = require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/current_user', isAuthenticated, (req, res) => {
-    console.log('Sending current user:', req.user);
+router.get('/current_user', (req, res) => {
     res.send(req.user);
 });
 
